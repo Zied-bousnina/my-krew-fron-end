@@ -15,8 +15,14 @@ import Message from "./Tools/Message";
 import Language from "./Tools/Language";
 import useRtl from "@/hooks/useRtl";
 import useMobileMenu from "@/hooks/useMobileMenu";
+import GlobalFilter from "../table/GlobalFilter";
+import Button from "@/components/ui/Button";
 
-const Header = ({ className = "custom-class" }) => {
+const Header = ({
+  isRh = false,
+  isConsultant = false,
+  className = "custom-class",
+}) => {
   const [collapsed, setMenuCollapsed] = useSidebar();
   const { width, breakpoints } = useWidth();
   const [navbarType] = useNavbarType();
@@ -65,7 +71,7 @@ const Header = ({ className = "custom-class" }) => {
              }
         `}
       >
-        <div className="flex justify-between items-center h-full">
+        <div className="flex justify-between items-center h-full gap-4">
           {/* For Vertical  */}
 
           {menuType === "vertical" && (
@@ -93,13 +99,30 @@ const Header = ({ className = "custom-class" }) => {
                 </div>
               )}
               {/* <SearchModal /> */}
-              <h1 className="text-[36px] font-semibold text-3xl capitalize text-slate-900 inline-block ltr:pr-4 rtl:pl-4">
-
-              Tableau de bord - RH
-              </h1>
-
+              {isRh && (
+                <h1 className="text-[36px] font-semibold text-3xl capitalize text-slate-900 inline-block ltr:pr-4 rtl:pl-4 text-left">
+                  Tableau de bord - RH
+                </h1>
+              )}
             </div>
           )}
+
+              {isConsultant && (
+                <div className="flex-1 relative">
+                  {/* <div className="absolute left-0">
+              <Image
+                src="/assets/icons/search.svg"
+                alt="search"
+                className="w-5 h-5 "
+              />
+            </div> */}
+                  <GlobalFilter />
+                  <Button
+                    text="Rechercher"
+                    className="absolute right-2 top-2 bg-black-500 text-white text-[14px] font-semibold w-[120px] h-[35px] flex items-center justify-center rounded-[10px]"
+                  />
+                </div>
+              )}
           {/* For Horizontal  */}
           {menuType === "horizontal" && (
             <div className="flex items-center space-x-4 rtl:space-x-reverse">
@@ -122,10 +145,11 @@ const Header = ({ className = "custom-class" }) => {
           {/* Nav Tools  */}
           <div className="nav-tools flex items-center lg:space-x-6 space-x-3 rtl:space-x-reverse">
             {/* <Language /> */}
-            <SwitchDark />
+            {/* <SwitchDark /> */}
 
             {/* {width >= breakpoints.md && <Message />} */}
-            {width >= breakpoints.md && <Notification />}
+            {isConsultant && width >= breakpoints.lg && <div className="w-[290px]"></div>}
+            {width >= breakpoints.md&&isRh && <Notification />}
             {width >= breakpoints.md && <Profile />}
             {width <= breakpoints.md && (
               <div

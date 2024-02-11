@@ -1,10 +1,10 @@
 import React from "react";
 import { Icon } from "@iconify/react";
-const Icons = ({ icon, className, width, rotate, hFlip, vFlip }) => {
+const Icons = ({ icon, className, width=20, rotate, hFlip, vFlip }) => {
   return (
     <>
       <Icon
-        width={20}
+        width={width}
         rotate={rotate}
         hFlip={hFlip}
         icon={icon}

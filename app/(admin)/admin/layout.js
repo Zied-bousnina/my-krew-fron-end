@@ -25,6 +25,7 @@ import Loading from "@/components/Loading";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import useNavbarType from "@/hooks/useNavbarType";
 import { motion, AnimatePresence } from "framer-motion";
+import { rhMenuItems } from "@/constant/data";
 export default function RootLayout({ children }) {
   const { width, breakpoints } = useWidth();
   const [collapsed] = useSidebar();
@@ -36,12 +37,12 @@ export default function RootLayout({ children }) {
   const router = useRouter();
   const { isAuth } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (!isAuth) {
-      router.push("/");
-    }
-    //darkMode;
-  }, [isAuth]);
+  // useEffect(() => {
+  //   if (!isAuth) {
+  //     router.push("/");
+  //   }
+  //   //darkMode;
+  // }, [isAuth]);
   const location = usePathname();
   // header switch class
   const switchHeaderClass = () => {
@@ -73,9 +74,10 @@ export default function RootLayout({ children }) {
       <ToastContainer />
       <Header className={width > breakpoints.xl ? switchHeaderClass() : ""} />
       {menuType === "vertical" && width > breakpoints.xl && !menuHidden && (
-        <Sidebar />
+        <Sidebar menuItems={rhMenuItems} />
       )}
       <MobileMenu
+        menuItems={rhMenuItems}
         className={`${
           width < breakpoints.xl && mobileMenu
             ? "left-0 visible opacity-100  z-[9999]"
@@ -128,7 +130,7 @@ export default function RootLayout({ children }) {
               }}
             >
               <Suspense fallback={<Loading />}>
-                <Breadcrumbs />
+                <Breadcrumbs menuItems={rhMenuItems} />
                 {children}
               </Suspense>
             </motion.div>

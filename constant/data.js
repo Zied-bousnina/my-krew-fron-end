@@ -1,4 +1,4 @@
-export const menuItems =
+export const rhMenuItems =
  [
   {
     isHeadr: true,
@@ -46,6 +46,58 @@ export const menuItems =
     isHide: true,
     icon: "heroicons-outline:users",
     link: "/todo",
+  },
+
+
+];
+export const consultantMenuItems =
+ [
+  {
+    isHeadr: true,
+    title: "menu",
+  },
+
+
+  {
+    title: "Home",
+    isHide: true,
+    icon: "heroicons-outline:home",
+    link: "/consultant",
+    // project
+  },
+
+  {
+    title: "Tableau de bord",
+    isHide: true,
+    icon: "ep:suitcase-line",
+    link: "#",
+  },
+
+  {
+    title: "Entreprise",
+    isHide: true,
+    icon: "heroicons:document-text",
+
+    link: "#",
+  },
+  {
+    title: "Nos Services",
+    isHide: true,
+    icon: "heroicons-outline:rectangle-stack",
+    link: "#",
+  },
+  {
+    title: "Nos Services",
+    isHide: true,
+    icon: "heroicons:inbox",
+    link: "#",
+  },
+
+  {
+    title: "Mes contacts",
+    isHide: true,
+    icon: "heroicons-outline:users",
+    link: "#",
   },
 
 

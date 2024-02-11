@@ -1,5 +1,5 @@
 function server() {
-  return process.env.NEXT_PUBLIC_API_URL || "https://my-krew-t2j4.onrender.com/api/";
+  return process.env.NEXT_PUBLIC_API_URL ?? "https://my-krew-t2j4.onrender.com/api/";
 }
 
 export const ApiConfigs = {

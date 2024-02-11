@@ -41,7 +41,7 @@ const MostSales = dynamic(
     ssr: false,
   }
 );
-const Dashboard = () => {
+const RhDashboard = () => {
   const [selectedFilter, setSelectedFilter] = useState("Tous les Consultants");
   const [showAddConsultantPopup, setShowAddConsultantPopup] = useState(false);
   const [showEditProfile, setShowEditProfile] = useState(false);
@@ -428,4 +428,4 @@ useEffect(() => {
   );
 };
 
-export default Dashboard;
+export default RhDashboard;
