@@ -193,7 +193,7 @@ console.log(consultants)
 
   return (
     <>
-      <Card noborder className="border border-[#EAE3D5] bg-white ">
+      <Card bodyClass="px-6 pb-6">
 
         <div className="overflow-x-auto -mx-6">
           <div className="inline-block min-w-full align-middle">
@@ -209,7 +209,7 @@ console.log(consultants)
                         <th
                           {...column.getHeaderProps(column.getSortByToggleProps())}
                           scope="col"
-                          className=" table-th "
+                          className=" table-th bg-[#e0d6c3]"
                         >
                           {column.render("Header")}
                           <span>

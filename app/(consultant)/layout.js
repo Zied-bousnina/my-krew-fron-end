@@ -65,7 +65,7 @@ export default function RootLayout({ children }) {
   return (
     <div
       dir={isRtl ? "rtl" : "ltr"}
-      className={`app-warp    ${isDark ? "dark" : "light"} ${
+      className={`app-warp  ${isDark ? "dark" : "light"} bg-white ${
         skin === "bordered" ? "skin--bordered" : "skin--default"
       }
       ${navbarType === "floating" ? "has-floating" : ""}
@@ -91,7 +91,7 @@ export default function RootLayout({ children }) {
           onClick={() => setMobileMenu(false)}
         ></div>
       )}
-      <Settings />
+      {/* <Settings /> */}
       <div
         className={`content-wrapper transition-all duration-150 ${
           width > 1280 ? switchHeaderClass() : ""

@@ -9,7 +9,6 @@ const Textinput = ({
   classLabel = "form-label",
   className = "",
   classGroup = "",
-  register,
   name,
   readonly,
   value,
@@ -55,7 +54,6 @@ const Textinput = ({
         {name && !isMask && (
           <input
             type={type === "password" && open === true ? "text" : type}
-            {...register(name)}
             {...rest}
             className={`${
               error ? " has-error" : " "
@@ -82,7 +80,6 @@ const Textinput = ({
         )}
         {name && isMask && (
           <Cleave
-            {...register(name)}
             {...rest}
             placeholder={placeholder}
             options={options}

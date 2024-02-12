@@ -54,10 +54,10 @@ const Navmenu = ({ menus }) => {
         {menus.map((item, i) => (
           <li
             key={i}
-            className={` single-sidebar-menu
+            className={`hover:bg-[#333333] rounded-lg single-sidebar-menu
               ${item.child ? "item-has-children" : ""}
               ${activeSubmenu === i ? "open" : ""}
-              ${locationName === item.link ? "menu-item-active" : ""}`}
+              ${location === item.link ? "bg-[#333333]" : ""}`}
           >
             {/* single menu with no childred*/}
             {!item.child && !item.isHeadr && (

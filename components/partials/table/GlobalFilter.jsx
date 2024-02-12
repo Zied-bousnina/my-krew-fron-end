@@ -9,7 +9,7 @@ const GlobalFilter = ({ filter, setFilter }) => {
   return (
     <div>
       <Textinput
-        className="h-[53px] border border-[#EAE3D5] focus:border-[#EAE3D5]"
+        className="h-[53px] border rounded-xl border-[#EAE3D5] focus:border-[#EAE3D5]"
         value={value || ""}
         onChange={onChange}
         placeholder="Rechercher ..."

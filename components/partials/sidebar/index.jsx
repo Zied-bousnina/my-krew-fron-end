@@ -31,7 +31,7 @@ const Sidebar = ({menuItems}) => {
   return (
     <div className={ "dark bg-[#1E1E1E]" }>
       <div
-        className={`sidebar-wrapper bg-[#1E1E1E] ${
+        className={`sidebar-wrapper bg-[rgb(36,36,36)] ${
           collapsed ? "w-[72px] close_sidebar" : "w-[248px]"
         }
       ${menuHover ? "sidebar-hovered" : ""}

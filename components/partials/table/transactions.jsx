@@ -154,7 +154,7 @@ const actions = [
 
 // ...
 
-const TransactionsTable = ({ title = "All transactions", consultants }) => {
+const TransactionsTable = ({ title = "", consultants }) => {
   const columns = useMemo(() => COLUMNS, []);
   const data = useMemo(() => consultants, [consultants]);
 console.log(data)
@@ -197,10 +197,13 @@ console.log(consultants)
 
   return (
     <>
-      <Card noborder className="border border-[#EAE3D5] bg-white ">
+              { title!=="" && <p className="text-xl mb-2">{title}</p>}
+
+      <Card bodyClass="px-6 pb-6">
 
         <div className="overflow-x-auto -mx-6">
           <div className="inline-block min-w-full align-middle">
+
             <div className="overflow-hidden">
               <table
                 className="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700"
@@ -220,7 +223,7 @@ console.log(consultants)
                         }
                           {...column.getHeaderProps(column.getSortByToggleProps())}
                           scope="col"
-                          className=" table-th "
+                          className=" table-th bg-[#e0d6c3] "
                         >
                           {column.render("Header")}
                           <span>

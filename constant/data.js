@@ -1,12 +1,6 @@
 export const rhMenuItems =
  [
   {
-    isHeadr: true,
-    title: "menu",
-  },
-
-
-  {
     title: "Tableau de bord",
     isHide: true,
     icon: "heroicons-outline:home",
@@ -52,10 +46,10 @@ export const rhMenuItems =
 ];
 export const consultantMenuItems =
  [
-  {
-    isHeadr: true,
-    title: "menu",
-  },
+  // {
+  //   isHeadr: true,
+  //   title: "menu",
+  // },
 
 
   {
@@ -70,7 +64,7 @@ export const consultantMenuItems =
     title: "Tableau de bord",
     isHide: true,
     icon: "ep:suitcase-line",
-    link: "#",
+    link: "/consultant/tableau-de-bord",
   },
 
   {

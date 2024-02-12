@@ -18,6 +18,9 @@
 .page-content {
   @apply md:pt-6 md:pb-[37px] md:px-6 pt-[15px] px-[15px] pb-24;
 }
+.page-content {
+  background-color: #ffffff;
+}
 
 .page-min-height {
   min-height: calc(var(--vh, 1vh) * 100 - 132px);

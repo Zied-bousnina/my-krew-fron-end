@@ -34,6 +34,7 @@ import Loading from "@/app/loading";
 import Missions from "@/components/partials/table/missions";
 import { set } from "react-hook-form";
 import { rhServices } from "@/_services/rh.service";
+import CustomTable from "@/components/partials/table/custom-table";
 
 const MostSales = dynamic(
   () => import("@/components/partials/widget/most-sales"),
@@ -41,6 +42,132 @@ const MostSales = dynamic(
     ssr: false,
   }
 );
+const COLUMNS = [
+  {
+    Header: "name",
+    accessor: "name",
+    Cell: (row) => {
+      console.log(row?.cell?.row?.original);
+      console.log(
+        row?.cell?.row?.original?.preRegister?.personalInfo?.firstName
+      );
+      return (
+        <div>
+          <span className="inline-flex items-center">
+            <span className="w-7 h-7 rounded-full ltr:mr-3 rtl:ml-3 flex-none bg-slate-600">
+              {/* <img
+                src={row?.cell?.row?.original?.image}
+                alt=""
+                className="object-cover w-full h-full rounded-full"
+              /> */}
+            </span>
+            <span className="text-sm text-slate-600 dark:text-slate-300 capitalize font-medium">
+              {/* {row?.cell?.value.name} */}
+              {
+                row?.cell?.row?.original?.preRegister?.personalInfo?.firstName
+                  ?.value
+              }{" "}
+              {
+                row?.cell?.row?.original?.preRegister?.personalInfo?.lastName
+                  ?.value
+              }
+            </span>
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    Header: "Email",
+    accessor: "Email",
+    Cell: (row) => {
+      return (
+        <span className="text-slate-500 dark:text-slate-400">
+          {row?.cell?.row?.original?.preRegister?.personalInfo?.email?.value}
+        </span>
+      );
+    },
+  },
+  {
+    Header: "Téléphone",
+    accessor: "téléphone",
+    Cell: (row) => {
+      return (
+        <span className="text-slate-500 dark:text-slate-400">
+          <span className="block text-slate-600 dark:text-slate-300">
+            {
+              row?.cell?.row?.original?.preRegister?.personalInfo?.phoneNumber
+                ?.value
+            }
+          </span>
+        </span>
+      );
+    },
+  },
+
+  {
+    Header: "Nationalité",
+    accessor: "nationalite",
+    Cell: (row) => {
+      return (
+        <span className="text-slate-500 dark:text-slate-400">
+          <span className="block text-slate-900 bg-slate-100 text-base px-3 py-2 border rounded-xl	 dark:text-slate-300">
+            {
+              row?.cell?.row?.original?.preRegister?.personalInfo?.nationality
+                ?.value
+            }
+          </span>
+        </span>
+      );
+    },
+  },
+
+  {
+    Header: "action",
+    accessor: "action",
+    // Cell: (row) => {
+    //   return (
+    //     <div className=" text-center">
+    //       <Dropdown
+    //         classMenuItems="right-0 w-[140px] bottom-[40%] z-1000  "
+    //         label={
+    //           <span className="text-xl text-center block w-full">
+    //             <Icon icon="heroicons-outline:dots-vertical" />
+    //           </span>
+    //         }
+    //       >
+    //         <div className="divide-y divide-slate-100 dark:divide-slate-800">
+    //           {actions.map((item, i) => (
+    //             <Menu.Item key={i}>
+    //               <Link
+    //                 href={`${item.redirect}/${row?.cell?.row?.original?._id}`}
+    //               >
+    //                 <div
+    //                   className={`
+
+    //               ${
+    //                 item.name === "delete"
+    //                   ? "bg-danger-500 text-danger-500 bg-opacity-30   hover:bg-opacity-100 hover:text-white"
+    //                   : "hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50"
+    //               }
+    //                w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer
+    //                first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
+    //                 >
+    //                   <span className="text-base">
+    //                     <Icon icon={item.icon} />
+    //                   </span>
+    //                   <span>{item.name}</span>
+    //                 </div>
+    //               </Link>
+    //             </Menu.Item>
+    //           ))}
+    //         </div>
+    //       </Dropdown>
+    //     </div>
+    //   );
+    // },
+  },
+];
 const ConsultantDashboard = () => {
   const [selectedFilter, setSelectedFilter] = useState("Tous les Consultants");
   const [showAddConsultantPopup, setShowAddConsultantPopup] = useState(false);
@@ -210,12 +337,10 @@ const ConsultantDashboard = () => {
         </div>
       </Modal>
 
-      <div className="space-y-5">
-        {/* <HomeBredCurbs title="Tableau de bord - RH" /> */}
-        <div className="grid grid-cols-12 gap-5">
+      
           <div className="lg:col-span-8 col-span-12 space-y-5">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-              <div className="flex gap-2 items-center">
+              <div className="flex gap-6 items-center">
                 <Icon icon="solar:document-outline" width={35} />
                 <h1 className="font-bold text-4xl">Mes Missions</h1>
               </div>
@@ -264,61 +389,10 @@ const ConsultantDashboard = () => {
               </div>
             </Card>
 
-            <div className="flex items-center gap-4">
-              <FilterTableItem
-                icon="/assets/icons/burger.svg"
-                alt="Burger"
-                additionalClasses="justify-center"
-              />
-              <FilterTableItem
-                icon="/assets/icons/filter.svg"
-                alt="filter"
-                text="Sort: Last updated"
-              />
-              <div
-                className={`min-w-[39px] h-[38px] rounded-[10px] border border-[#EAE3D5] flex items-center gap-2  bg-white cursor-pointer`}
-              >
-                <div
-                  className={`min-w-[39px] h-full p-2 rounded-tl-[10px] rounded-bl-[10px] text-[13px] ${
-                    selectedFilter === "Tous les Consultants"
-                      ? "bg-[#EAE3D5]"
-                      : ""
-                  }`}
-                  onClick={() => {
-                    setconsultantV2([]);
-                    getAllConsultant();
-
-                    setSelectedFilter("Tous les Consultants");
-                  }}
-                >
-                  Tous les Consultants
-                </div>
-                <div
-                  className={`min-w-[39px] h-full p-2 rounded-tr-[10px] rounded-br-[10px] text-[13px]
-                ${selectedFilter === "Missions" ? "bg-[#EAE3D5]" : ""}
-              `}
-                  onClick={() => {
-                    setmissionsPending([]);
-                    getAllPendingMission();
-                    setSelectedFilter("Missions");
-                  }}
-                >
-                  Missions
-                </div>
-              </div>
-
-              <FilterTableItem
-                text="Ajouter un Consultant"
-                onClick={openAddConsultantPopupHandler}
-              />
-              <FilterTableItem
-                text="Export List"
-                onClick={openEditProfilePopupHandler}
-              />
-            </div>
+      <p className="text-2xl font-bold">Mes Missions</p>
             {!isConsultLoading ? (
-              selectedFilter == "Tous les Consultants" ? (
-                <TransactionsTable consultants={consultantV2} />
+              selectedFilter == "Tous les Consultants" ? (  
+                <CustomTable title="En attente" columns={COLUMNS} data={consultantV2} />
               ) : missionsPendingLoading ? (
                 <Loading />
               ) : (
@@ -328,27 +402,7 @@ const ConsultantDashboard = () => {
               <Loading />
             )}
           </div>
-          <div className="lg:col-span-4 col-span-12 space-y-5">
-            <Card
-              title="Historique des demandes"
-              className="border border-[#EAE3D5] bg-white relative"
-            >
-              <span className="absolute top-7 right-4 text-[13px] font-semibold text-[#D8CCB2] cursor-pointer hover:border-b hover:border-[#D8CCB2]">
-                Voir tout {">"}
-              </span>
-              <MessageList />
-            </Card>
-            <Card
-              title="Nos consultants"
-              className="border border-[#EAE3D5] bg-white relative"
-            >
-              <span className="absolute top-7 right-4 text-[13px] font-semibold text-[#D8CCB2] cursor-pointer hover:border-b hover:border-[#D8CCB2]">
-                Voir tout {">"}
-              </span>
-              <TaskLists />
-            </Card>
-          </div>
-        </div>
+      
         {/* <div className="grid xl:grid-cols-3 grid-cols-1 gap-5">
         <Card title="Task list" headerslot={<SelectMonth />}>
           <TaskLists />
@@ -406,7 +460,6 @@ const ConsultantDashboard = () => {
           </Card>
         </div>
       </div> */}
-      </div>
     </>
   );
 };
