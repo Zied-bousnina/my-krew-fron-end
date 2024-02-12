@@ -2,6 +2,7 @@
 import React, { useState, useMemo } from "react";
 
 import Icon from "@/components/ui/Icon";
+import Select from 'react-select';
 
 import {
   useTable,
@@ -127,12 +128,49 @@ const VirementTable = ({ title }) => {
   return (
     <>
       <div className="bg-[#f7f5ef] p-6 rounded-lg">
-        <div className="py-4 flex items-center justify-between">
+        <div className="py-4 flex sm:flex-row flex-col sm:items-center justify-between">
           <p className="text-3xl font-semibold">{title}</p>
-          <div></div>
+          <div className="flex items-center gap-2">
+            <Select
+              // value={selectedOption}
+              // onChange={this.handleChange}
+              styles={{
+                control: (baseStyles, state) => ({
+                  ...baseStyles,
+                  borderRadius: "12px",
+                }),
+              }}
+              className="react-select "
+              classNamePrefix="select"
+              placeholder="dernier mois"
+              options={[
+                { label: "Aujourd'hui", value: "aujourd'hui" },
+                { label: "7 Dernier Jours", value: "7_Dernier_Jours" },
+                { label: "Dernier Mois", value: "Dernier_Mois" },
+                { label: "Derniére Année", value: "Derniére_Année" },
+              ]}
+            />
+            <Select
+              // value={selectedOption}
+              // onChange={this.handleChange}
+              styles={{
+                control: (baseStyles, state) => ({
+                  ...baseStyles,
+                  borderRadius: "12px",
+                }),
+              }}
+              className="react-select"
+              classNamePrefix="select"
+              placeholder="type de virement"
+              options={[
+                { label: "Participation", value: "participation" },
+                { label: "Cooptation", value: "cooptation" },
+              ]}
+            />
+          </div>
         </div>
 
-        <div className="overflow-x-auto -mx-6">
+        <div className="overflow-x-auto -mx-6 ">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden ">
               <table

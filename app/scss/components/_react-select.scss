@@ -20,7 +20,7 @@
   .select__control,
   .react-select__control {
     .select__input {
-      @apply text-slate-500;
+      @apply text-slate-800;
     }
     &.select__control--is-disabled {
       @apply cursor-not-allowed;
@@ -37,14 +37,14 @@
 
     .select__indicator svg {
       cursor: pointer;
-      @apply text-slate-600;
+      @apply text-slate-800;
     }
 
     .select__indicator-separator {
       display: none;
     }
     .select__single-value {
-      @apply text-slate-600   text-sm;
+      @apply text-slate-800   text-sm;
     }
 
     .select__placeholder {
@@ -76,7 +76,7 @@
         }
 
         &.select__option--is-selected {
-          @apply bg-secondary-900 text-slate-200;
+          @apply bg-[#e0d7c2] text-slate-800;
         }
       }
     }
@@ -98,7 +98,7 @@
 .dashcode-app {
   .select__multi-value,
   .react-select__multi-value {
-    @apply text-white bg-slate-900;
+    @apply text-white;
     border-radius: 3px;
     margin: 0 0.7rem 0 0;
 
@@ -141,7 +141,7 @@
 
 .dark {
   .select__control {
-    @apply bg-slate-900 border-slate-700;
+    @apply bg-[#e0d7c2] border-slate-700;
 
     .select__indicator svg {
       @apply fill-slate-500;
@@ -204,3 +204,5 @@ html[dir="rtl"] {
     }
   }
 }
+
+

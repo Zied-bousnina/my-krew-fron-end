@@ -97,11 +97,14 @@ const Select = ({
             {options.map((option, i) => (
               <Fragment key={i}>
                 {option.value && option.label ? (
-                  <option key={i} value={option.value}>
+                  <option
+                    key={i}
+                    value={option.value}
+                  >
                     {option.label}
                   </option>
                 ) : (
-                  <option key={i} value={option}>
+                  <option key={i} value={option} className="p-2">
                     {option}
                   </option>
                 )}
