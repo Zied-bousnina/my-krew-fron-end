@@ -5,6 +5,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { handleLogout } from "@/components/partials/auth/store";
 import { useRouter } from "next/navigation";
+import { authActions } from "@/store/auth/authSlice";
 
 const ProfileLabel = () => {
   return (
@@ -43,7 +44,7 @@ const Profile = () => {
       icon: "heroicons-outline:user",
 
       action: () => {
-        router.push("/profile");
+        router.push("#");
       },
     },
     // {
@@ -92,7 +93,7 @@ const Profile = () => {
       label: "Logout",
       icon: "heroicons-outline:login",
       action: () => {
-        dispatch(handleLogout(false));
+        dispatch(authActions.logout({ router }));
       },
     },
   ];

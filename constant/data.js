@@ -61,24 +61,24 @@ export const consultantMenuItems =
   },
 
   {
-    title: "Tableau de bord",
+    title: "Personal info",
     isHide: true,
     icon: "ep:suitcase-line",
-    link: "/consultant/tableau-de-bord",
+    link: "/consultant/personal-info",
   },
 
   {
-    title: "Entreprise",
+    title: "Virement",
     isHide: true,
     icon: "heroicons:document-text",
 
-    link: "#",
+    link: "/consultant/virement",
   },
   {
-    title: "Nos Services",
+    title: "Compte rendu d'activité",
     isHide: true,
     icon: "heroicons-outline:rectangle-stack",
-    link: "#",
+    link: "/consultant/compte-rendu-activite",
   },
   {
     title: "Nos Services",

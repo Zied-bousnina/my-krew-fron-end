@@ -108,6 +108,7 @@ export const handleRegistretionStep2 = createAsyncThunk(
     return response.data;
   }
 );
+
 export const handleRegistretionStep4 = createAsyncThunk(
   'auth/handleRegistretionStep4',
   async (data, thunkAPI) => {
