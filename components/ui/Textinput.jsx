@@ -26,6 +26,7 @@ const Textinput = ({
   options,
   onFocus,
   defaultValue,
+  helperText,
 
   ...rest
 }) => {
@@ -144,7 +145,7 @@ const Textinput = ({
               : " text-danger-500 block text-sm"
           }`}
         >
-          {error.message}
+          {helperText}
         </div>
       )}
       {/* validated and success message*/}

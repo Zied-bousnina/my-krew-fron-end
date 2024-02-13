@@ -7,16 +7,21 @@ import kanban from "@/components/partials/app/kanban/store";
 import calendar from "@/components/partials/app/calender/store";
 import auth from "@/components/partials/auth/store";
 import rhconsultant from "./rhreducer";
+import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "./auth/authSlice";
 
-const rootReducer = {
-  layout,
-  todo,
-  email,
-  chat,
-  project,
-  kanban,
-  calendar,
-  auth,
-  rhconsultant
-};
-export default rootReducer;
+export const store = configureStore({
+  reducer: {
+    userAuth:authReducer,
+    layout,
+    todo,
+    email,
+    chat,
+    project,
+    kanban,
+    calendar,
+    auth,
+    rhconsultant,
+  },
+  devTools: process.env.NODE_ENV !== "production",
+});
