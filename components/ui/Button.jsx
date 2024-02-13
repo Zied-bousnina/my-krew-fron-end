@@ -22,7 +22,7 @@ function Button({
         <button
           type={type}
           onClick={onClick}
-          className={`btn btn inline-flex justify-center   ${
+          className={`btn btn inline-flex justify-center ${
             isLoading ? " pointer-events-none" : ""
           }
         ${disabled ? " opacity-40 cursor-not-allowed" : ""}

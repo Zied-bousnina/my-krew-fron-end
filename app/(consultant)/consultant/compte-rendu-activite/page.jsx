@@ -1,181 +1,125 @@
 "use client";
 
-import React, { useState } from "react";
-import FullCalendar from "@fullcalendar/react"; // must go before plugins
-import { useSelector, useDispatch } from "react-redux";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import listPlugin from "@fullcalendar/list";
-
-// needed for dayClick
-import Card from "@/components/ui/Card";
+import BasicArea from "@/components/partials/chart/appex-chart/BasicArea";
 import Button from "@/components/ui/Button";
-import Checkbox from "@/components/ui/Checkbox";
-import EventModal from "@/components/partials/app/calender/EventModal";
-import EditEventModal from "@/components/partials/app/calender/EditEventModal";
+
+import Card from "@/components/ui/Card";
 import Icon from "@/components/ui/Icon";
+import Textarea from "@/components/ui/Textarea";
+import EventCalendar from "@/components/ui/event-calendar";
+import React, { useState } from "react";
+import SignatureCanvas from "react-signature-canvas";
 
 const ConsultantCompteRenduActivitePage = () => {
-  const { calendarEvents, categories } = useSelector((state) => state.calendar);
-  const [activeModal, setActiveModal] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [editItem, setEditItem] = useState(null);
-  const [editModal, setEditModal] = useState(false);
-
-  const [selectedCategories, setSelectedCategories] = useState(
-    categories.map((c) => c.value)
-  );
-
-  const handleCategorySelection = (category) => {
-    if (selectedCategories.includes(category)) {
-      setSelectedCategories(selectedCategories.filter((c) => c !== category));
-    } else {
-      setSelectedCategories([...selectedCategories, category]);
-    }
-  };
-
-  const dispatch = useDispatch();
-  const closeModal = () => {
-    setActiveModal(false);
-  };
-
-  const onCloseEditModal = () => {
-    setEditModal(false);
-  };
-
-  //   const calendarOptions = {
-  //     plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
-  //     headerToolbar: {
-  //       left: "prev,next today",
-  //       center: "title",
-  //       right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
-  //     },
-  //     events: calendarEvents,
-  //     editable: true,
-  //     selectable: true,
-  //     selectMirror: true,
-  //     dayMaxEvents: true,
-  //     weekends: true,
-  //     dateClick: {},
-  //     eventClick: {},
-  //     eventsSet: {},
-  //   };
-
-  const handleDateClick = (arg) => {
-    setActiveModal(true);
-    setSelectedEvent(arg);
-  };
-
-  const handleEventClick = (arg) => {
-    setEditModal(true);
-    setEditItem(arg);
-  };
-
-  const handleClassName = (arg) => {
-    if (arg.event.extendedProps.calendar === "holiday") {
-      return "danger";
-    } else if (arg.event.extendedProps.calendar === "business") {
-      return "primary";
-    } else if (arg.event.extendedProps.calendar === "personal") {
-      return "success";
-    } else if (arg.event.extendedProps.calendar === "family") {
-      return "info";
-    } else if (arg.event.extendedProps.calendar === "etc") {
-      return "info";
-    } else if (arg.event.extendedProps.calendar === "meeting") {
-      return "warning";
-    }
-  };
-
-  // filter events
-  const filteredEvents = calendarEvents.filter((event) =>
-    selectedCategories.includes(event.extendedProps.calendar)
-  );
-
+  const canvasRef = React.useRef(null);
+  console.log("canvasRef:",canvasRef);
   return (
-    <div className="dashcode-calender">
-             <div className="flex gap-6 items-center">
-                <Icon icon="heroicons:document-text" width={35} />
-                <h1 className="font-bold text-4xl">Compte Rendu D'activité</h1>
-              </div>
-      <div className="grid grid-cols-12 gap-4">
-        <Card className="lg:col-span-3 col-span-12 bg-white">
-          <Button
-            icon="heroicons-outline:plus"
-            text=" Add Event"
-            className="btn-dark w-full block  "
-            onClick={() => {
-              setActiveModal(true);
-            }}
-          />
-          <div className="block py-4 text-slate-800 dark:text-slate-400 font-semibold text-xs uppercase mt-4">
-            FILTER
+    <div className="space-y-5">
+      {/* <HomeBredCurbs title="Tableau de bord - RH" /> */}
+      <div className="grid grid-cols-12 gap-5">
+        <div className="lg:col-span-8 col-span-12 space-y-5">
+          {/*title */}
+          <div className="flex gap-6 items-center pb-4">
+            <Icon icon="heroicons:document-text" width={35} />
+            <h1 className="font-bold text-4xl ">Compte Rendu d'activié</h1>
           </div>
-          <ul className=" space-y-2 ">
-            <li>
-              <Checkbox
-                activeClass="ring-primary-500 bg-primary-500"
-                label="All"
-                value={selectedCategories.length === categories.length}
-                onChange={() => {
-                  if (selectedCategories.length === categories.length) {
-                    setSelectedCategories([]);
-                  } else {
-                    setSelectedCategories(categories.map((c) => c.value));
-                  }
-                }}
-              />
-            </li>
-            {categories.map((category) => (
-              <li key={category.value}>
-                <Checkbox
-                  activeClass={category.activeClass}
-                  label={category.label}
-                  value={selectedCategories.includes(category.value)}
-                  onChange={() => handleCategorySelection(category.value)}
-                />
-              </li>
-            ))}
-          </ul>
-        </Card>
-        <Card className="lg:col-span-9 col-span-12 bg-white">
-          <FullCalendar
-            plugins={[
-              dayGridPlugin,
-              timeGridPlugin,
-              interactionPlugin,
-              listPlugin,
-            ]}
-            headerToolbar={{
-              left: "prev,next today",
-              center: "title",
-              right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
-            }}
-            events={filteredEvents}
-            editable={true}
-            selectable={true}
-            selectMirror={true}
-            dayMaxEvents={2}
-            weekends={true}
-            dateClick={handleDateClick}
-            eventClick={handleEventClick}
-            eventClassNames={handleClassName}
-            initialView="dayGridMonth"
-          />
-        </Card>
-      </div>
+          {/*body*/}
 
-      <EventModal
-        activeModal={activeModal}
-        onClose={closeModal}
-        selectedEvent={selectedEvent}
-      />
-      <EditEventModal
-        editModal={editModal}
-        onCloseEditModal={onCloseEditModal}
-        editItem={editItem}
-      />
+          {/*information section */}
+          <div className=" border border-x-0 border-y-slate-800 p-8 mr-0 sm:mr-8 ">
+            <h4 className="font-semibold lg:text-2xl text-xl capitalize text-slate-900 inline-block ltr:pr-4 rtl:pl-4 mb-6">
+              Informations
+            </h4>
+            <div className="flex items-center gap-4">
+              <div className="p-2 rounded-md bg-[#f6f7f3] border border-slate-800">
+                <Icon
+                  icon="heroicons:clock"
+                  className="text-[#b4b1a9]"
+                  width={25}
+                />
+              </div>
+              <p className="text-md font-semibold">20J.</p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 sm:items-center mt-6">
+              <div className="flex items-center gap-4">
+                <div className="p-2 rounded-md bg-[#f6f7f3] border border-slate-800">
+                  <Icon
+                    icon="heroicons:credit-card"
+                    className="text-[#b4b1a9]"
+                    width={25}
+                  />
+                </div>
+                <p className="text-md font-semibold">PORTAGE LAB</p>
+              </div>
+              <div className="flex items-center gap-6">
+                <div className="p-2 rounded-md bg-[#f6f7f3] border border-slate-800">
+                  <Icon
+                    icon="heroicons:wallet"
+                    className="text-[#b4b1a9]"
+                    width={25}
+                  />
+                </div>
+                <p className="text-md font-semibold">CAFE CREME</p>
+              </div>
+            </div>
+          </div>
+          {/*note globale section */}
+          <div className="border border-x-0 border-t-0 border-b-slate-800 px-12 pb-12 pt-4 mr-0 sm:mr-8">
+            <h4 className="font-semibold lg:text-2xl text-xl capitalize text-slate-900 inline-block ltr:pr-4 rtl:pl-4 mb-6">
+              Note globale
+            </h4>
+            <Textarea
+              row={6}
+              placeholder="note sure le compte rendu d'activité"
+            />
+          </div>
+          {/*personnalisation section */}
+          <div className=" px-12 pb-12 pt-4 mr-0 sm:mr-8">
+            <h4 className="font-semibold lg:text-2xl text-xl capitalize text-slate-900 inline-block ltr:pr-4 rtl:pl-4 mb-6">
+              Personnalisation
+            </h4>
+            <p className="mb-2">Ajouter ma signature:</p>
+            <div className="flex">
+              <div className="border-2 border-slate-800 border-dashed rounded-lg ">
+                <SignatureCanvas
+                  ref={canvasRef}
+                  penColor="black"
+                  canvasProps={{ className: "sigCanvas" }}
+                />
+              </div>
+            </div>
+            <div className="flex mt-3">
+            <Button
+            onClick={()=>canvasRef.current.clear()}
+              text=" Enregistrer ma signature"
+              className="btn btn-dark rounded-lg hover:bg-opacity-80 text-white py-2 px-4"
+            />
+            </div>
+          </div>
+        </div>
+        <div className="lg:col-span-4 col-span-12 space-y-5">
+          <EventCalendar />
+
+          <div className="flex p-2 rounded-lg bg-[#f6f7f3] gap-2">
+            <Button
+              text=" Enregistrer"
+              className="border bg-white rounded-lg hover:bg-[#fefdf0]  py-2 px-4"
+            />
+            <Button
+              text=" Télécharger le PDF"
+              className="border bg-[#00c97b] rounded-lg hover:bg-opacity-80 text-white py-2 px-4"
+            />
+            <Button
+              text="Partager"
+              className="border bg-[#00c97b] rounded-lg hover:bg-opacity-80 text-white py-2 px-4"
+            />
+            <Button
+              text="Supprimer"
+              className="border bg-danger-500 rounded-lg hover:bg-opacity-80 text-white py-2 px-4"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
