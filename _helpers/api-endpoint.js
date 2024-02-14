@@ -1,5 +1,5 @@
 function server() {
-  return process.env.NEXT_PUBLIC_API_URL ?? "https://my-krew-t2j4.onrender.com/api/";
+  return process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3600/api/";
 }
 
 export const ApiConfigs = {
@@ -10,8 +10,25 @@ export const ApiConfigs = {
     auth: {
       user: { register: "users" },
       login: "users/login",
-      
     },
+    rh: {
+      getConsultant: "users/consultants/getAllConsultant",
+      getStatistiques: "users/getConsultantStats",
+      getPendingPreregistration:
+        "users/preregistartion/getPendingPreregistration",
+      getConsultantById: "users/getConsultantById/",
+      updatePreregistrationClientInfo:
+        "users/validatePreregistrationClientInfo/",
+    },
+    consultant: {
+      getAllMissions:"consultant/getAllMissions/{id}",
+      getPendingMissions:"consultant/getPendingMissions/{id}",
+      getWaitingContractMissions:"consultant/getWaitingContractMissions/{id}",
+      getValidatedMissions:"consultant/getValidatedMissions/{id}",
+      getNotValidatedMissions:"consultant/getNotValidatedMissions/{id}",
+    },
+  },
+};
  rh: {
   getConsultant: "users/consultants/getAllConsultant",
   getStatistiques: "users/getConsultantStats",

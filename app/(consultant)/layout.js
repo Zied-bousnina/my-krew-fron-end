@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, useLayoutEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { ToastContainer } from "react-toastify";
 import Header from "@/components/partials/header";
@@ -26,6 +26,8 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import useNavbarType from "@/hooks/useNavbarType";
 import { motion, AnimatePresence } from "framer-motion";
 import { consultantMenuItems } from "@/constant/data";
+import { refreshAuthentication } from "@/utils/auth";
+import { useDispatch } from "react-redux";
 export default function RootLayout({ children }) {
   const { width, breakpoints } = useWidth();
   const [collapsed] = useSidebar();
@@ -36,13 +38,11 @@ export default function RootLayout({ children }) {
   const [isMonoChrome] = useMonoChrome();
   const router = useRouter();
   const { isAuth } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   if (!isAuth) {
-  //     router.push("/");
-  //   }
-  //   //darkMode;
-  // }, []);
+  useLayoutEffect(() => {
+    refreshAuthentication(dispatch, router);
+  }, []);
   const location = usePathname();
   // header switch class
   const switchHeaderClass = () => {

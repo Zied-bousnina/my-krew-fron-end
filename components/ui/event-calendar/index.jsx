@@ -1,31 +1,22 @@
+import React, { useState } from "react";
 import {
-  eachDayOfInterval,
-  endOfMonth,
   format,
   getDay,
   startOfMonth,
+  endOfMonth,
+  eachDayOfInterval,
   subDays,
-  isEqual,
+  isSameDay,
 } from "date-fns";
-import React, { useState } from "react";
 import Button from "../Button";
 import EventCalendarModal from "../modals/pages/compte-rendu-activite/even-calendar-modal";
+
 const WEEKDAYS = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
 
-const EventCalendar = ({ }) => {
-  //*start and end date state
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  //*modal logic
-  //modal state and function
+const EventCalendar = () => {
+  const [selectedDates, setSelectedDates] = useState([]);
   const [activeModal, setActiveModal] = useState(false);
-  const closeModal = () => {
-    setActiveModal(false);
-  };
-  const openModal = () => {
-    setActiveModal(true);
-  };
-  //*calendar logic
+
   const currentDate = new Date();
   const firstDayOfMonth = startOfMonth(currentDate);
   const lastDayOfMonth = endOfMonth(currentDate);
@@ -34,55 +25,39 @@ const EventCalendar = ({ }) => {
     start: firstDayOfMonth,
     end: lastDayOfMonth,
   });
-
-  //get the index of the days before and after the current month
   const startingDayIndex = getDay(firstDayOfMonth);
   const endingDayIndex = getDay(lastDayOfMonth);
 
-  //the subDays is subtract a number of days from a date
-  //the format to get the new date from subtracted date and "d" is to get the day of the month
   const previousMonthDaysToShow = Array.from({ length: startingDayIndex }).map(
-    (_, i) => {
-      // console.log("firstDayOfMonth:",firstDayOfMonth);
-      // console.log("startingDayIndex:",startingDayIndex);
-      return format(subDays(firstDayOfMonth, startingDayIndex - i), "d");
-    }
+    (_, i) => format(subDays(firstDayOfMonth, startingDayIndex - i), "d")
   );
 
+  const toggleDateSelection = (day) => {
+    const index = selectedDates.findIndex((selectedDate) =>
+      isSameDay(selectedDate, day)
+    );
+    if (index === -1) {
+      setSelectedDates([...selectedDates, day]);
+    } else {
+      setSelectedDates(selectedDates.filter((_, i) => i !== index));
+    }
+  };
   const findDayIndexInWeek = (day) => {
     return getDay(day);
   };
+  const isDateSelected = (day) =>
+    selectedDates.some((selectedDate) => isSameDay(selectedDate, day));
 
-  const selectedDaysInMonth = eachDayOfInterval({
-    start: startDate,
-    end: endDate,
-  });
-
-  const isDaySelected = (day) => {
-    return selectedDaysInMonth.some((selectedDay) => isEqual(selectedDay, day));
+  const closeModal = () => setActiveModal(false);
+  const openModal = () => setActiveModal(true);
+  const clearCalendar = () => {
+    setSelectedDates([]);
   };
 
-  //clear the calender
-  const clearCalender = () => {
-    setStartDate(null);
-    setEndDate(null);
-  }
   return (
     <>
-      <EventCalendarModal
-        activeModal={activeModal}
-        onClose={closeModal}
-        setStartDate={setStartDate}
-        setEndDate={setEndDate}
-        startDate={startDate}
-        endDate={endDate}
-      />
-
       <div className="container">
-        <div className="">
-          <h2 className="text-2xl mb-4 ">{format(currentDate, "MMM yyyy")}</h2>
-
-        </div>
+        <h2 className="text-2xl mb-4">{format(currentDate, "MMM yyyy")}</h2>
         <div className="border border-slate-800 rounded-xl overflow-hidden">
           <div className="grid grid-cols-7 bg-[#fefdf0] border border-b-slate-800 p-4">
             {WEEKDAYS.map((day) => (
@@ -99,36 +74,36 @@ const EventCalendar = ({ }) => {
                 </div>
               </div>
             ))}
-            {daysInMonth.map((day, index) => (
-              <div className="p-1">
-                {findDayIndexInWeek(day) === 0 ||
-                findDayIndexInWeek(day) === 6 ? (
+            {daysInMonth.map((day, index) =>
+              findDayIndexInWeek(day) === 0 || findDayIndexInWeek(day) === 6 ? (
+                <div
+                  key={index}
+                  className="bg-[#fefdf0] text-secondary-300 font-bold flex items-center justify-center h-[120px] rounded-md"
+                >
+                  {format(day, "d")}
+                </div>
+              ) : (
+                <div
+                  key={index}
+                  className="p-1"
+                  onClick={() => toggleDateSelection(day)}
+                >
                   <div
-                    key={index}
-                    className="bg-[#fefdf0] text-secondary-300 font-bold flex items-center justify-center h-[120px] rounded-md"
+                    className={`font-bold flex items-center cursor-pointer justify-center h-[120px] rounded-md duration-100 hover:scale-105 ${
+                      isDateSelected(day) ? "bg-[#00c97b]" : "bg-secondary-100"
+                    }`}
                   >
                     {format(day, "d")}
                   </div>
-                ) : (
-                  <div
-                    key={index}
-                    className={`${
-                      !!startDate && !!endDate && isDaySelected(day)
-                        ? "bg-[#00c97b]"
-                        : "bg-secondary-100"
-                    } font-bold flex items-center justify-center h-[120px] rounded-md`}
-                  >
-                    {format(day, "d")}
-                  </div>
-                )}
-              </div>
-            ))}
+                </div>
+              )
+            )}
             {Array.from({ length: WEEKDAYS.length - endingDayIndex - 1 }).map(
               (_, index) => {
                 return (
                   <div className="p-1">
                     <div
-                      key={`empty-${index}`}
+                      key={`next-day-${index}`}
                       className="font-bold flex items-center justify-center h-[120px] text-secondary-300 rounded-md"
                     >
                       {index + 1}
@@ -140,15 +115,10 @@ const EventCalendar = ({ }) => {
           </div>
         </div>
         <div className="mt-6 flex gap-4 items-center">
-        <Button
-            text=" Remplir le CRA"
+          <Button
+            text="Vider le CRA"
             className="border bg-white rounded-xl hover:bg-[#fefdf0] py-2 px-4"
-            onClick={openModal}
-          />
-        <Button
-            text=" Vider le CRA"
-            className="border bg-white rounded-xl hover:bg-[#fefdf0] py-2 px-4"
-            onClick={clearCalender}
+            onClick={clearCalendar}
           />
         </div>
       </div>
@@ -157,3 +127,4 @@ const EventCalendar = ({ }) => {
 };
 
 export default EventCalendar;
+
