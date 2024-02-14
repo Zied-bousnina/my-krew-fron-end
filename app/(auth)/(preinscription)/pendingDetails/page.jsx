@@ -61,7 +61,7 @@ zIndex: '2',
 }}
 >
 
-  <Link href="/">
+  <Link href="/v4/public">
     <Image
       src={
         isDark
@@ -99,7 +99,7 @@ Nous vérifions vos informations. Nous vous tiendrons informé dans quelques ins
           <div className="inner-content h-full flex flex-col bg-white dark:bg-slate-800">
             <div className="auth-box h-full flex flex-col justify-center">
               <div className="mobile-logo text-left mb-6 lg:hidden block">
-                <Link href="/">
+                <Link href="/v4/public">
                   <img
                     src={
                       isDark

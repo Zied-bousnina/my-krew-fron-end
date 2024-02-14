@@ -49,7 +49,7 @@ const SignUp = () => {
 }}
   >
 
-    <Link href="/">
+    <Link href="/v4/public">
       <Image
         src={
           isDark
@@ -82,7 +82,7 @@ const SignUp = () => {
             <div className="inner-content h-full flex flex-col bg-white dark:bg-slate-800">
               <div className="auth-box h-full flex flex-col justify-center">
                 <div className="mobile-logo text-left mb-6 lg:hidden block">
-                  <Link href="/">
+                  <Link href="/v4/public">
                     <Image
                       src={
                         isDark
@@ -133,6 +133,8 @@ const SignUp = () => {
 
                     Vous avez déjà un compte ? {" "}
 
+
+
                   <Link
                     href="/"
                     className="text-slate-900 dark:text-white font-medium hover:underline"
@@ -140,6 +142,7 @@ const SignUp = () => {
                   Connectez-vous
                   </Link>
                 </div>
+
               </div>
               <div className="auth-footer text-center">
                 {/* Copyright 2021, Dashcode All Rights Reserved. */}

@@ -277,57 +277,7 @@ useEffect(() => {
               </div>
             </Card>
 
-            <div className="flex items-center gap-4">
-              <FilterTableItem
-                icon="/assets/icons/burger.svg"
-                alt="Burger"
-                additionalClasses="justify-center"
-              />
-              <FilterTableItem
-                icon="/assets/icons/filter.svg"
-                alt="filter"
-                text="Sort: Last updated"
-              />
-              <div
-                className={`min-w-[39px] h-[38px] rounded-[10px] border border-[#EAE3D5] flex items-center gap-2  bg-white cursor-pointer`}
-              >
-                <div
-                  className={`min-w-[39px] h-full p-2 rounded-tl-[10px] rounded-bl-[10px] text-[13px] ${
-                    selectedFilter === "Tous les Consultants"
-                      ? "bg-[#EAE3D5]"
-                      : ""
-                  }`}
-                  onClick={() => {
-                    setconsultantV2([])
-                    getAllConsultant()
 
-                    setSelectedFilter("Tous les Consultants")
-                    }}
-                >
-                  Tous les Consultants
-                </div>
-                <div
-                  className={`min-w-[39px] h-full p-2 rounded-tr-[10px] rounded-br-[10px] text-[13px]
-                ${selectedFilter === "Missions" ? "bg-[#EAE3D5]" : ""}
-              `}
-                  onClick={() =>{
-                    setmissionsPending([])
-                    getAllPendingMission()
-                     setSelectedFilter("Missions")}}
-                >
-                  Missions
-                </div>
-              </div>
-
-              <FilterTableItem
-                text="Ajouter un Consultant"
-                onClick={openAddConsultantPopupHandler}
-              />
-              <FilterTableItem
-                text="Export List"
-                onClick={openEditProfilePopupHandler}
-              />
-            </div>
 {
   !isConsultLoading  ?
   ( selectedFilter =="Tous les Consultants" ?

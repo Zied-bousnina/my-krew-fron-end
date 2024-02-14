@@ -5,6 +5,7 @@ import axios from "axios";
 import { SetAuthToken } from "@/utils/SetAuthToken";
 import jwt_decode from "jwt-decode";
 import { useRouter } from "next/navigation";
+import {ApiConfigs} from "@/_helpers";
 // import { useRouter } from "next/navigation";
 const initialUsers = () => {
   if (typeof window !== "undefined") {
@@ -98,7 +99,7 @@ export const handleRegistretionStep2 = createAsyncThunk(
   async (data, thunkAPI) => {
     const token = localStorage.getItem('jwtToken');
     console.log(data)
-    const response = await axios.post(`https://my-krew-t2j4.onrender.com/api/users/preRegistration/createPreRegistration2`, data,
+    const response = await axios.post(ApiConfigs.base_url + ApiConfigs.apis.preregistration.createPreRegistration2, data,
     {
       headers: { "Content-Type": "multipart/form-data",
       Authorization: `${token}`, }

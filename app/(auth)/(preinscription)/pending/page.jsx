@@ -43,7 +43,7 @@ zIndex: '2',
 }}
 >
 
-  <Link href="/">
+  <Link href="/v4/public">
     <Image
       src={
         isDark
@@ -81,8 +81,8 @@ Nous vérifions vos informations. Nous vous tiendrons informé dans quelques ins
           <div className="inner-content h-full flex flex-col bg-white dark:bg-slate-800">
             <div className="auth-box h-full flex flex-col justify-center">
               <div className="mobile-logo text-left mb-6 lg:hidden block">
-                <Link href="/">
-                  <img
+                <Link href="/v4/public">
+                  <Image
                     src={
                       isDark
                         ? "/assets/images/all-img/Calque4.png"
@@ -90,6 +90,8 @@ Nous vérifions vos informations. Nous vous tiendrons informé dans quelques ins
                     }
                     alt=""
                     className="mx-auto"
+                    width={100}
+                    height={100}
                   />
                 </Link>
               </div>
@@ -115,7 +117,7 @@ Nous vérifions vos informations. Nous vous tiendrons informé dans quelques ins
                   /> */}
                 <div className="text-slate-500 text-base">
                 <Link
-                 href={`/pendingDetails/${5}`}
+                 href={`/pendingDetails`}
                   className="text-[#76736E] dark:text-white"
                 >
                 <Button

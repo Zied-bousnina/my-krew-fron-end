@@ -26,7 +26,7 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.exp = decodedToken.exp;
         state.iat = decodedToken.iat;
-       
+
 
         switch (decodedToken.role) {
           case "RH":
@@ -35,13 +35,13 @@ const authSlice = createSlice({
           case "CONSULTANT":
             switch (decodedToken.preRegister.status) {
       case "NOTEXIST":
-        action.payload.router.push(`/register/${decodedToken.id}`);
+        action.payload.router.push(`/register`);
         break;
       case "PENDING":
-        action.payload.router.push(`/pending/${decodedToken.id}`);
+        action.payload.router.push(`/pending`);
         break;
       case "NOTVALIDATED":
-        action.payload.router.push(`/declined/${decodedToken.id}`);
+        action.payload.router.push(`/declined`);
         break;
       default:
 

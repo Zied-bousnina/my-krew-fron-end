@@ -13,13 +13,13 @@ import Fileinput from "@/components/ui/Fileinput";
 import { ToastContainer, toast } from "react-toastify";
 const schema = yup
   .object({
-    metier: yup.string().required("Ce champ est obligatoire"),
-    secteur: yup.string().required("Ce champ est obligatoire"),
-    client: yup.string().required("Ce champ est obligatoire"),
-    simulation: yup.string().required("Ce champ est obligatoire"),
-    tjm: yup.string().required("Ce champ est obligatoire"),
-    debut: yup.string().required("Ce champ est obligatoire"),
-    fin: yup.string().required("Ce champ est obligatoire"),
+    metier: yup.string(),
+    secteur: yup.string(),
+    client: yup.string(),
+    simulation: yup.string(),
+    tjm: yup.string(),
+    debut: yup.string(),
+    fin: yup.string(),
     // simulationfile: yup.string().required("Ce champ est obligatoire"),
 
 
@@ -30,6 +30,17 @@ const RegForm4 = ({id}) => {
   const dispatch = useDispatch();
   const  {isLoading}  = useSelector((state) => state.auth);
   const [checked, setChecked] = useState(false);
+    const [inputs, setInputs] = useState({})
+    const onChangeHandlerinput = (e, name) => {
+        const { value } = e.target;
+        console.log(e.target)
+        setInputs({
+            ...inputs,
+            [name]: value
+
+        })
+        console.log(inputs)
+    };
   const {
     register,
     formState: { errors },
@@ -63,21 +74,68 @@ const RegForm4 = ({id}) => {
     }
 
     const data2 =  {
-      ...data,
+        metier: inputs.metier,
+        secteur: inputs.secteur,
+        client: inputs.client,
+        simulation: inputs.simulation,
+        tjm: inputs.tjm,
+        debut: inputs.debut,
+        fin: inputs.fin,
+
       simulationfile: form.simulationfile
     }
-    dispatch(handleRegistretionStep4({...data2,id}))
-    .then((res) => {
-      console.log(res);
-      if(res.type=="auth/handleRegistretionStep4/fulfilled"){
-        router.push(`/pending/${id}`);
-      }
-    })
-    .catch((err) => {
-      // toast.error("Something went wrong");
-    }
-    );
 
+      if (!data2.metier) {
+          toast.error("Veuillez remplir le champ 'Métier'");
+          return;
+      }
+
+      if (!data2.secteur) {
+          toast.error("Veuillez remplir le champ 'Secteur'");
+          return;
+      }
+
+      if (!data2.client) {
+          toast.error("Veuillez remplir le champ 'Client'");
+          return;
+      }
+
+      if (!data2.simulation) {
+          toast.error("Veuillez remplir le champ 'Simulation'");
+          return;
+      }
+
+      if (!data2.tjm) {
+          toast.error("Veuillez remplir le champ 'TJM'");
+          return;
+      }
+
+      if (!data2.debut) {
+          toast.error("Veuillez remplir le champ 'Début'");
+          return;
+      }
+
+      if (!data2.fin) {
+          toast.error("Veuillez remplir le champ 'Fin'");
+          return;
+      }
+      const debutDate = new Date(data2.debut);
+      const finDate = new Date(data2.fin);
+      if (debutDate >= finDate) {
+          toast.error("La date de début doit être antérieure à la date de fin");
+          return;
+      }
+      dispatch(handleRegistretionStep4(data2))
+          .then((res) => {
+              console.log(res);
+              if(res.type=="auth/handleRegistretionStep4/fulfilled"){
+                  router.push(`/pending`);
+              }
+          })
+          .catch((err) => {
+                  // toast.error("Something went wrong");
+              }
+          );
     console.log(data2)
   };
   return (
@@ -90,6 +148,7 @@ const RegForm4 = ({id}) => {
         placeholder="Métier"
         register={register}
         error={errors.metier}
+        onChange={(e)=>onChangeHandlerinput(e, "metier")}
       />{" "}
       <Textinput
         name="secteur"
@@ -98,6 +157,7 @@ const RegForm4 = ({id}) => {
         placeholder="Secteur d'activité"
         register={register}
         error={errors.secteur}
+        onChange={(e)=>onChangeHandlerinput(e, "secteur")}
       />{" "}
       <Textinput
         name="client"
@@ -106,6 +166,7 @@ const RegForm4 = ({id}) => {
         placeholder="client final"
         register={register}
         error={errors.client}
+        onChange={(e)=>onChangeHandlerinput(e, "client")}
       />{" "}
         <Textinput
         name="simulation"
@@ -114,6 +175,7 @@ const RegForm4 = ({id}) => {
         placeholder="Simulation"
         register={register}
         error={errors.simulation}
+        onChange={(e)=>onChangeHandlerinput(e, "simulation")}
       />{" "}
        <Textinput
         name="tjm"
@@ -122,6 +184,7 @@ const RegForm4 = ({id}) => {
         placeholder="TJM"
         register={register}
         error={errors.tjm}
+        onChange={(e)=>onChangeHandlerinput(e, "tjm")}
       />{" "}
        <Textinput
         name="debut"
@@ -130,6 +193,7 @@ const RegForm4 = ({id}) => {
         placeholder="Date de début"
         register={register}
         error={errors.debut}
+        onChange={(e)=>onChangeHandlerinput(e, "debut")}
       />{" "}
       <Textinput
         name="fin"
@@ -138,6 +202,7 @@ const RegForm4 = ({id}) => {
         placeholder="Date de fin"
         register={register}
         error={errors.fin}
+        onChange={(e)=>onChangeHandlerinput(e, "fin")}
       />{" "}
 
 <Fileinput
@@ -158,7 +223,7 @@ const RegForm4 = ({id}) => {
 {/* <div className="flex justify-end m-5"> */}
 <div className="flex justify-end">
 <Link
-                    href={`/registerpage2/${id}`}
+                    href={`/registerPage3`}
                     className="text-slate-900 dark:text-white font-medium hover:underline"
                   >
 
@@ -167,6 +232,7 @@ const RegForm4 = ({id}) => {
     //   disabled
       className="btn"
       style={{ backgroundColor: "#1E1E1E", opacity: "0.55", marginRight: "8px",color: "white", }}
+
     >
       Retour
     </button>

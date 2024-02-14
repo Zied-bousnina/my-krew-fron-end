@@ -6,9 +6,9 @@ import useDarkMode from "@/hooks/useDarkMode";
 import RegForm from "@/components/partials/auth/reg-from";
 import Social from "@/components/partials/auth/social";
 import Image from "next/image";
-import RegForm4 from "@/components/partials/auth/reg-form4";
+import RegForm3 from "@/components/partials/auth/reg-form3";
 
-const RegisterPage4 = ({params}) => {
+const RegisterPage3 = ({params}) => {
   const [isDark] = useDarkMode();
 
   console.log(params)
@@ -18,7 +18,7 @@ const RegisterPage4 = ({params}) => {
       <div className="lg-inner-column">
       <div className="left-column relative z-[1]"
        style={{
-        backgroundImage: `url(/assets/images/all-img/Rectangle122.png)`,
+        backgroundImage: `url(/assets/images/all-img/Rectangle133.png)`,
         backgroundSize: 'cover',
          backgroundPosition: 'center',
          borderRadius: '1.875rem',
@@ -45,7 +45,7 @@ zIndex: '2',
 }}
 >
 
-  <Link href="/">
+  <Link href="/v4/public">
     <img
       src={
         isDark
@@ -69,7 +69,7 @@ zIndex: '2',
           <div className="inner-content h-full flex flex-col bg-white dark:bg-slate-800">
             <div className="auth-box h-full flex flex-col justify-center">
               <div className="mobile-logo text-left mb-6 lg:hidden block">
-                <Link href="/">
+                <Link href="/v4/public">
                   <img
                     src={
                       isDark
@@ -91,7 +91,7 @@ zIndex: '2',
        paddingBottom: '10px',
       }}
     />
-                <h4 className="font-medium">  Créer votre compte</h4>
+                <h4 className="font-medium"> Information du client</h4>
                 {/* <img
                     src={
                       isDark
@@ -108,9 +108,10 @@ zIndex: '2',
               <div className="text-[#76736E] text-base">
               Pré-inscription
                 </div>
-              <RegForm4
+              <RegForm3
               id={params.id}
-               />
+
+              />
 
 
             </div>
@@ -125,4 +126,4 @@ zIndex: '2',
   );
 };
 
-export default RegisterPage4;
+export default RegisterPage3;

@@ -12,6 +12,7 @@ const Fileinput = ({
   selectedFile,
   badge,
   selectedFiles,
+    value
 }) => {
   return (
     <div>
@@ -25,6 +26,7 @@ const Fileinput = ({
             id={id}
             multiple={multiple}
             placeholder={placeholder}
+
           />
           <div
             className={`w-full h-[40px] file-control flex items-center ${className}`}
