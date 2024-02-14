@@ -27,21 +27,12 @@ export const ApiConfigs = {
       getValidatedMissions:"consultant/getValidatedMissions/{id}",
       getNotValidatedMissions:"consultant/getNotValidatedMissions/{id}",
     },
-  },
-};
- rh: {
-  getConsultant: "users/consultants/getAllConsultant",
-  getStatistiques: "users/getConsultantStats",
-  getPendingPreregistration: "users/preregistartion/getPendingPreregistration",
-  getConsultantById: "users/getConsultantById/",
-  updatePreregistrationClientInfo: "users/validatePreregistrationClientInfo/",
- },
- preregistration: {
-     createPreRegistration1: "users/preRegistration/createPreRegistration1",
-     createPreRegistration2: "users/preRegistration/createPreRegistration2",
-     createPreRegistration3: "users/preRegistration/createPreRegistration3",
-     createPreRegistration4: "users/preRegistration/createPreRegistration4",
- }
+    preregistration: {
+      createPreRegistration1: "users/preRegistration/createPreRegistration1",
+      createPreRegistration2: "users/preRegistration/createPreRegistration2",
+      createPreRegistration3: "users/preRegistration/createPreRegistration3",
+      createPreRegistration4: "users/preRegistration/createPreRegistration4",
+  }
   },
 };
 
