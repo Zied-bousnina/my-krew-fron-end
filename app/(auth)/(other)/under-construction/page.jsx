@@ -1,5 +1,5 @@
 "use client";
-import Button from "@/components/ui/Button";
+import Button from "v4/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import Link from "next/link";
 import useDarkMode from "@/hooks/useDarkMode";

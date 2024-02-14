@@ -42,7 +42,7 @@ zIndex: '2',
 }}
 >
 
-  <Link href="/">
+  <Link href="/v4/public">
     <img
       src={
         isDark
@@ -68,7 +68,7 @@ Créez votre compte MyKrew pour suivre vos investissements, gérer vos relations
           <div className="inner-content h-full flex flex-col bg-white dark:bg-slate-800">
             <div className="auth-box h-full flex flex-col justify-center">
               <div className="mobile-logo text-left mb-6 lg:hidden block">
-                <Link href="/">
+                <Link href="/v4/public">
                   <img
                     src={
                       isDark

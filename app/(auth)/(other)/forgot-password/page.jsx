@@ -39,7 +39,7 @@ const ForgotPassPage = () => {
 }}
   >
 
-    <Link href="/">
+    <Link href="/v4/public">
       <img
         src={
           isDark
@@ -69,7 +69,7 @@ const ForgotPassPage = () => {
           <div className="inner-content h-full flex flex-col bg-white dark:bg-slate-800">
             <div className="auth-box2 flex flex-col justify-center h-full">
               <div className="mobile-logo text-center mb-6 lg:hidden block">
-                <Link href="/">
+                <Link href="/v4/public">
                   <img
                     src={
                       isDark
@@ -95,7 +95,7 @@ const ForgotPassPage = () => {
               <div className="md:max-w-[345px] mx-auto font-normal text-slate-500 dark:text-slate-400 2xl:mt-12 mt-8 uppercase text-sm">
               Oubliez ça,
                 <Link
-                  href="/"
+                  href="/v4/public"
                   className="text-slate-900 dark:text-white font-medium hover:underline"
                 >
                   {' '}Renvoyez-moi {' '}

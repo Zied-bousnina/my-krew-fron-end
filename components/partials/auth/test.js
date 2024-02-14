@@ -15,10 +15,10 @@ import { ToastContainer, toast } from "react-toastify";
 
 const schema = yup
     .object({
-        avs: yup.string(),
+        avs: yup.string().required("avs is Required"),
 
 
-        rib: yup.string(),
+        rib: yup.string().required("rib is Required"),
 
 
 
@@ -48,17 +48,6 @@ const RegForm2 = ({id}) => {
         mode: "all",
     });
     const [form, setForm] = useState({})
-    const [inputs, setInputs] = useState({})
-    const onChangeHandlerinput = (e, name) => {
-        const { value } = e.target;
-     console.log(e.target)
-        setInputs({
-            ...inputs,
-            [name]: value
-
-        })
-        console.log(inputs)
-    };
     const onChangeHandlerFile = (e) => {
         // const { name, files } = e.target;
         const { name, files } = e.target;
@@ -73,9 +62,16 @@ const RegForm2 = ({id}) => {
 
     const onSubmit = (data) => {
         // dispatch(handleRegister(data));
-        console.log(data)
-        console.log(value)
+        if(value === "oui" && data.permis == "") {
+            toast.error("Veuillez remplir tous les champs");
+            return;
+        }
+        if(data.cin == "" || data.avs == "" || data.passport == "" || data.rib == "") {
+            handleClickVariant('error');
+            toast.error("Veuillez remplir tous les champs");
 
+            return;
+        }
         const formdata = new FormData();
         // Add non-file data to FormData
         Object.keys(data).forEach((key) => {
@@ -93,53 +89,21 @@ const RegForm2 = ({id}) => {
                 formdata.append(key, form[key]);
             }
         });
+        console.log(formdata, "formdata")
 
-console.log(data)
         const data2 = {
-            avs: inputs.avs,
-            rib: inputs.rib,
+            ...data,
             permis: form.permis,
             passport: form.passport,
             cin: form.cin,
-            ribDocument: form.ribDocument,
 
 
-        }
-        console.log("regis", data2)
-        if (value === "oui" && !data2.permis) {
-            toast.error("Veuillez choisir un fichier pour le permis de conduire");
-            return
-        }
-
-        if (!data2.passport) {
-            toast.error("Veuillez remplir le champ 'Passeport'");
-            return;
-        }
-
-        if (!data2.cin) {
-            toast.error("Veuillez remplir le champ 'Pièce d’identité (CNI)'");
-            return;
-        }
-
-        if (!data2.avs) {
-            toast.error("Veuillez remplir le champ 'Numéro de sécurité sociale / AVS'");
-            return;
-        }
-
-        if (!data2.rib) {
-            toast.error("Veuillez remplir le champ 'RIB'");
-            return;
-        }
-
-        if (!data2.ribDocument) {
-            toast.error("Veuillez remplir le champ 'RIB document'");
-            return;
         }
         dispatch(handleRegistretionStep2({...data2, id}))
             .then((res) => {
                 console.log(res);
                 if(res.type=="auth/handleRegistretionStep2/fulfilled"){
-                    router.push(`/registerPage3`);
+                    router.push(`/registerPage4/${id}`);
                 }
             })
             .catch((err) => {
@@ -147,7 +111,7 @@ console.log(data)
                 }
             );
         //
-
+        console.log("regis", data2)
         // router.push(`/registerPage3/${id}`);
         // setTimeout(() => {
         //   router.push("/");
@@ -157,21 +121,17 @@ console.log(data)
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 ">
             <ToastContainer/>
             <Textinput
-
                 name="avs"
                 // label="Prénom"
                 type="text"
                 placeholder="Numéro de sécurité sociale / AVS"
                 register={register}
                 error={errors.avs}
-                onChange={(e)=>onChangeHandlerinput(e, "avs")}
                 style={{
-
 
                 }}
             />{" "}
             <Fileinput
-
                 name="cin"
                 label="choisir un fichier"
                 onChange={onChangeHandlerFile}
@@ -184,7 +144,6 @@ console.log(data)
                 }
             />{" "}
             <Fileinput
-
                 name="passport"
                 value={form.passport}
                 label="choisir un fichier"
@@ -195,9 +154,8 @@ console.log(data)
                 error={errors.passport}
             />{" "}
             <Textinput
-
                 name="rib"
-                onChange={(e)=>onChangeHandlerinput(e, "rib")}
+
                 // label="Prénom"
                 type="text"
                 placeholder="RIB"
@@ -205,7 +163,6 @@ console.log(data)
                 // error={errors.rib}
             />{" "}
             <Fileinput
-
                 name="ribDocument"
                 value={form.ribDocument}
                 label="choisir un fichier"

@@ -6,9 +6,9 @@ import useDarkMode from "@/hooks/useDarkMode";
 import RegForm from "@/components/partials/auth/reg-from";
 import Social from "@/components/partials/auth/social";
 import Image from "next/image";
-import RegForm2 from "@/components/partials/auth/reg-form2";
+import RegForm4 from "@/components/partials/auth/reg-form4";
 
-const RegisterPage2 = ({params}) => {
+const RegisterPage4 = ({params}) => {
   const [isDark] = useDarkMode();
 
   console.log(params)
@@ -18,7 +18,7 @@ const RegisterPage2 = ({params}) => {
       <div className="lg-inner-column">
       <div className="left-column relative z-[1]"
        style={{
-        backgroundImage: `url(/assets/images/all-img/Rectangle135.png)`,
+        backgroundImage: `url(/assets/images/all-img/Rectangle122.png)`,
         backgroundSize: 'cover',
          backgroundPosition: 'center',
          borderRadius: '1.875rem',
@@ -45,7 +45,7 @@ zIndex: '2',
 }}
 >
 
-  <Link href="/">
+  <Link href="/v4/public">
     <img
       src={
         isDark
@@ -60,9 +60,7 @@ zIndex: '2',
 
 </div>
 <div className="absolute left-20 2xl:bottom-20 bottom-20 z-[-1]">
-<h2 className="text-4xl font-bold text-white  mb-4">
-Sécurisez vos informations : Une étape clé vers une gestion financière intelligente avec MyKrew.
-</h2>
+<h2 className="text-4xl font-bold text-white  mb-4">Saisissez les détails de votre société et de votre rôle pour faciliter la gestion et le suivi de vos interactions professionnelles.</h2>
 </div>
 
 </div>
@@ -71,7 +69,7 @@ Sécurisez vos informations : Une étape clé vers une gestion financière intel
           <div className="inner-content h-full flex flex-col bg-white dark:bg-slate-800">
             <div className="auth-box h-full flex flex-col justify-center">
               <div className="mobile-logo text-left mb-6 lg:hidden block">
-                <Link href="/">
+                <Link href="/v4/public">
                   <img
                     src={
                       isDark
@@ -108,9 +106,9 @@ Sécurisez vos informations : Une étape clé vers une gestion financière intel
                 </div>
               </div>
               <div className="text-[#76736E] text-base">
-              Documents personnels
+              Pré-inscription
                 </div>
-              <RegForm2
+              <RegForm4
               id={params.id}
                />
 
@@ -127,4 +125,4 @@ Sécurisez vos informations : Une étape clé vers une gestion financière intel
   );
 };
 
-export default RegisterPage2;
+export default RegisterPage4;

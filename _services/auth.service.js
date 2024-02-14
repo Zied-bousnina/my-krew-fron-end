@@ -5,6 +5,9 @@ const AuthService = {
   registerCollector,
   registerEnterprise,
   login,
+  Register1,
+  Register2,
+  Register3
 };
 
 async function registerUser(userData) {
@@ -78,6 +81,66 @@ async function handleResponse(response) {
     console.error("Response handling error:", error);
     throw error;
   }
+}
+
+async function Register1(data) {
+  const requestOptions = {
+    method: "POST",
+  headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+    };
+
+
+  const response = await fetch(
+      ApiConfigs.base_url + ApiConfigs.apis.preregistration.createPreRegistration1,
+      requestOptions
+
+  );
+  console.log(response)
+  return handleResponse(response);
+}
+
+async function Register2(data) {
+
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      ...authHeader(),
+      "Content-Type": "multipart/form-data ",
+
+
+
+
+    },
+    body: data,
+  };
+
+  console.log(requestOptions)
+  console.log(data)
+  const response = await fetch(
+      ApiConfigs.base_url + ApiConfigs.apis.preregistration.createPreRegistration2,
+      requestOptions
+
+  );
+  console.log(response)
+  return handleResponse(response);
+}
+
+async function Register3(data) {
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+
+
+  const response = await fetch(
+      ApiConfigs.base_url + ApiConfigs.apis.preregistration.createPreRegistration3,
+      requestOptions
+
+  );
+  console.log(response)
+  return handleResponse(response);
 }
 
 export default AuthService;

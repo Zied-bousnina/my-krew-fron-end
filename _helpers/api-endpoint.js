@@ -27,5 +27,13 @@ export const ApiConfigs = {
       getValidatedMissions:"consultant/getValidatedMissions/{id}",
       getNotValidatedMissions:"consultant/getNotValidatedMissions/{id}",
     },
+    preregistration: {
+      createPreRegistration1: "users/preRegistration/createPreRegistration1",
+      createPreRegistration2: "users/preRegistration/createPreRegistration2",
+      createPreRegistration3: "users/preRegistration/createPreRegistration3",
+      createPreRegistration4: "users/preRegistration/createPreRegistration4",
+  }
   },
 };
+
+
