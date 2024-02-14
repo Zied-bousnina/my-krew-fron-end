@@ -14,12 +14,12 @@ import AuthService from "@/_services/auth.service";
 import {authActions} from "@/store/auth/authSlice";
 const schema = yup
   .object({
-    name: yup.string().required("Name is Required"),
+    firstName: yup.string().required("Name is Required"),
     lastName: yup.string().required("Last Name is Required"),
-    mail: yup.string().email().required("Email is Required"),
-    num: yup.string().required("Num is Required"),
-    societe: yup.string().required("Societe is Required"),
-    poste: yup.string().required("Poste is Required"),
+    email: yup.string().email().required("Email is Required"),
+    phoneNumber: yup.string().required("Num is Required"),
+    company: yup.string().required("Societe is Required"),
+    position: yup.string().required("Poste is Required"),
 
 
   })
@@ -43,12 +43,12 @@ const RegForm3 = ({id}) => {
 
     const formik = useFormik({
         initialValues: {
-           mail: "",
-              num: "",
-                societe: "",
-                poste: "",
-            name: "",
-            lastName: "",
+          email: "",
+          phoneNumber: "",
+          company: "",
+          position: "",
+          firstName: "",
+          lastName: "",
 
         },
         validationSchema: schema,
@@ -91,59 +91,59 @@ const RegForm3 = ({id}) => {
         helperText={formik.touched.lastName && formik.errors.lastName}
       />{" "}
       <Textinput
-          id={"name"}
-        name="name"
+          id={"firstName"}
+        name="v"
         // label="Prénom"
         type="text"
         placeholder="NOM"
-        value={formik.values.name}
+        value={formik.values.firstName}
         onChange={formik.handleChange}
-        error={formik.touched.name && Boolean(formik.errors.name)}
-        helperText={formik.touched.name && formik.errors.name}
+        error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+        helperText={formik.touched.firstName && formik.errors.firstName}
       />{" "}
       <Textinput
-          id={"mail"}
-        name="mail"
+          id={"email"}
+        name="email"
         // label="Prénom"
         type="text"
-        placeholder="Adresse e-mail"
-        value={formik.values.mail}
+        placeholder="Adresse e-email"
+        value={formik.values.email}
         onChange={formik.handleChange}
-        error={formik.touched.mail && Boolean(formik.errors.mail)}
-        helperText={formik.touched.mail && formik.errors.mail}
+        error={formik.touched.email && Boolean(formik.errors.email)}
+        helperText={formik.touched.email && formik.errors.email}
       />{" "}
         <Textinput
-            id={"num"}
-        name="num"
+            id={"phoneNumber"}
+        name="phoneNumber"
         // label="Prénom"
         type="text"
         placeholder="Numéro de téléphone"
-        value={formik.values.num}
+        value={formik.values.phoneNumber}
         onChange={formik.handleChange}
-        error={formik.touched.num && Boolean(formik.errors.num)}
-        helperText={formik.touched.num && formik.errors.num}
+        error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+        helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
       />{" "}
        <Textinput
-           id={"societe"}
-        name="societe"
+           id={"company"}
+        name="company"
         // label="Prénom"
         type="text"
         placeholder="Societé"
-        value={formik.values.societe}
+        value={formik.values.company}
         onChange={formik.handleChange}
-        error={formik.touched.societe && Boolean(formik.errors.societe)}
-        helperText={formik.touched.societe && formik.errors.societe}
+        error={formik.touched.company && Boolean(formik.errors.company)}
+        helperText={formik.touched.company && formik.errors.company}
       />{" "}
        <Textinput
-           id={"poste"}
-        name="poste"
+           id={"position"}
+        name="position"
         // label="Prénom"
         type="text"
         placeholder="Poste du contact"
-        value={formik.values.poste}
+        value={formik.values.position}
         onChange={formik.handleChange}
-        error={formik.touched.poste && Boolean(formik.errors.poste)}
-        helperText={formik.touched.poste && formik.errors.poste}
+        error={formik.touched.position && Boolean(formik.errors.position)}
+        helperText={formik.touched.position && formik.errors.position}
       />{" "}
 
 
