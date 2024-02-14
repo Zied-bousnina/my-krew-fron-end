@@ -9,185 +9,96 @@ import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { handleLogin, handleRegister2, handlelogin2 } from "./store";
 import { ToastContainer, toast } from "react-toastify";
+import AuthService from "@/_services/auth.service";
+import { useFormik } from "formik";
 // import { then } from './../../../.next/server/app/(dashboard)/ecommerce/page';
 
 const schema = yup.object({
     email: yup.string().email("Invalid email").required("Email is Required"),
     password: yup.string().required("Password is Required"),
-    confirmPassword: yup.string()
+    confirm: yup.string()
       .oneOf([yup.ref('password'), null], 'Passwords must match')
       .required('Confirm Password is Required')
   })
   .required();
 const SignUpForm = () => {
-  const { isAuth } = useSelector((state) => state.auth);
-  const  {isLoading}  = useSelector((state) => state.auth);
+
   const  {error} = useSelector((state) => state.auth);
-  const  state = useSelector((state) => state.auth);
-
-  // console.log(isAuth);
-  function parseJwt(token) {
-    if (!token) { return; }
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace('-', '+').replace('_', '/');
-    return JSON.parse(window.atob(base64));
-}
-
-  console.log(error)
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-  const { users } = useSelector((state) => state.auth);
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm({
-    resolver: yupResolver(schema),
-    //
-    mode: "all",
-  });
+
   const router = useRouter();
-  const onSubmit = (data) => {
-    // const user = users.find(
-    //   (user) => user.email === data.email && user.password === data.password
-    // );
- if(data.email !="" && data.password!="") {
-  const data2 =  {
-    email: data.email,
-    password: data.password,
-    confirm: data.password
-  }
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      confirm: "",
+    },
+    validationSchema: schema,
+    onSubmit: (values) => {
+      setIsLoading(true);
+      AuthService.registerUser(values)
+        .then((res) => {
+          // dispatch(authActions.login({token: res.token, router:router}))
+          console.log(res)
+          toast.success("Bienvenue", {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        })
+        .catch((err) => {
 
-   dispatch(handleRegister2(data2))
-   .then((res) => {
-    console.log("ressss", res)
-    if(res.type =="auth/handleRegister/rejected") {
-      toast.error("Invalid credentials", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      console.log("error", res.error)
-    }else if(
-      res.type =="auth/handleRegister/fulfilled"
-    ) {
-      console.log(res)
-      toast.success("votre compte a été crée avec succès"
-      , {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      // setTimeout(() => {
-        router.push("/");
-      // }, 1500);
-    }
-
-
-
-
-
-      // toast.success("Bienvenue", {
-      //   position: "top-right",
-      //   autoClose: 1500,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   pauseOnHover: true,
-      //   draggable: true,
-      //   progress: undefined,
-      //   theme: "light",
-      // });
-      // setTimeout(() => {
-      //   router.push("/analytics");
-      // }, 1500);
-
-  }
-  )
-  .catch((err) => {
-    // console.log("error", err)
-    // toast.error("Invalid credentials", {
-    //   position: "top-right",
-    //   autoClose: 1500,
-    //   hideProgressBar: true,
-    //   closeOnClick: true,
-    //   pauseOnHover: true,
-    //   draggable: true,
-    //   progress: undefined,
-    //   // theme: "light",
-    // });
-    console.log(err);
+          console.log("erroe: ", err)
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    },
   });
-
-  }else {
-    toast.error("Veuillez remplir les champs", {
-      position: "top-right",
-      autoClose: 1500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-
-  }
-    // if (user) {
-
-    //   // setTimeout(() => {
-    //   //   router.push("/analytics");
-    //   // }, 1500);
-    // } else {
-    //   toast.error("Invalid credentials", {
-    //     position: "top-right",
-    //     autoClose: 1500,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //     theme: "light",
-    //   });
-    // }
-  };
 
   const [checked, setChecked] = useState(false);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 ">
+    <form onSubmit={formik.handleSubmit} className="space-y-4 ">
       <Textinput
+      id="email"
         name="email"
         label="email"
         placeholder="enter your email"
-
-        type="email"
-        register={register}
-        error={errors?.email}
-      />
+value={formik.values.email}
+onChange={formik.handleChange}
+error={formik.touched.email && Boolean(formik.errors.email)}
+helperText={formik.touched.email && formik.errors.email}
+              />
       <Textinput
+      id="password"
         name="password"
         label="passwrod"
         type="password"
 placeholder="********"
-        register={register}
-        error={errors.password}
+value={formik.values.password}
+onChange={formik.handleChange}
+error={formik.touched.password && Boolean(formik.errors.password)}
+helperText={formik.touched.password && formik.errors.password}
+
       />
       <Textinput
-        name="confirmPassword"
-        label="Consfirm passwrod"
+      id="confirm"
+        name="confirm"
+        label="confirm passwrod"
         type="password"
         placeholder="********"
+        value={formik.values.confirm}
+        onChange={formik.handleChange}
+        error={formik.touched.confirm && Boolean(formik.errors.confirm)}
+        helperText={formik.touched.confirm && formik.errors.confirmPassword}
 
-        register={register}
-        error={errors.confirmPassword}
       />
       <div className="flex justify-end">
 
@@ -200,20 +111,39 @@ placeholder="********"
       </div>
 
       <button
-      disabled={isLoading}
-      className="btn btn-dark block w-full text-center">
-{
-  isLoading ?
-  <div className="spinner-border text-light" role="status">
-          <span className="visually-hidden">
-            Loading...
-          </span>
-        </div>
-:
-      "s'inscrire"
-}
-
-      </button>
+          disabled={isLoading}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          type="submit"
+          className="btn btn-dark block w-full text-center"
+        >
+          {isLoading ? (
+            <div role="status">
+              <svg
+                aria-hidden="true"
+                class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                viewBox="0 0 100 101"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                  fill="currentFill"
+                />
+              </svg>
+              <span class="sr-only">Loading...</span>
+            </div>
+          ) : (
+            "s'inscrire"
+          )}
+        </button>
     </form>
   );
 };

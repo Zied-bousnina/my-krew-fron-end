@@ -10,6 +10,7 @@ export const ApiConfigs = {
     auth: {
       user: { register: "users" },
       login: "users/login",
+      
     },
  rh: {
   getConsultant: "users/consultants/getAllConsultant",

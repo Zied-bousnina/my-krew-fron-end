@@ -55,19 +55,29 @@ async function login(userData) {
   ).then(handleResponse);
 }
 
-function handleResponse(response) {
-  return response.text().then((text) => {
+async function handleResponse(response) {
+  try {
+    const text = await response.text();
     const data = text && JSON.parse(text);
+
     if (!response.ok) {
       if (response.status === 401) {
+
         window.location.href = "/login";
+        // console.log("Unauthorized access, redirecting");
       }
-      const error = (data && data.message) || response.statusText;
-      return Promise.reject(error);
+
+      const error = (data) || response.statusText;
+      console.log('ervhhghgg', error)
+      throw error;
     }
 
     return data;
-  });
+  } catch (error) {
+
+    console.error("Response handling error:", error);
+    throw error;
+  }
 }
 
 export default AuthService;

@@ -37,6 +37,7 @@ const LoginForm = () => {
       setIsLoading(true);
       AuthService.login(values)
         .then((res) => {
+          
           dispatch(authActions.login({token: res.token, router:router}))
           toast.success("Bienvenue", {
             position: "top-right",

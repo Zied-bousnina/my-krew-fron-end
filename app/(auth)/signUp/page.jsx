@@ -15,19 +15,24 @@ const SignUp = () => {
 
       <div className="loginwrapper">
         <div className="lg-inner-column">
-        <div className="left-column relative z-[1]"
-         style={{
-          backgroundImage: `url(/assets/images/all-img/Rectangle.png)`,
-          backgroundSize: 'cover',
-           backgroundPosition: 'center',
-           borderRadius: '1.875rem',
-           margin: '10px',
-          //  opacity : '0.9',
-          //  background: 'rgba(215, 215, 209, 0.32)',
-
-            }}
-
-            >
+        <div
+  className="left-column relative z-[1]"
+  style={{
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    borderRadius: '1.875rem',
+    margin: '10px',
+    // opacity : '0.9',
+    // background: 'rgba(215, 215, 209, 0.32)',
+  }}
+>
+  <Image
+    src="/assets/images/all-img/Rectangle.png"  // Replace with the actual path to your image
+    alt="Background Image"
+    layout="fill"  // This makes the Image component cover the entire parent container
+    objectFit="cover"  // Similar to backgroundSize: 'cover'
+    objectPosition="center"  // Similar to backgroundPosition: 'center'
+  />
   <div className="max-w-[520px] pt-10 ltr:pl-20 rtl:pr-20">
   <div className=" bg-black opacity-100"
   style={{
@@ -45,7 +50,7 @@ const SignUp = () => {
   >
 
     <Link href="/">
-      <img
+      <Image
         src={
           isDark
             ? "/assets/images/all-img/Calque4.png"
@@ -55,6 +60,8 @@ const SignUp = () => {
         width={150}
         height={150}
         // className="mb-10"
+        objectFit="cover"
+    objectPosition="center"
       />
     </Link>
   </div>
@@ -76,7 +83,7 @@ const SignUp = () => {
               <div className="auth-box h-full flex flex-col justify-center">
                 <div className="mobile-logo text-left mb-6 lg:hidden block">
                   <Link href="/">
-                    <img
+                    <Image
                       src={
                         isDark
                           ? "/assets/images/all-img/Calque4.png"
@@ -84,6 +91,11 @@ const SignUp = () => {
                       }
                       alt=""
                       className="mx-auto"
+                      width={150}
+        height={150}
+        objectFit="cover"
+    objectPosition="center"
+
                     />
                   </Link>
                 </div>
@@ -96,6 +108,8 @@ const SignUp = () => {
         style={{
          paddingBottom: '10px',
         }}
+        objectFit="cover"
+    objectPosition="center"
       />
                   <h4 className="font-medium">
                     Créez un compte MyKrew
