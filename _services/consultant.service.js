@@ -6,6 +6,7 @@ export const consultantService = {
   getConsultantMissionsWaitingContract,
   getConsultantMissionsValidated,
   getConsultantMissionsNotValidated,
+  getConsultantLastMission
 };
 
 async function getConsultantMissions(id) {
@@ -69,6 +70,19 @@ async function getConsultantMissionsNotValidated(id) {
   const response = await fetch(
     ApiConfigs.base_url +
       ApiConfigs.apis.consultant.getNotValidatedMissions.replace("{id}", id),
+    requestOptions
+  );
+  return handleResponse(response);
+}
+async function getConsultantLastMission(id) {
+  const requestOptions = {
+    method: "GET",
+    headers: authHeader(),
+  };
+
+  const response = await fetch(
+    ApiConfigs.base_url +
+      ApiConfigs.apis.consultant.getLastMission.replace("{id}", id),
     requestOptions
   );
   return handleResponse(response);

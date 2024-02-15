@@ -26,6 +26,7 @@ export const ApiConfigs = {
       getWaitingContractMissions:"consultant/getWaitingContractMissions/{id}",
       getValidatedMissions:"consultant/getValidatedMissions/{id}",
       getNotValidatedMissions:"consultant/getNotValidatedMissions/{id}",
+      getLastMission:"consultant/getLastMission/{id}",
     },
     preregistration: {
       createPreRegistration1: "users/preRegistration/createPreRegistration1",

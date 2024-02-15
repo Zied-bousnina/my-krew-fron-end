@@ -30,7 +30,7 @@ const authSlice = createSlice({
 
         switch (decodedToken.role) {
           case "RH":
-            // action.payload.router.push("/rh");
+            action.payload.router.push("/rh");
             break;
           case "CONSULTANT":
             switch (decodedToken.preRegister.status) {

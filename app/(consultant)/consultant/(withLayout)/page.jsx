@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import Loading from "@/app/loading";
 import CustomTable from "@/components/partials/table/custom-table";
 import { consultantService } from "@/_services/consultant.service";
+import { format } from "date-fns";
 
 const MostSales = dynamic(
   () => import("@/components/partials/widget/most-sales"),
@@ -26,25 +27,8 @@ const COLUMNS = [
     Cell: (row) => {
       return (
         <div>
-          <span className="inline-flex items-center">
-            <span className="w-7 h-7 rounded-full ltr:mr-3 rtl:ml-3 flex-none bg-slate-600">
-              {/* <img
-                src={row?.cell?.row?.original?.image}
-                alt=""
-                className="object-cover w-full h-full rounded-full"
-              /> */}
-            </span>
-            <span className="text-sm text-slate-600 dark:text-slate-300 capitalize font-medium">
-              {/* {row?.cell?.value.name} */}
-              {
-                row?.cell?.row?.original?.preRegister?.personalInfo?.firstName
-                  ?.value
-              }{" "}
-              {
-                row?.cell?.row?.original?.preRegister?.personalInfo?.lastName
-                  ?.value
-              }
-            </span>
+          <span className="text-slate-600 dark:text-slate-400">
+            {row?.cell?.value}
           </span>
         </div>
       );
@@ -55,8 +39,8 @@ const COLUMNS = [
     accessor: "id",
     Cell: (row) => {
       return (
-        <span className="text-slate-500 dark:text-slate-400">
-          {row?.cell?.row?.original?.preRegister?.personalInfo?.email?.value}
+        <span className="text-slate-600 dark:text-slate-400">
+          {row?.cell?.value}
         </span>
       );
     },
@@ -66,13 +50,8 @@ const COLUMNS = [
     accessor: "metier",
     Cell: (row) => {
       return (
-        <span className="text-slate-500 dark:text-slate-400">
-          <span className="block text-slate-600 dark:text-slate-300">
-            {
-              row?.cell?.row?.original?.preRegister?.personalInfo?.phoneNumber
-                ?.value
-            }
-          </span>
+        <span className="text-slate-600 dark:text-slate-400">
+          {row?.cell?.value}
         </span>
       );
     },
@@ -83,13 +62,8 @@ const COLUMNS = [
     accessor: "client",
     Cell: (row) => {
       return (
-        <span className="text-slate-500 dark:text-slate-400">
-          <span className="block text-slate-900 bg-slate-100 text-base px-3 py-2 border rounded-xl	 dark:text-slate-300">
-            {
-              row?.cell?.row?.original?.preRegister?.personalInfo?.nationality
-                ?.value
-            }
-          </span>
+        <span className="text-slate-600 dark:text-slate-400">
+          {row?.cell?.value}
         </span>
       );
     },
@@ -99,13 +73,8 @@ const COLUMNS = [
     accessor: "secteur",
     Cell: (row) => {
       return (
-        <span className="text-slate-500 dark:text-slate-400">
-          <span className="block text-slate-900 bg-slate-100 text-base px-3 py-2 border rounded-xl	 dark:text-slate-300">
-            {
-              row?.cell?.row?.original?.preRegister?.personalInfo?.nationality
-                ?.value
-            }
-          </span>
+        <span className="text-slate-600 dark:text-slate-400">
+          {row?.cell?.value}
         </span>
       );
     },
@@ -115,13 +84,8 @@ const COLUMNS = [
     accessor: "tjm",
     Cell: (row) => {
       return (
-        <span className="text-slate-500 dark:text-slate-400">
-          <span className="block text-slate-900 bg-slate-100 text-base px-3 py-2 border rounded-xl	 dark:text-slate-300">
-            {
-              row?.cell?.row?.original?.preRegister?.personalInfo?.nationality
-                ?.value
-            }
-          </span>
+        <span className="text-slate-600 dark:text-slate-400">
+          {row?.cell?.value}
         </span>
       );
     },
@@ -131,13 +95,8 @@ const COLUMNS = [
     accessor: "debut",
     Cell: (row) => {
       return (
-        <span className="text-slate-500 dark:text-slate-400">
-          <span className="block text-slate-900 bg-slate-100 text-base px-3 py-2 border rounded-xl	 dark:text-slate-300">
-            {
-              row?.cell?.row?.original?.preRegister?.personalInfo?.nationality
-                ?.value
-            }
-          </span>
+        <span className="text-slate-600 dark:text-slate-400">
+          {row?.cell?.value}
         </span>
       );
     },
@@ -147,13 +106,8 @@ const COLUMNS = [
     accessor: "fin",
     Cell: (row) => {
       return (
-        <span className="text-slate-500 dark:text-slate-400">
-          <span className="block text-slate-900 bg-slate-100 text-base px-3 py-2 border rounded-xl	 dark:text-slate-300">
-            {
-              row?.cell?.row?.original?.preRegister?.personalInfo?.nationality
-                ?.value
-            }
-          </span>
+        <span className="text-slate-600 dark:text-slate-400">
+          {row?.cell?.value}
         </span>
       );
     },
@@ -206,13 +160,13 @@ const COLUMNS = [
   // },
 ];
 const ConsultantDashboard = () => {
-  const [consultantV2, setconsultantV2] = useState([]);
   const [statistiques, setstatistiques] = useState({});
 
   const [isLoading, setIsLoading] = useState(true);
   const [pendingMissions, setPendingMissions] = useState([]);
   const [waitingContractMissions, setWaitingContractMissions] = useState([]);
   const [validatedMissions, setValidatedMissions] = useState([]);
+  const [lastMission, setLastMission] = useState({});
 
   const userAuth = useSelector((state) => state.userAuth);
 
@@ -220,7 +174,21 @@ const ConsultantDashboard = () => {
     consultantService
       .getConsultantMissionsPending(userAuth.id)
       .then((res) => {
-        setPendingMissions(res.data.missions);
+        setPendingMissions(
+          res.data.map((item) => ({
+            status: item.status,
+            id: item._id,
+            metier: item?.missionInfo?.profession?.value,
+            client:
+              item?.clientInfo?.clientContact?.firstName?.value ||
+              "" + " " + item?.clientInfo?.clientContact?.lastName?.value ||
+              "",
+            secteur: item?.missionInfo?.industrySector?.value,
+            tjm: item?.missionInfo?.dailyRate?.value,
+            debut: format(item?.missionInfo?.startDate?.value, "MMM d"),
+            fin: format(item?.missionInfo?.endDate?.value, "MMM d"),
+          }))
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -231,7 +199,21 @@ const ConsultantDashboard = () => {
     consultantService
       .getConsultantMissionsWaitingContract(userAuth.id)
       .then((res) => {
-        setWaitingContractMissions(res.data.missions);
+        setWaitingContractMissions(
+          res.data.map((item) => ({
+            status: item.status,
+            id: item._id,
+            metier: item?.missionInfo?.profession?.value,
+            client:
+              item?.clientInfo?.clientContact?.firstName?.value ||
+              "" + " " + item?.clientInfo?.clientContact?.lastName?.value ||
+              "",
+            secteur: item?.missionInfo?.industrySector?.value,
+            tjm: item?.missionInfo?.dailyRate?.value,
+            debut: format(item?.missionInfo?.startDate?.value, "MMM d"),
+            fin: format(item?.missionInfo?.endDate?.value, "MMM d"),
+          }))
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -242,7 +224,34 @@ const ConsultantDashboard = () => {
     consultantService
       .getConsultantMissionsValidated(userAuth.id)
       .then((res) => {
-        setValidatedMissions(res.data.missions);
+        setValidatedMissions(
+          res.data.map((item) => ({
+            status: item.status,
+            id: item._id,
+            metier: item?.missionInfo?.profession?.value,
+            client:
+              item?.clientInfo?.clientContact?.firstName?.value ||
+              "" + " " + item?.clientInfo?.clientContact?.lastName?.value ||
+              "",
+            secteur: item?.missionInfo?.industrySector?.value,
+            tjm: item?.missionInfo?.dailyRate?.value,
+            debut: format(item?.missionInfo?.startDate?.value, "MMM d"),
+            fin: format(item?.missionInfo?.endDate?.value, "MMM d"),
+          }))
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {});
+  };
+
+  const getLastMission = () => {
+    consultantService
+      .getConsultantLastMission(userAuth.id)
+      .then((res) => {
+        console.log(res.data);
+        setLastMission(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -255,6 +264,7 @@ const ConsultantDashboard = () => {
     Promise.all([
       getConsultantMissionsPending(),
       getConsultantMissionsWaitingContract(),
+      getLastMission(),
       getConsultantMissionsValidated(),
     ])
       .then((_) => {})
@@ -287,30 +297,30 @@ const ConsultantDashboard = () => {
           <div className="grid grid-cols-9 gap-5">
             <div className="2xl:col-span-3 lg:col-span-4 col-span-12">
               <ImageBlock1
-                title="Chiffre d’Affaire"
-                amount={statistiques?.totalRevenue?.toLocaleString("fr-FR", {
-                  style: "currency",
-                  currency: "EUR",
-                })}
-                growth="20"
+                isLoading={isLoading}
+                title="Info Missions"
+                amount={lastMission?.status}
+                subtitle1={lastMission?.missionInfo?.finalClient?.value}
+                subtitle2={lastMission?.missionInfo?.dailyRate?.value}
               />
             </div>
             <div className="2xl:col-span-3 lg:col-span-4 col-span-12">
               <ImageBlock1
                 title="TJM Moyen"
-                amount={statistiques?.averageTJM?.toLocaleString("fr-FR", {
-                  style: "currency",
-                  currency: "EUR",
-                })}
+                amount={lastMission?.missionInfo?.dailyRate?.value}
+                isLoading={isLoading}
                 amountColor="text-[#1E1E1E]"
                 bgColor="bg-[#FEFCF1]"
                 border="border border-[#EAE3D5]"
+                isMoney={true}
               />
             </div>
             <div className="2xl:col-span-3 lg:col-span-4 col-span-12">
               <ImageBlock1
-                title="Nb de Consultants"
-                amount={statistiques?.numberOfConsultants}
+                title="Date de fin de Mission"
+                isLoading={isLoading}
+                amount={lastMission?.missionInfo?.endDate?.value}
+                isDate={true}
                 amountColor="text-[#1E1E1E]"
                 bgColor="bg-[#FEFCF1]"
                 border="border border-[#EAE3D5]"
@@ -324,19 +334,19 @@ const ConsultantDashboard = () => {
         ) : (
           <div>
             <CustomTable
-              title={`En attente (${pendingMissions.length})`}
+              title={`En attente (${pendingMissions?.length})`}
               columns={COLUMNS}
               data={pendingMissions}
               tableLoading={isLoading}
             />
             <CustomTable
-              title={`En cours (${waitingContractMissions.length})`}
+              title={`En cours (${waitingContractMissions?.length})`}
               columns={COLUMNS}
               data={waitingContractMissions}
               tableLoading={isLoading}
             />
             <CustomTable
-              title={`Validées (${validatedMissions.length})`}
+              title={`Validées (${validatedMissions?.length})`}
               columns={COLUMNS}
               data={validatedMissions}
               tableLoading={isLoading}
