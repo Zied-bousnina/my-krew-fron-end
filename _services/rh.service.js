@@ -90,6 +90,20 @@ async function getConsultantInfoById(id) {
 
 }
 
+async function getConsultantInfoWithMissionById(id) {
+  const requestOptions = {
+    method: "GET",
+    headers: authHeader(),
+  };
+
+  const response = await fetch(
+    ApiConfigs.base_url + ApiConfigs.apis.rh.getConsultantInfoWithMissionById + id,
+    requestOptions
+  );
+  return handleResponse(response);
+
+}
+
 
 async function updatePreregistrationClientInfo (id, data) {
   const requestOptions = {
@@ -151,6 +165,7 @@ export const rhServices = {
   updatePreregistrationClientInfo,
   getConsultantInfoById,
   updatePreregistrationStatus,
-  SendNoteToConsultant
+  SendNoteToConsultant,
+  getConsultantInfoWithMissionById
 
 };

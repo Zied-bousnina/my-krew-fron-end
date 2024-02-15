@@ -17,6 +17,7 @@ export const ApiConfigs = {
       getPendingPreregistration:"users/preregistartion/getPendingPreregistration",
       getConsultantById: "users/getConsultantById/",
       getConsultantInfoById: "users/getConsultantInfoById/",
+      getConsultantInfoWithMissionById: "users/getConsultantInfoWithMissionById/",
       updatePreregistrationClientInfo: "users/validatePreregistrationClientInfo/",
       updateStatusProcess :"users/validateProcessus/",
       sendNote:"users/sendNote/",
