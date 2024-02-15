@@ -91,7 +91,7 @@ zIndex: '2',
        paddingBottom: '10px',
       }}
     />
-                <h4 className="font-medium">  Créer votre compte</h4>
+                <h4 className="font-medium">  Information de la mission</h4>
                 {/* <img
                     src={
                       isDark
