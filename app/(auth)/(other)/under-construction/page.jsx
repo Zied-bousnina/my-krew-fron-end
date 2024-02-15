@@ -1,5 +1,5 @@
 "use client";
-import Button from "v4/components/ui/Button";
+// import Button from "v4/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import Link from "next/link";
 import useDarkMode from "@/hooks/useDarkMode";
@@ -23,7 +23,7 @@ const UnderConstructionPage = () => {
             </Link>
           </div>
           <div>
-            <Button text="Contact us" className=" btn-outline-dark btn-sm" />
+            {/* <Button text="Contact us" className=" btn-outline-dark btn-sm" /> */}
           </div>
         </div>
       </div>
