@@ -195,11 +195,12 @@ useEffect(() => {
               <p className="text-[34px] text-[#1E1E1E] font-bold">Firoz NOM</p>
             </div>
             <div className="flex flex-col gap-4 text-center  text-[18px] text-[#1E1E1E] w-full">
-              <InputBox placeholder="Prenom" additionalClasses="w-full" />
+              <InputBox placeholder="Prenom"  additionalClasses="w-full" />
               <InputBox placeholder="Nom" additionalClasses="w-full" />
               <InputBox
                 placeholder="Adresse e-mail"
                 additionalClasses="w-full"
+                type="email"
               />
               <InputBox
                 placeholder="Numéro de téléphone"
@@ -208,6 +209,7 @@ useEffect(() => {
               <InputBox
                 placeholder="Date de naissance"
                 additionalClasses="w-full"
+                type="date"
               />
               <InputBox
                 placeholder="Lieu de naissance"

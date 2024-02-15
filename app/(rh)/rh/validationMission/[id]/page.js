@@ -17,7 +17,7 @@ import TransactionsTable from "@/components/partials/table/transactions";
 import Button from "@/components/ui/Button";
 import Image from "@/components/ui/Image";
 import FilterTableItem from "@/components/ui/FilterTableItem";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import Input from "postcss/lib/input";
 import GlobalFilter from "@/components/partials/table/GlobalFilter";
 import ConfirmationPopup from "@/components/ui/ConfirmationPopup";
@@ -26,12 +26,83 @@ import Contact from "@/components/ui/Contact";
 import Document from "@/components/ui/Document";
 import StatisticBox from "@/components/ui/StatisticBox";
 import ValidationStep from "@/components/ui/ValidationStep";
+import { rhServices } from "@/_services/rh.service";
+import Loading from "@/components/Loading";
+import { set } from "date-fns";
 
-const ProjectPage = () => {
+const ProjectPage = ({params}) => {
   const [selectedFilter, setSelectedFilter] = useState("Tous les Consultants");
+  const [infoPersoById, setinfoPersoById] = useState({})
+const [infoIsloading, setinfoIsloading] = useState(false)
+  const fetchinfoPersoById = async () => {
+  setinfoIsloading(true)
 
+  rhServices.getConsultantInfoById(params.id).then((data) => {
+    setinfoPersoById(data)
+    setinfoIsloading(false)
+  }
+  )
+  .catch(err=> {
+    setinfoIsloading(false)
+    console.log(err)
+  }).finally(()=> {
+    setinfoIsloading(false)
+  }
+  )
+}
+
+useEffect(() => {
+  fetchinfoPersoById()
+}, [])
+console.log(infoPersoById)
+const preregister = infoPersoById?.consultant?.preRegister?.personalInfo
+const validation = infoPersoById?.consultant?.preRegister
+// const preregister = infoPersoById?.consultant?.preRegister?.personalInfo
+
+const switchValidation = (value) => {
+  switch (value) {
+    case 'VALIDATED':
+      return 'Valideé';
+    case 'PENDING':
+      return 'En cours';
+    case 'NOTVALIDATED':
+      return 'En attente';
+    default:
+      // Handle other cases or invalid values
+      return 'En attente';
+  }
+};
+const [note, setnote] = useState("")
+const [isloading, setisloading] = useState(false)
+const onchangeVlaue =(e)=> {
+  setnote(e)
+
+}
+const SendNoteToConsultant = (id)=> {
+  setisloading(true)
+      rhServices.SendNoteToConsultant(id, {note:note}).then((data) => {
+        // setinfoPersoById(data)
+        // setinfoIsloading(false)
+        setisloading(false)
+        console.log(data)
+      }
+      )
+      .catch(err=> {
+        // setinfoIsloading(false)
+        setisloading(false)
+        console.log(err)
+      }).finally(()=> {
+        // setinfoIsloading(false)
+        setisloading(false)
+      }
+      )
+}
+console.log("preregister",validation)
   return (
     <>
+{
+  infoIsloading ?
+  <Loading />:
       <div className="space-y-5 p-4">
         {/* <HomeBredCurbs
           title="Validation Missions "
@@ -45,7 +116,7 @@ const ProjectPage = () => {
         </h1>
         <br/>
         <p className="text-[36px] font-semibold">
-            <span>Mission de zied -</span>
+            <span>Mission de {preregister?.firstName?.value } -</span>
             <span className="text-[23px] text-[#68461F] italic">ste </span>
           </p>
 
@@ -65,18 +136,28 @@ const ProjectPage = () => {
                 <StatisticBox
                   icon="/assets/icons/roadmap.svg"
                   title="Demandes de Préinscription"
-                  numberOfNotifications={5}
+                  numberOfNotifications={infoPersoById?.allpreregistration }
                   isSelected={true}
                 />
                 <StatisticBox
                   icon="/assets/icons/loader.svg"
-                  title="Demandes de Préinscription"
-                  numberOfNotifications={5}
+                  title="Nouvelles missions"
+                  numberOfNotifications={infoPersoById?.newMission + infoPersoById?.pendingCount}
                 />
                 <StatisticBox
                   icon="/assets/icons/seen.svg"
                   title="Demandes non traitées"
-                  numberOfNotifications={5}
+                  numberOfNotifications={infoPersoById?.pendingCount}
+                />
+                <StatisticBox
+                  icon="/assets/icons/loader.svg"
+                  title="Demandes Traitées "
+                  numberOfNotifications={infoPersoById?.traiteCount}
+                />
+                <StatisticBox
+                  icon="/assets/icons/seen.svg"
+                  title="Demandes  Rejetées"
+                  numberOfNotifications={infoPersoById?.RejeteCount}
                 />
               </div>
             </Card>
@@ -162,7 +243,7 @@ const ProjectPage = () => {
                     <div className="flex items-center gap-2">
                       <Image src="/assets/images/all-img/user.png" />
                       <p className="text-[14px] text-[#171A1F] font-semibold">
-                        bousnina zied
+                       {preregister?.firstName?.value + " "+ preregister?.lastName?.value}
                       </p>
                     </div>
                   </Contact>
@@ -172,27 +253,31 @@ const ProjectPage = () => {
                   <ValidationStep
                     stepNumber={1}
                     step="Validation Informations Personnelles"
-                    state="Valideé"
+                    state={switchValidation(validation?.validateClient)}
+                    id={validation?._id}
                   />
                   <ValidationStep
                     stepNumber={2}
-                    step="Validation Informations Personnelles"
-                    state="Valideé"
+                    step="Prise de contact avec le client"
+                    state={switchValidation(validation?.validateContractWithClient)}
+                    id={validation?._id}
                   />
                   <ValidationStep
                     stepNumber={3}
-                    step="Validation Informations Personnelles"
-                    state="En Cours"
+                    step="Contrat de service validé avec le client"
+                    state={switchValidation(validation?.validateContractTravail)}
+                    id={validation?._id}
                   />
                   <ValidationStep
                     stepNumber={4}
-                    step="Validation Informations Personnelles"
-                    state="En attente"
+                    step="Transmission et validation du contrat"
+                    state={switchValidation(validation?.transmissionContract)}
+                    id={validation?._id}
                   />
 
                   <div>
                     <Contact
-                      label="Nationalité"
+                      label="Pas d'accord"
                       text="Terminer la mission"
                       bgColor="bg-[#DE3B40]/10"
                       textColor="text-[#DE3B40]"
@@ -226,9 +311,11 @@ const ProjectPage = () => {
 
                     <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Votre contrat n'a pas été validé par le client vu le
-                      montant TJM proposé">
+                      montant TJM proposé"
+                      onChange={(e) => {onchangeVlaue(e.target.value)}}
+                      >
 
-                      
+
 
                     </textarea>
 
@@ -247,10 +334,27 @@ const ProjectPage = () => {
                           className="w-4 h-4 cursor-pointer"
                         />
                       </div>
+
                       <Button
-                        text="Envoyer la note"
+                      type="button"
+                      disabled={isloading}
+
                         className="bg-black-500 text-white w-[132px] h-[35px] text-[11px] flex items-center justify-center"
-                      />
+                        onClick={()=> {
+                          SendNoteToConsultant(validation?._id)
+                        }}
+                      >
+                      {
+                        isloading ?
+                        <div className="flex items-center gap-2">
+
+<div className="animate-spin w-5 h-5 border-t-2 border-b-2 border-[#ffffff] rounded-full"></div>
+</div>:"Envoyer la note"
+
+
+                      }
+
+                      </Button>
                     </div>
                   </div>
                 </Card>
@@ -316,6 +420,7 @@ const ProjectPage = () => {
         </div>
       </div> */}
       </div>
+}
     </>
   );
 };

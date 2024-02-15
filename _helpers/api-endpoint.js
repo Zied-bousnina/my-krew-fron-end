@@ -14,11 +14,12 @@ export const ApiConfigs = {
     rh: {
       getConsultant: "users/consultants/getAllConsultant",
       getStatistiques: "users/getConsultantStats",
-      getPendingPreregistration:
-        "users/preregistartion/getPendingPreregistration",
+      getPendingPreregistration:"users/preregistartion/getPendingPreregistration",
       getConsultantById: "users/getConsultantById/",
-      updatePreregistrationClientInfo:
-        "users/validatePreregistrationClientInfo/",
+      getConsultantInfoById: "users/getConsultantInfoById/",
+      updatePreregistrationClientInfo: "users/validatePreregistrationClientInfo/",
+      updateStatusProcess :"users/validateProcessus/",
+      sendNote:"users/sendNote/",
     },
     consultant: {
       getAllMissions:"consultant/getAllMissions/{id}",
