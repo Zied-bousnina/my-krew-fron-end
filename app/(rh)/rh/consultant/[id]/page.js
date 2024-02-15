@@ -28,19 +28,157 @@ import { useDispatch } from "react-redux";
 import { handleFetchConsultants } from "@/store/rhreducer";
 import { useSelector } from "react-redux";
 import MissionConsultantTable from "@/components/partials/table/missionsConsultantTable";
+import { rhServices } from "@/_services/rh.service";
+import CustomTable from "@/components/partials/table/custom-table";
+const COLUMNS = [
+  {
+    Header: "Status",
+    accessor: "Status",
+    Cell: (row) => {
+      return (
+        <span className={`text-[${row?.cell?.row?.original?.status  =="PENDING" ? '#FCE9A4':'#EEFDF3' }] dark:text-slate-400`}>
+          <span className={`block text-[${row?.cell?.row?.original?.status  =="PENDING" ? '#BF6F25':'#187111' }] bg-[${row?.cell?.row?.original?.status  =="PENDING" ? '#FCE9A4':'#EEFDF3' }] text-base px-3 py-2 border rounded-[12px]	 dark:text-slate-300`}>
+          {row?.cell?.row?.original?.status  =="PENDING" ?
+          "Nouvelle"
+          :"Terminée"
+          }
+          </span>
 
-const ProjectPage = () => {
+        </span>
+      );
+    },
+  },
+  {
+    Header: "ID",
+    accessor: "id",
+    Cell: (row) => {
+      return (
+        <span className="text-slate-500 dark:text-slate-400">
+        {row?.cell?.row?.original?.id}
+
+        </span>
+      );
+    },
+  },
+  {
+    Header: "Client",
+    accessor: "Client",
+    Cell: (row) => {
+      return (
+        <span className="text-slate-500 dark:text-slate-400">
+         {row?.cell?.row?.original?.client}
+
+        </span>
+      );
+    },
+  },
+  {
+    Header: "Métier",
+    accessor: "Métier",
+    Cell: (row) => {
+      return (
+        <span className="text-slate-500 dark:text-slate-400">
+          <span className="block text-slate-600 dark:text-slate-300">
+          {row?.cell?.row?.original?.metier}
+          </span>
+
+        </span>
+      );
+    },
+  },
+
+  {
+    Header: "Secteur",
+    accessor: "Secteur",
+    Cell: (row) => {
+      return (
+        <span className="text-slate-500 dark:text-slate-400">
+          <span className="block text-slate-900 bg-slate-100 text-base px-3 py-2 border rounded-xl	 dark:text-slate-300">
+          {row?.cell?.row?.original?.secteur
+          }
+          </span>
+
+        </span>
+      );
+    },
+  },
+  {
+    Header: "Date",
+    accessor: "date",
+    Cell: (row) => {
+      return (
+        <span className="text-slate-500 dark:text-slate-400">
+          <span className="block text-slate-900 bg-slate-100 text-base px-3 py-2 border rounded-xl	 dark:text-slate-300">
+          {row?.cell?.row?.original?.date
+          }
+          </span>
+
+        </span>
+      );
+    },
+  },
+
+];
+import Loading from "@/app/loading";
+const ProjectPage = ({params}) => {
   const [selectedFilter, setSelectedFilter] = useState("Tous les Consultants");
   const  {consultants}  = useSelector((state) => state.rhconsultant);
 const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(handleFetchConsultants())
+const [infoPersoById, setinfoPersoById] = useState({})
+const [mission, setmission] = useState([])
+const [infoIsloading, setinfoIsloading] = useState(false)
 
-  }, [])
+  const fetchinfoPersoById = async () => {
+  setinfoIsloading(true)
 
-  console.log(consultants)
+  rhServices.getConsultantInfoWithMissionById(params.id).then((data) => {
+    console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++",data.AllMission)
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    setmission(
+      data?.AllMission?.map((item)=>( {
+
+        id:"1",
+        status: item?.status,
+        client: item?.finalClient?.value,
+        metier: item?.profession?.value,
+        secteur: item?.industrySector?.value,
+        date : `${months[new Date(item?.startDate.value).getMonth()]} ${new Date(item?.startDate.value).getDate()}`,
+
+
+      }))
+    )
+    setinfoPersoById(data)
+    setinfoIsloading(false)
+  }
+  )
+  .catch(err=> {
+    setinfoIsloading(false)
+    console.log(err)
+  }).finally(()=> {
+    setinfoIsloading(false)
+  }
+  )
+}
+
+useEffect(() => {
+  fetchinfoPersoById()
+}, [])
+console.log("mision-------------------", mission)
+  // useEffect(() => {
+  //   dispatch(handleFetchConsultants())
+
+  // }, [])
+
+  console.log(infoPersoById)
+  console.log(infoPersoById?.AllMission)
+  const personalInfo = infoPersoById?.consultant
+
   return (
     <>
+    {
+      infoIsloading ?
+      <Loading />:
+
       <div className="space-y-5 p-4">
         {/* <HomeBredCurbs title="Tableau de bord - RH" notification={false} /> */}
         <div className="grid grid-cols-12 gap-5">
@@ -72,7 +210,7 @@ const dispatch = useDispatch()
                       Consultant
                     </span>
                     <p className="text-[22px] font-bold text-[#503515]">
-                      bousnina zied
+                     {infoPersoById?.consultant?.preRegister?.personalInfo?.firstName?.value} {infoPersoById?.consultant?.preRegister?.personalInfo?.lastName?.value}
                     </p>
                   </div>
                 </div>
@@ -99,17 +237,17 @@ const dispatch = useDispatch()
               </div>
 
               <div className="flex items-start flex-col gap-2 py-4  border-b-2 border-dotted  border-[#EFEBE1]">
-                <Contact icon="/assets/icons/alt.svg" text="zied@gmail.com" />
-                <Contact icon="/assets/icons/phone.svg" text="55 184 192" />
+                <Contact icon="/assets/icons/alt.svg" text={infoPersoById?.consultant?.email} />
+                <Contact icon="/assets/icons/phone.svg" text={infoPersoById?.consultant?.preRegister?.personalInfo?.phoneNumber?.value} />
                 <Contact
                   icon="/assets/icons/office.svg"
-                  text="Menzel Temime, Nabeul, Tunisie"
+                  text={infoPersoById?.consultant?.preRegister?.personalInfo?.location?.value + ", " + infoPersoById?.consultant?.preRegister?.personalInfo?.nationality?.value}
                 />
               </div>
               <div className="flex items-start flex-col gap-2 py-4  border-b-2 border-dotted  border-[#EFEBE1]">
-                <Contact label="Nationalité" text="Tunisien" isBadge={true} />
-                <Contact label="RIB" text="215-754876265862258" />
-                <Contact label="N° Sécurité " text="CN-12548552" />
+                <Contact label="Nationalité" text={infoPersoById?.consultant?.preRegister?.personalInfo?.nationality?.value} isBadge={true} />
+                <Contact label="RIB" text={infoPersoById?.consultant?.preRegister?.personalInfo?.rib?.value} />
+                <Contact label="N° Sécurité " text={infoPersoById?.consultant?.preRegister?.personalInfo?.socialSecurityNumber?.value} />
               </div>
               <div className="flex items-start flex-col gap-2 py-4  ">
                 <Contact label="Documents Assocciés" text="05" />
@@ -119,13 +257,19 @@ const dispatch = useDispatch()
                     icon="/assets/icons/document.svg"
                     date="May 29, 2022"
                     bgColor="bg-[#DD6E42]/20"
+                    url={infoPersoById?.consultant?.preRegister?.missionInfo?.isSimulationValidated?.value}
                   />
+                   {
+                    infoPersoById?.consultant?.preRegister?.personalInfo?.carInfo?.hasCar?.value &&
                   <Document
                     title="Permis de Conduire"
                     icon="/assets/icons/document.svg"
                     date=" Feb 13, 2022"
                     bgColor="bg-[#A67DB8]/20"
+                    url={infoPersoById?.consultant?.preRegister?.personalInfo?.carInfo?.drivingLicense?.value
+}
                   />
+                   }
                 </div>
 
                 <div className="w-full flex  justify-end mt-2">
@@ -204,7 +348,18 @@ const dispatch = useDispatch()
             {/* <TransactionsTable /> */}
           </div>
           <div className="lg:col-span-7 col-span-12 space-y-5">
-            <MissionConsultantTable consultants={consultants} />
+          {
+            infoIsloading ?
+      <Loading />:
+
+            <CustomTable
+              title={`test`}
+              columns={COLUMNS}
+              data={mission}
+              tableLoading={infoIsloading}
+            />
+          }
+            {/* <MissionConsultantTable consultants={infoPersoById?.AllMission   } /> */}
           </div>
         </div>
         {/* <div className="grid xl:grid-cols-3 grid-cols-1 gap-5">
@@ -265,6 +420,7 @@ const dispatch = useDispatch()
         </div>
       </div> */}
       </div>
+    }
     </>
   );
 };

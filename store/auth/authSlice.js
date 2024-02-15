@@ -33,21 +33,20 @@ const authSlice = createSlice({
             action.payload.router.push("/rh");
             break;
           case "CONSULTANT":
-            switch (decodedToken.preRegister.status) {
-      case "NOTEXIST":
-        action.payload.router.push(`/register`);
-        break;
-      case "PENDING":
-        action.payload.router.push(`/pending`);
-        break;
-      case "NOTVALIDATED":
-        action.payload.router.push(`/declined`);
-        break;
-      default:
-
-        action.payload.router.push("/consultant");
-        break;
-    }
+            switch (decodedToken?.preRegistration?.status) {
+              case "NOTEXIST":
+                action.payload.router.push(`/register`);
+                break;
+              case "PENDING":
+                action.payload.router.push(`/pending`);
+                break;
+              case "NOTVALIDATED":
+                action.payload.router.push(`/declined`);
+                break;
+              default:
+                action.payload.router.push("/consultant");
+                break;
+            }
             break;
           default:
             action.payload.router.push("/");

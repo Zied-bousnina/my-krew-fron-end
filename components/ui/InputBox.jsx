@@ -10,7 +10,8 @@ const InputBox = ({
   imageSrc = "",
   additionalClasses = "",
   readOnly = false,
-  name=""
+  name="",
+  type="text"
 }) => {
   const [inputValue, setInputValue] = useState("");
   const [switchValue, setSwitchValue] = useState(false);
@@ -30,19 +31,19 @@ const InputBox = ({
           {label} <span className="text-[#D8CCB2]">*</span>
         </label>
       ) : null}
-      <div className="flex gap-2 items-center">
+      <div className=" items-center">
         {!imageSrc ? (
           <div>
             <input
               id={label}
               readOnly={readOnly}
-              type="text"
+              type={type}
               value={inputValue || value}
               placeholder={placeholder}
               onChange={() => {}}
               className={`bg-[#F2F2F2] w-[276px] h-[46px] text-[12px] pl-4 rounded-md border border-[#EAE3D5] outline-none ${additionalClasses}`}
             />
-            {!switchValue && (
+            {/* {!switchValue && (
               <>
 
               <label
@@ -67,18 +68,18 @@ const InputBox = ({
               className={`bg-[#F2F2F2] w-[276px] h-[46px] text-[12px] pl-4 rounded-md border border-[#EAE3D5] outline-none ${additionalClasses}`}
             />
               </>
-            )}
+            )} */}
           </div>
         ) : (
           <Image src={imageSrc} alt="image" className="w-44 h-24" />
         )}
-        {isSwitched ? (
+        {/* {isSwitched ? (
           <Switch
             value={switchValue}
             onChange={() => setSwitchValue((curr) => !curr)}
             activeClass="bg-[#2CE254]"
           />
-        ) : null}
+        ) : null} */}
       </div>
     </div>
   );
