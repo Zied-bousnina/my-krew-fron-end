@@ -13,6 +13,7 @@ import Loading from "@/app/loading";
 import CustomTable from "@/components/partials/table/custom-table";
 import { consultantService } from "@/_services/consultant.service";
 import { format } from "date-fns";
+import MissionChart from "@/components/partials/chart/consultant/mission-chart";
 
 const MostSales = dynamic(
   () => import("@/components/partials/widget/most-sales"),
@@ -163,6 +164,7 @@ const ConsultantDashboard = () => {
   const [statistiques, setstatistiques] = useState({});
 
   const [isLoading, setIsLoading] = useState(true);
+  const [allMissions, setAllMissions] = useState([]);
   const [pendingMissions, setPendingMissions] = useState([]);
   const [waitingContractMissions, setWaitingContractMissions] = useState([]);
   const [validatedMissions, setValidatedMissions] = useState([]);
@@ -170,6 +172,32 @@ const ConsultantDashboard = () => {
 
   const userAuth = useSelector((state) => state.userAuth);
 
+  const getConsultantAllMissions = () => {
+    consultantService
+      .getConsultantMissions(userAuth.id)
+      .then((res) => {
+        setAllMissions(
+          res.data.map((item) => ({
+            status: item.status,
+            id: item._id,
+            metier: item?.missionInfo?.profession?.value,
+            client:
+              item?.clientInfo?.clientContact?.firstName?.value ||
+              "" + " " + item?.clientInfo?.clientContact?.lastName?.value ||
+              "",
+            secteur: item?.missionInfo?.industrySector?.value,
+            tjm: item?.missionInfo?.dailyRate?.value,
+            createdAt:item?.addedDate,
+            debut: format(item?.missionInfo?.startDate?.value, "MMM d"),
+            fin: format(item?.missionInfo?.endDate?.value, "MMM d"),
+          }))
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {});
+  };
   const getConsultantMissionsPending = () => {
     consultantService
       .getConsultantMissionsPending(userAuth.id)
@@ -262,6 +290,7 @@ const ConsultantDashboard = () => {
   useEffect(() => {
     setIsLoading(true);
     Promise.all([
+      getConsultantAllMissions(),
       getConsultantMissionsPending(),
       getConsultantMissionsWaitingContract(),
       getLastMission(),
@@ -291,7 +320,7 @@ const ConsultantDashboard = () => {
         </div>
         {/* </Card> */}
         <Card>
-          <BasicArea height={240} />
+          <MissionChart data={allMissions} height={240} />
         </Card>
         <Card>
           <div className="grid grid-cols-9 gap-5">

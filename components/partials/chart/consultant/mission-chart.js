@@ -1,29 +1,20 @@
 import dynamic from "next/dynamic";
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 import useDarkMode from "@/hooks/useDarkMode";
+import { getMonth } from "date-fns";
 
-const BasicArea = ({ data=[90, 70, 85, 60, 80, 70, 90, 75, 60, 80], height = 350 }) => {
+const MissionChart = ({ data, height = 350 }) => {
   const [isDark] = useDarkMode();
+
+  let datesArray = Array.from({ length: 12 }, (_) => 0);
+  data.map((item, _) => {
+    const monthIndex = getMonth(new Date(item.createdAt));
+    datesArray[monthIndex] = new Date(item?.createdAt).getDate();
+  });
   const series = [
     {
-      name: "Creér a",
-      data: [90, 70, 85, 60, 80, 70, 90, 75, 60, 80],
-    },
-    {
-      name: "date debut",
-      data: [90, 70, 85, 60, 80, 70, 90, 75, 60, 80],
-    },
-    {
-      name: "date fin",
-      data: [90, 70, 85, 60, 80, 70, 90, 75, 60, 80],
-    },
-    {
-      name: "client",
-      data: [90, 70, 85, 60, 80, 70, 90, 75, 60, 80],
-    },
-    {
-      name: "secteur",
-      data: [90, 70, 85, 60, 80, 70, 90, 75, 60, 80],
+      name: "créé le jour",
+      data: datesArray,
     },
   ];
   const options = {
@@ -105,12 +96,18 @@ const BasicArea = ({ data=[90, 70, 85, 60, 80, 70, 90, 75, 60, 80], height = 350
 
   return (
     <div>
-    {/* {
+      {/* {
 options &&
     } */}
-      <Chart options={options} series={series} type="area"  width={"100%"} height={height} />
+      <Chart
+        options={options}
+        series={series}
+        type="area"
+        width={"100%"}
+        height={height}
+      />
     </div>
   );
 };
 
-export default BasicArea;
+export default MissionChart;

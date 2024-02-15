@@ -24,7 +24,7 @@ import useSkin from "@/hooks/useSkin";
 import Loading from "@/components/Loading";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import useNavbarType from "@/hooks/useNavbarType";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { consultantMenuItems } from "@/constant/data";
 import { refreshAuthentication } from "@/utils/auth";
 import { useDispatch } from "react-redux";
@@ -35,14 +35,19 @@ export default function RootLayout({ children }) {
   const [isDark] = useDarkMode();
   const [skin] = useSkin();
   const [navbarType] = useNavbarType();
-  const [isMonoChrome] = useMonoChrome();
   const router = useRouter();
-  const { isAuth } = useSelector((state) => state.auth);
+  const userAuth = useSelector((state) => state.userAuth);
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     refreshAuthentication(dispatch, router);
   }, []);
+
+  useEffect(() => {
+    if (userAuth.role !== "CONSULTANT" && userAuth.isLoggedIn) {
+      router.push("/");
+    }
+  }, [userAuth]);
   const location = usePathname();
   // header switch class
   const switchHeaderClass = () => {
@@ -72,7 +77,10 @@ export default function RootLayout({ children }) {
       `}
     >
       <ToastContainer />
-      <Header isConsultant={true} className={width > breakpoints.xl ? switchHeaderClass() : ""} />
+      <Header
+        isConsultant={true}
+        className={width > breakpoints.xl ? switchHeaderClass() : ""}
+      />
       {menuType === "vertical" && width > breakpoints.xl && !menuHidden && (
         <Sidebar menuItems={consultantMenuItems} />
       )}

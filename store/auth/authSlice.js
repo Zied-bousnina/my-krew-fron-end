@@ -9,6 +9,7 @@ const initialState = {
   token: "",
   exp: null,
   iat: null,
+  personalInfo: {},
 };
 
 const authSlice = createSlice({
@@ -26,8 +27,7 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.exp = decodedToken.exp;
         state.iat = decodedToken.iat;
-
-
+        state.personalInfo = decodedToken.preRegister.personalInfo;
         switch (decodedToken.role) {
           case "RH":
             action.payload.router.push("/rh");
@@ -64,6 +64,7 @@ const authSlice = createSlice({
       state.isLoggedIn = false;
       state.exp = null;
       state.iat = null;
+      state.personalInfo = {};
       action.payload.router.push("/");
     },
   },

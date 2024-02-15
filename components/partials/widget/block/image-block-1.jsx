@@ -37,13 +37,7 @@ const ImageBlock1 = ({
                 {title}
               </div>
               <p className={`text-[27px] font-extrabold ${amountColor}`}>
-                {isDate
-                  ? new Date(amount).getDay() +
-                    "/" +
-                    new Date(amount).getMonth() +
-                    "/" +
-                    new Date(amount).getFullYear()
-                  : amount}
+                {isDate ? format(new Date(amount), "dd/MM/yyyy") : amount}
                 {isMoney ? "€" : ""}
               </p>
               {subtitle1 !== "" && subtitle2 !== "" && (
