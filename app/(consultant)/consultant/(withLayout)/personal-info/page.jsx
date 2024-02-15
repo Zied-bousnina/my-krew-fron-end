@@ -17,7 +17,6 @@ const ConsultantPersonalInfoPage = () => {
     consultantService
       .getCurrentConsultant()
       .then((res) => {
-        console.log(res.data);
         setCurrentConsultant(res.data);
       })
       .catch((err) => {
@@ -31,6 +30,23 @@ const ConsultantPersonalInfoPage = () => {
   useEffect(() => {
     getCurrentConsultant();
   }, []);
+
+  const handleDownload = async (imageUrl) => {
+    try {
+      const response = await fetch(imageUrl);
+      const blob = await response.blob();
+      const downloadUrl = URL.createObjectURL(blob);
+      const downloadLink = document.createElement("a");
+      downloadLink.href = downloadUrl;
+      downloadLink.download = "image.jpg"; // You can set the file name here
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+      URL.revokeObjectURL(downloadUrl); // Clean up
+    } catch (error) {
+      console.error("Error downloading the image:", error);
+    }
+  };
   return (
     <>
       {isLoading ? (
@@ -85,6 +101,10 @@ const ConsultantPersonalInfoPage = () => {
                   type="text"
                   placeholder="Votre poste du contact"
                   className="bg-transparent rounded-xl"
+                  defaultValue={
+                    currentConsultant?.preRegister?.clientInfo?.clientContact
+                      ?.position?.value
+                  }
                 />
                 <Textinput
                   name="phone"
@@ -103,6 +123,9 @@ const ConsultantPersonalInfoPage = () => {
                   type="text"
                   placeholder="Votre société"
                   className="bg-transparent rounded-xl"
+                  defaultValue={
+                    currentConsultant?.preRegister?.clientInfo?.company?.value
+                  }
                 />
               </div>
             </div>
@@ -141,6 +164,12 @@ const ConsultantPersonalInfoPage = () => {
                       iconPosition="right"
                       iconClass="w-4"
                       text="Télécharger"
+                      onClick={() =>
+                        handleDownload(
+                          currentConsultant?.preRegister?.personalInfo
+                            ?.identificationDocument?.value
+                        )
+                      }
                     />
                     <Button
                       className="text-[#be6e25] text-sm font-light px-6 py-2 rounded-full bg-[#fff6df] "
@@ -183,6 +212,12 @@ const ConsultantPersonalInfoPage = () => {
                       iconPosition="right"
                       iconClass="w-4"
                       text="Télécharger"
+                      onClick={() =>
+                        handleDownload(
+                          currentConsultant?.preRegister?.personalInfo
+                            ?.ribDocument?.value
+                        )
+                      }
                     />
                     <Button
                       className="text-[#be6e25] text-sm font-light px-6 py-2 rounded-full bg-[#fff6df] "

@@ -9,7 +9,6 @@ const initialState = {
   token: "",
   exp: null,
   iat: null,
-  personalInfo: {},
 };
 
 const authSlice = createSlice({
@@ -27,26 +26,28 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.exp = decodedToken.exp;
         state.iat = decodedToken.iat;
-        state.personalInfo = decodedToken.preRegister.personalInfo;
+
+
         switch (decodedToken.role) {
           case "RH":
             action.payload.router.push("/rh");
             break;
           case "CONSULTANT":
-            switch (decodedToken?.preRegistration?.status) {
-              case "NOTEXIST":
-                action.payload.router.push(`/register`);
-                break;
-              case "PENDING":
-                action.payload.router.push(`/pending`);
-                break;
-              case "NOTVALIDATED":
-                action.payload.router.push(`/declined`);
-                break;
-              default:
-                action.payload.router.push("/consultant");
-                break;
-            }
+            switch (decodedToken.preRegister.status) {
+      case "NOTEXIST":
+        action.payload.router.push(`/register`);
+        break;
+      case "PENDING":
+        action.payload.router.push(`/pending`);
+        break;
+      case "NOTVALIDATED":
+        action.payload.router.push(`/declined`);
+        break;
+      default:
+
+        action.payload.router.push("/consultant");
+        break;
+    }
             break;
           default:
             action.payload.router.push("/");
@@ -63,7 +64,6 @@ const authSlice = createSlice({
       state.isLoggedIn = false;
       state.exp = null;
       state.iat = null;
-      state.personalInfo = {};
       action.payload.router.push("/");
     },
   },

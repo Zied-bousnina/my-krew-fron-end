@@ -28,7 +28,7 @@ const COLUMNS = [
     Cell: (row) => {
       return (
         <div>
-          <span className="text-slate-600 dark:text-slate-400">
+          <span className="text-slate-600 dark:text-slate-400 lowercase px-4 py-2 text-[#e0d6c3] bg-[#fefcf1]">
             {row?.cell?.value}
           </span>
         </div>
@@ -178,7 +178,7 @@ const ConsultantDashboard = () => {
       .then((res) => {
         setAllMissions(
           res.data.map((item) => ({
-            status: item.status,
+            status: item?.missionInfo?.status,
             id: item._id,
             metier: item?.missionInfo?.profession?.value,
             client:
@@ -187,7 +187,7 @@ const ConsultantDashboard = () => {
               "",
             secteur: item?.missionInfo?.industrySector?.value,
             tjm: item?.missionInfo?.dailyRate?.value,
-            createdAt:item?.addedDate,
+            createdAt: item?.addedDate,
             debut: format(item?.missionInfo?.startDate?.value, "MMM d"),
             fin: format(item?.missionInfo?.endDate?.value, "MMM d"),
           }))
@@ -204,7 +204,7 @@ const ConsultantDashboard = () => {
       .then((res) => {
         setPendingMissions(
           res.data.map((item) => ({
-            status: item.status,
+            status: item?.missionInfo?.status,
             id: item._id,
             metier: item?.missionInfo?.profession?.value,
             client:
@@ -229,7 +229,7 @@ const ConsultantDashboard = () => {
       .then((res) => {
         setWaitingContractMissions(
           res.data.map((item) => ({
-            status: item.status,
+            status: item?.missionInfo?.status,
             id: item._id,
             metier: item?.missionInfo?.profession?.value,
             client:
@@ -254,7 +254,7 @@ const ConsultantDashboard = () => {
       .then((res) => {
         setValidatedMissions(
           res.data.map((item) => ({
-            status: item.status,
+            status: item?.missionInfo?.status,
             id: item._id,
             metier: item?.missionInfo?.profession?.value,
             client:
@@ -278,7 +278,7 @@ const ConsultantDashboard = () => {
     consultantService
       .getConsultantLastMission(userAuth.id)
       .then((res) => {
-        console.log(res.data);
+        console.log("lastmission", res.data);
         setLastMission(res.data);
       })
       .catch((err) => {
@@ -328,7 +328,7 @@ const ConsultantDashboard = () => {
               <ImageBlock1
                 isLoading={isLoading}
                 title="Info Missions"
-                amount={lastMission?.status}
+                amount={lastMission?.missionInfo?.status}
                 subtitle1={lastMission?.missionInfo?.finalClient?.value}
                 subtitle2={lastMission?.missionInfo?.dailyRate?.value}
               />
