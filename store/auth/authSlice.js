@@ -26,28 +26,27 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.exp = decodedToken.exp;
         state.iat = decodedToken.iat;
-
+        console.log(decodedToken?.preRegister?.status);
 
         switch (decodedToken.role) {
           case "RH":
             action.payload.router.push("/rh");
             break;
           case "CONSULTANT":
-            switch (decodedToken.preRegister.status) {
-      case "NOTEXIST":
-        action.payload.router.push(`/register`);
-        break;
-      case "PENDING":
-        action.payload.router.push(`/pending`);
-        break;
-      case "NOTVALIDATED":
-        action.payload.router.push(`/declined`);
-        break;
-      default:
-
-        action.payload.router.push("/consultant");
-        break;
-    }
+            switch (decodedToken?.preRegister?.status) {
+              case "NOTEXIST":
+                action.payload.router.push(`/register`);
+                break;
+              case "PENDING":
+                action.payload.router.push(`/pending`);
+                break;
+              case "NOTVALIDATED":
+                action.payload.router.push(`/declined`);
+                break;
+              default:
+                action.payload.router.push("/consultant");
+                break;
+            }
             break;
           default:
             action.payload.router.push("/");

@@ -8,7 +8,7 @@ export function authHeader() {
   let userJSON = localStorage.getItem("jwtToken");
   let user = parseJwt(userJSON);
   let language = localStorage.getItem("Language");
-  console.log(userJSON)
+
   if (user && userJSON) {
     return {
       "Authorization": userJSON,

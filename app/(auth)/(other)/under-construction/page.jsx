@@ -23,7 +23,7 @@ const UnderConstructionPage = () => {
             </Link>
           </div>
           <div>
-            <Button text="Contact us" className=" btn-outline-dark btn-sm" />
+            {/* <Button text="Contact us" className=" btn-outline-dark btn-sm" /> */}
           </div>
         </div>
       </div>
