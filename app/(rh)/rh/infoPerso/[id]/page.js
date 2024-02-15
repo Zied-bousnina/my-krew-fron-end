@@ -164,7 +164,8 @@ const inputs = [
  {
   label:"RIB Document :",
   value:infoPersoById?.[0]?.preRegister?.personalInfo?.ribDocument?.value,
-  commentaire:"ribDocument"
+  commentaire:"ribDocument",
+  image:true
 }
 
 ]
@@ -190,16 +191,50 @@ const inputsRightSide = [
 const InputsClientLeftSide =  [
   {
     label: "Nom :",
-    value:infoPersoById?.[0]?.preRegister?.missionInfo?.finalClient?.value,
-    commentaire:"finalClient"
+    value:infoPersoById?.[0]?.preRegister?.clientInfo?.clientContact?.firstName?.value,
+    commentaire:"clientContactFirstName"
+
+
+  },
+  {
+    label: "Prenom :",
+    value:infoPersoById?.[0]?.preRegister?.clientInfo?.clientContact?.lastName?.value,
+    commentaire:"clientContactLastName"
+
+
+  },
+  {
+    label: "tel :",
+    value:infoPersoById?.[0]?.preRegister?.clientInfo?.clientContact?.phoneNumber?.value,
+    commentaire:"clientContactPhoneNumber"
+
+
+
+  },
+  {
+    label: "position :",
+    value:infoPersoById?.[0]?.preRegister?.clientInfo?.clientContact?.position?.value,
+    commentaire:"position"
 
 
   },
 
-    {
-      label:"Société :",
-      // value:
-    }
+
+]
+const InputsClientRightSide =  [
+  {
+    label:"Société :",
+    value: infoPersoById?.[0]?.preRegister?.clientInfo?.company?.value,
+    commentaire:"company"
+    // value:
+  },
+  {
+    label:"Email :",
+    value: infoPersoById?.[0]?.preRegister?.clientInfo?.clientContact?.email?.value,
+    commentaire:"clientContactemail"
+    // value:
+  }
+
 ]
 
   return (
@@ -314,8 +349,8 @@ const InputsClientLeftSide =  [
               title="Information personnel et du compte"
               className="border border-[#EAE3D5] bg-white text-bold"
             >
-              <div className="flex gap-4">
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col md:flex-row gap-4">
+    <div className="flex flex-col gap-2 flex-grow">
                 {inputs.map((input, index) => (
         <div key={index}>
           <label htmlFor={input.commentaire} className="font-bold text-[14px] text-[#6E7787]">
@@ -324,20 +359,33 @@ const InputsClientLeftSide =  [
 
           <div className="flex gap-2 items-center">
             <div>
-              <input
+            {
+              input.image ?
+              <Image
+                  src={input.value}
+                  alt={input.label}
+                  width={276}
+                  height={46}
+                  className="rounded-md border border-[#EAE3D5] outline-none  mb-5"
+                  onClick={()=> { window.open(input.value, "_blank")}}
+                />
+                :
+                <input
                 id={input.label}
                 readOnly={true}
                 type="text"
                 value={input.value}
                 placeholder={""}
                 onChange={() => {}}
-                className={`bg-[#F2F2F2] w-[276px] h-[46px] text-[12px] pl-4 rounded-md border border-[#EAE3D5] outline-none`}
+                className={`bg-[#F2F2F2] w-[276px] h-[46px] text-[12px] pl-4 rounded-md border border-[#EAE3D5] outline-none mb-5`}
               />
+            }
+
               {!switchStates[input.commentaire] && (
                 <>
-                  <label htmlFor={input.commentaire} className="text-[12px] text-[#FF0000] font-bold">
+                  {/* <label htmlFor={input.commentaire} className="text-[12px] text-[#FF0000] font-bold">
                     Commentaire
-                  </label>
+                  </label> */}
                   <input
                     id={input.commentaire}
                     type="text"
@@ -351,20 +399,20 @@ const InputsClientLeftSide =  [
                   />
                 </>
               )}
-            </div>
-
             <Switch
               value={switchStates[input.commentaire] || false}
               onChange={() => onSwitchChange(input.commentaire)}
               activeClass="bg-[#2CE254]"
             />
+            </div>
+
           </div>
         </div>
       ))}
 
                 </div>
 
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 flex-grow">
                   <div>
                     <label htmlFor="voiture" className="font-bold text-[14px]">
                       Voiture <span className="text-[#D8CCB2]">*</span>
@@ -374,17 +422,17 @@ const InputsClientLeftSide =  [
                       <Radio
                         label="Oui"
                         name="Oui"
-                        checked={!personalInfo?.personalInfo?.carInfo?.hasCar?.value }
+                        checked={personalInfo?.personalInfo?.carInfo?.hasCar?.value }
                         // value="oui"
                       />
                       <Radio
-                      checked={personalInfo?.personalInfo?.carInfo?.hasCar?.value  }
+                      checked={!personalInfo?.personalInfo?.carInfo?.hasCar?.value  }
                        label="Non" name="Non" />
                     </div>
                   </div>
                   {inputsRightSide.map((input, index) => (
 input.commentaire =="carInfo" ?
- !personalInfo?.personalInfo?.carInfo?.hasCar?.value&&
+ personalInfo?.personalInfo?.carInfo?.hasCar?.value&&
         (<div key={index}>
           <label htmlFor={input.commentaire} className="font-bold text-[14px] text-[#6E7787]">
             {input.label} <span className="text-[#D8CCB2]">*</span>
@@ -397,14 +445,14 @@ input.commentaire =="carInfo" ?
                   alt={input.label}
                   width={276}
                   height={46}
-                  className="rounded-md border border-[#EAE3D5] outline-none"
+                  className="rounded-md border border-[#EAE3D5] outline-none  mb-5"
                   onClick={()=> { window.open(input.value, "_blank")}}
                 />
               {!switchStates[input.commentaire] && (
                 <>
-                  <label htmlFor={input.commentaire} className="text-[12px] text-[#FF0000] font-bold">
+                  {/* <label htmlFor={input.commentaire} className="text-[12px] text-[#FF0000] font-bold">
                     Commentaire
-                  </label>
+                  </label> */}
                   <input
                     id={input.commentaire}
                     type="text"
@@ -414,17 +462,17 @@ input.commentaire =="carInfo" ?
                     onChange={(e) => {
                       onChange(e, input.commentaire);
                     }}
-                    className={`bg-[#F2F2F2] w-[276px] h-[46px] text-[12px] pl-4 rounded-md border border-[#EAE3D5] outline-none `}
+                    className={`bg-[#F2F2F2] w-[276px] h-[46px] text-[12px] pl-4 rounded-md border  mb-5 border-[#EAE3D5] outline-none  `}
                   />
                 </>
               )}
-            </div>
-
             <Switch
               value={switchStates[input.commentaire] || false}
               onChange={() => onSwitchChange(input.commentaire)}
               activeClass="bg-[#2CE254]"
             />
+            </div>
+
           </div>
         </div>)
         :
@@ -445,9 +493,9 @@ input.commentaire =="carInfo" ?
                 />
               {!switchStates[input.commentaire] && (
                 <>
-                  <label htmlFor={input.commentaire} className="text-[12px] text-[#FF0000] font-bold">
+                  {/* <label htmlFor={input.commentaire} className="text-[12px] text-[#FF0000] font-bold  ">
                     Commentaire
-                  </label>
+                  </label> */}
                   <input
                     id={input.commentaire}
                     type="text"
@@ -458,17 +506,127 @@ input.commentaire =="carInfo" ?
                     onChange={(e) => {
                       onChange(e, input.commentaire);
                     }}
-                    className={`bg-[#F2F2F2] w-[276px] h-[46px] text-[12px] pl-4 rounded-md border border-[#EAE3D5] outline-none `}
+                    className={`bg-[#F2F2F2] w-[276px] h-[46px] text-[12px] pl-4 rounded-md border  mb-5 border-[#EAE3D5] outline-none `}
                   />
                 </>
               )}
-            </div>
-
             <Switch
               value={switchStates[input.commentaire] || false}
               onChange={() => onSwitchChange(input.commentaire)}
               activeClass="bg-[#2CE254]"
             />
+            </div>
+
+          </div>
+        </div>
+      ))}
+                  {/* <Button
+                    text="Terminer"
+                    className="bg-black-500 text-white text-[12px] font-semibold w-[130px] h-[35px] flex items-center justify-center rounded-[10px] mt-10"
+                    onClick={() => setConfirmationPopup(true)}
+                  /> */}
+                </div>
+              </div>
+            </Card>
+            {/* Information du client (pour la contractualisation) */}
+            <Card
+              title="Information du client (pour la contractualisation)"
+              className="border border-[#EAE3D5] bg-white text-bold"
+            >
+               <div className="flex flex-col md:flex-row gap-4">
+    <div className="flex flex-col gap-2 flex-grow">
+                {InputsClientLeftSide.map((input, index) => (
+        <div key={index}>
+          <label htmlFor={input.commentaire} className="font-bold text-[14px] text-[#6E7787]">
+            {input.label} <span className="text-[#D8CCB2]">*</span>
+          </label>
+
+          <div className="flex flex-col gap-2 flex-grow">
+            <div>
+              <input
+                id={input.label}
+                readOnly={true}
+                type="text"
+                value={input.value}
+                placeholder={""}
+                onChange={() => {}}
+                className={`bg-[#F2F2F2] w-[276px] h-[46px]  mb-5 text-[12px] pl-4 rounded-md border border-[#EAE3D5] outline-none`}
+              />
+              {!switchStates[input.commentaire] && (
+                <>
+                  {/* <label htmlFor={input.commentaire} className="text-[12px] text-[#FF0000] font-bold">
+                    Commentaire
+                  </label> */}
+                  <input
+                    id={input.commentaire}
+                    type="text"
+                    value={comments[input.commentaire] || ""}
+                    placeholder={"comment"}
+                    name={input.commentaire}
+                    onChange={(e) => {
+                      onChange(e, input.commentaire);
+                    }}
+                    className={`bg-[#F2F2F2] w-[276px]  mb-5 h-[46px] text-[12px] pl-4 rounded-md border border-[#EAE3D5] outline-none `}
+                  />
+                </>
+              )}
+            <Switch
+              value={switchStates[input.commentaire] || false}
+              onChange={() => onSwitchChange(input.commentaire)}
+              activeClass="bg-[#2CE254]"
+            />
+            </div>
+
+          </div>
+        </div>
+      ))}
+
+                </div>
+
+                <div className="flex flex-col gap-2">
+
+                {InputsClientRightSide.map((input, index) => (
+        <div key={index}>
+          <label htmlFor={input.commentaire} className="font-bold text-[14px] text-[#6E7787]">
+            {input.label} <span className="text-[#D8CCB2]">*</span>
+          </label>
+
+          <div className={`flex flex-col gap-2 flex-grow ${switchStates[input.commentaire] ? 'switch-open-container' : ''}`}>
+            <div>
+              <input
+                id={input.label}
+                readOnly={true}
+                type="text"
+                value={input.value}
+                placeholder={""}
+                onChange={() => {}}
+                className={`bg-[#F2F2F2] w-[276px] h-[46px]  mb-5 text-[12px] pl-4 rounded-md border border-[#EAE3D5] outline-none`}
+              />
+              {!switchStates[input.commentaire] && (
+                <>
+                  {/* <label htmlFor={input.commentaire} className="text-[12px] text-[#FF0000] font-bold">
+                    Commentaire
+                  </label> */}
+                  <input
+                    id={input.commentaire}
+                    type="text"
+                    value={comments[input.commentaire] || ""}
+                    placeholder={"comment"}
+                    name={input.commentaire}
+                    onChange={(e) => {
+                      onChange(e, input.commentaire);
+                    }}
+                    className={`bg-[#F2F2F2] w-[276px] h-[46px] text-[12px] pl-4 rounded-md border border-[#EAE3D5] outline-none `}
+                  />
+                </>
+              )}
+            <Switch
+              value={switchStates[input.commentaire] || false}
+              onChange={() => onSwitchChange(input.commentaire)}
+              activeClass="bg-[#2CE254]"
+            />
+            </div>
+
           </div>
         </div>
       ))}
@@ -480,177 +638,6 @@ input.commentaire =="carInfo" ?
                 </div>
               </div>
             </Card>
-            {/* Information du client (pour la contractualisation) */}
-            {/* <Card
-              title="Information du client (pour la contractualisation)"
-              className="border border-[#EAE3D5] bg-white text-bold"
-            >
-              <div className="flex gap-4">
-                <div className="flex flex-col gap-2">
-                {InputsClientLeftSide.map((input, index) => (
-        <div key={index}>
-          <label htmlFor={input.commentaire} className="font-bold text-[14px] text-[#6E7787]">
-            {input.label} <span className="text-[#D8CCB2]">*</span>
-          </label>
-
-          <div className="flex gap-2 items-center">
-            <div>
-              <input
-                id={input.label}
-                readOnly={true}
-                type="text"
-                value={input.value}
-                placeholder={""}
-                onChange={() => {}}
-                className={`bg-[#F2F2F2] w-[276px] h-[46px] text-[12px] pl-4 rounded-md border border-[#EAE3D5] outline-none`}
-              />
-              {!switchStates[input.commentaire] && (
-                <>
-                  <label htmlFor={input.commentaire} className="text-[12px] text-[#FF0000] font-bold">
-                    Commentaire
-                  </label>
-                  <input
-                    id={input.commentaire}
-                    type="text"
-                    value={comments[input.commentaire] || ""}
-                    placeholder={"comment"}
-                    name={input.commentaire}
-                    onChange={(e) => {
-                      onChange(e, input.commentaire);
-                    }}
-                    className={`bg-[#F2F2F2] w-[276px] h-[46px] text-[12px] pl-4 rounded-md border border-[#EAE3D5] outline-none `}
-                  />
-                </>
-              )}
-            </div>
-
-            <Switch
-              value={switchStates[input.commentaire] || false}
-              onChange={() => onSwitchChange(input.commentaire)}
-              activeClass="bg-[#2CE254]"
-            />
-          </div>
-        </div>
-      ))}
-
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <div>
-                    <label htmlFor="voiture" className="font-bold text-[14px]">
-                      Voiture <span className="text-[#D8CCB2]">*</span>
-                    </label>
-
-                    <div className="flex gap-4">
-                      <Radio
-                        label="Oui"
-                        name="Oui"
-                        checked={!personalInfo?.personalInfo?.carInfo?.hasCar?.value }
-                        // value="oui"
-                      />
-                      <Radio
-                      checked={personalInfo?.personalInfo?.carInfo?.hasCar?.value  }
-                       label="Non" name="Non" />
-                    </div>
-                  </div>
-                  {inputsRightSide.map((input, index) => (
-input.commentaire =="carInfo" ?
- !personalInfo?.personalInfo?.carInfo?.hasCar?.value&&
-        (<div key={index}>
-          <label htmlFor={input.commentaire} className="font-bold text-[14px] text-[#6E7787]">
-            {input.label} <span className="text-[#D8CCB2]">*</span>
-          </label>
-
-          <div className="flex gap-2 items-center">
-            <div>
-              <Image
-                  src={input.value}
-                  alt={input.label}
-                  width={276}
-                  height={46}
-                  className="rounded-md border border-[#EAE3D5] outline-none"
-                  onClick={()=> { window.open(input.value, "_blank")}}
-                />
-              {!switchStates[input.commentaire] && (
-                <>
-                  <label htmlFor={input.commentaire} className="text-[12px] text-[#FF0000] font-bold">
-                    Commentaire
-                  </label>
-                  <input
-                    id={input.commentaire}
-                    type="text"
-                    value={comments[input.commentaire] || ""}
-                    placeholder={"comment"}
-                    name={input.commentaire}
-                    onChange={(e) => {
-                      onChange(e, input.commentaire);
-                    }}
-                    className={`bg-[#F2F2F2] w-[276px] h-[46px] text-[12px] pl-4 rounded-md border border-[#EAE3D5] outline-none `}
-                  />
-                </>
-              )}
-            </div>
-
-            <Switch
-              value={switchStates[input.commentaire] || false}
-              onChange={() => onSwitchChange(input.commentaire)}
-              activeClass="bg-[#2CE254]"
-            />
-          </div>
-        </div>)
-        :
-           <div key={index}>
-          <label htmlFor={input.commentaire} className="font-bold text-[14px] text-[#6E7787]">
-            {input.label} <span className="text-[#D8CCB2]">*</span>
-          </label>
-
-          <div className="flex gap-2 items-center">
-            <div>
-            <Image
-                  src={input.value}
-                  alt={input.label}
-                  width={276}
-                  height={46}
-                  className="rounded-md border border-[#EAE3D5] outline-none"
-                  onClick={()=> { window.open(input.value, "_blank")}}
-                />
-              {!switchStates[input.commentaire] && (
-                <>
-                  <label htmlFor={input.commentaire} className="text-[12px] text-[#FF0000] font-bold">
-                    Commentaire
-                  </label>
-                  <input
-                    id={input.commentaire}
-                    type="text"
-                    value={comments[input.commentaire] || ""}
-                    placeholder={"comment"}
-                    name={input.commentaire}
-
-                    onChange={(e) => {
-                      onChange(e, input.commentaire);
-                    }}
-                    className={`bg-[#F2F2F2] w-[276px] h-[46px] text-[12px] pl-4 rounded-md border border-[#EAE3D5] outline-none `}
-                  />
-                </>
-              )}
-            </div>
-
-            <Switch
-              value={switchStates[input.commentaire] || false}
-              onChange={() => onSwitchChange(input.commentaire)}
-              activeClass="bg-[#2CE254]"
-            />
-          </div>
-        </div>
-      ))}
-                  <Button
-                    text="Terminer"
-                    className="bg-black-500 text-white text-[12px] font-semibold w-[130px] h-[35px] flex items-center justify-center rounded-[10px] mt-10"
-                    onClick={() => setConfirmationPopup(true)}
-                  />
-                </div>
-              </div>
-            </Card> */}
           </div>
           <div className="lg:col-span-4 col-span-12 space-y-5">
             <Card

@@ -83,9 +83,10 @@ async function updatePreregistrationClientInfo (id, data) {
     body: JSON.stringify(data)
   };
 console.log(requestOptions)
-  const response = await axios.put(
+  const response = await fetch(
     ApiConfigs.base_url + ApiConfigs.apis.rh.updatePreregistrationClientInfo + id,
-    data
+
+    requestOptions
   );
   return handleResponse(response);
 }
