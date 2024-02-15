@@ -34,13 +34,279 @@ import Loading from "@/app/loading";
 import Missions from "@/components/partials/table/missions";
 import { set } from "react-hook-form";
 import { rhServices } from "@/_services/rh.service";
-
+import CustomTable from "@/components/partials/table/custom-table";
+import Dropdown from "@/components/ui/Dropdown";
+import { Menu } from "@headlessui/react";
+import Link from "next/link";
 const MostSales = dynamic(
   () => import("@/components/partials/widget/most-sales"),
   {
     ssr: false,
   }
 );
+const COLUMNSConsultant = [
+  {
+    Header: "name",
+    accessor: "name",
+    Cell: (row) => {
+      console.log(row?.cell?.row?.original);
+      console.log(row?.cell?.row?.original?.preRegister?.personalInfo?.firstName);
+      return (
+        <div>
+          <span className="inline-flex items-center">
+            <span className="w-7 h-7 rounded-full ltr:mr-3 rtl:ml-3 flex-none bg-slate-600">
+              {/* <img
+                src={row?.cell?.row?.original?.image}
+                alt=""
+                className="object-cover w-full h-full rounded-full"
+              /> */}
+            </span>
+            <span className="text-sm text-slate-600 dark:text-slate-300 capitalize font-medium">
+              {/* {row?.cell?.value.name} */}
+              {row?.cell?.row?.original?.preRegister?.personalInfo?.firstName?.value}{" "}
+              {row?.cell?.row?.original?.preRegister?.personalInfo?.lastName
+?.value}
+            </span>
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    Header: "Email",
+    accessor: "Email",
+    Cell: (row) => {
+      return (
+        <span className="text-slate-500 dark:text-slate-400">
+         {row?.cell?.row?.original?.preRegister?.personalInfo?.email?.value}
+
+        </span>
+      );
+    },
+  },
+  {
+    Header: "Téléphone",
+    accessor: "téléphone",
+    Cell: (row) => {
+      return (
+        <span className="text-slate-500 dark:text-slate-400">
+          <span className="block text-slate-600 dark:text-slate-300">
+          {row?.cell?.row?.original?.preRegister?.personalInfo?.phoneNumber
+?.value}
+          </span>
+
+        </span>
+      );
+    },
+  },
+
+  {
+    Header: "Nationalité",
+    accessor: "nationalite",
+    Cell: (row) => {
+      return (
+        <span className="text-slate-500 dark:text-slate-400">
+          <span className="block text-slate-900 bg-slate-100 text-base px-3 py-2 border rounded-xl	 dark:text-slate-300">
+          {row?.cell?.row?.original?.preRegister?.personalInfo?.nationality
+?.value}
+          </span>
+
+        </span>
+      );
+    },
+  },
+
+  {
+    Header: "action",
+    accessor: "action",
+    Cell: (row) => {
+      return (
+        <div className=" text-center">
+          <Dropdown
+            classMenuItems="right-0 w-[140px] bottom-[40%] z-1000  "
+            label={
+              <span className="text-xl text-center block w-full">
+                <Icon icon="heroicons-outline:dots-vertical" />
+              </span>
+            }
+          >
+            <div className="divide-y divide-slate-100 dark:divide-slate-800">
+              {actionsConsult.map((item, i) => (
+                <Menu.Item key={i}>
+                <Link href={`${item.redirect}/${row?.cell?.row?.original?._id}`}>
+                  <div
+                    className={`
+
+                  ${
+                    item.name === "delete"
+                      ? "bg-danger-500 text-danger-500 bg-opacity-30   hover:bg-opacity-100 hover:text-white"
+                      :
+                      "hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50"
+                  }
+                   w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer
+                   first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
+                  >
+                    <span className="text-base">
+                      <Icon icon={item.icon} />
+                    </span>
+                    <span>{item.name}</span>
+                  </div>
+                  </Link>
+                </Menu.Item>
+              ))}
+            </div>
+          </Dropdown>
+        </div>
+      );
+    },
+  },
+];
+
+const actionsConsult = [
+  {
+    name: "Process de validation",
+    icon: "heroicons:pencil-square",
+    redirect:"/rh/validationMission"
+  },
+  {
+    name: "Voir mission",
+    icon: "heroicons-outline:eye",
+    redirect:"/rh/consultant"
+  },
+  // {
+  //   name: "delete",
+  //   icon: "heroicons-outline:trash",
+  //   redirect:"/"
+  // },
+];
+const COLUMNS = [
+  {
+    Header: "Consultant",
+    accessor: "consultant",
+    Cell: (row) => {
+      console.log(row);
+      console.log(row?.cell?.row?.original?.personalInfo?.firstName?.value);
+      return (
+        <div>
+          <span className="inline-flex items-center">
+            <span className="w-7 h-7 rounded-full ltr:mr-3 rtl:ml-3 flex-none bg-slate-600">
+              {/* <img
+                src={row?.cell?.row?.original?.image}
+                alt=""
+                className="object-cover w-full h-full rounded-full"
+              /> */}
+            </span>
+            <span className="text-sm text-slate-600 dark:text-slate-300 capitalize font-medium">
+              {/* {row?.cell?.value.name} */}
+              {row?.cell?.row?.original?.consultant}
+            </span>
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    Header: "Mission",
+    accessor: "mission",
+    Cell: (row) => {
+      return (
+        <span className="text-slate-500 dark:text-slate-400">
+        {row?.cell?.row?.original?.mission}
+
+        </span>
+      );
+    },
+  },
+  {
+    Header: "Date début",
+    accessor: "datedebut",
+    Cell: (row) => {
+      return (
+        <span className="text-slate-500 dark:text-slate-400">
+          <span className="block text-slate-600 dark:text-slate-300">
+          {row?.cell?.row?.original?.dateDebut}
+          </span>
+
+        </span>
+      );
+    },
+  },
+
+  {
+    Header: "Date fin",
+    accessor: "enddate",
+    Cell: (row) => {
+      return (
+        <span className="text-slate-500 dark:text-slate-400">
+          <span className="block text-slate-900 bg-slate-100 text-base px-3 py-2 border rounded-xl	 dark:text-slate-300">
+          {row?.cell?.row?.original?.dateFin}
+          5455
+          </span>
+
+        </span>
+      );
+    },
+  },
+
+  {
+    Header: "action",
+    accessor: "action",
+    Cell: (row) => {
+      return (
+        <div className=" text-center">
+          <Dropdown
+            classMenuItems="right-0 w-[140px] bottom-[40%] z-1000  "
+            label={
+              <span className="text-xl text-center block w-full">
+                <Icon icon="heroicons-outline:dots-vertical" />
+              </span>
+            }
+          >
+            <div className="divide-y divide-slate-100 dark:divide-slate-800">
+              {actions.map((item, i) => (
+                <Menu.Item key={i}>
+                <Link href={`${item.redirect}/${row.cell?.row?.original?.id}`}>
+                  <div
+                    className={`
+
+                  ${
+                    item.name === "delete"
+                      ? "bg-danger-500 text-danger-500 bg-opacity-30   hover:bg-opacity-100 hover:text-white"
+                      :
+                      "hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50"
+                  }
+                   w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer
+                   first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
+                  >
+                    <span className="text-base">
+                      <Icon icon={item.icon} />
+                    </span>
+                    <span>{item.name}</span>
+                  </div>
+                  </Link>
+                </Menu.Item>
+              ))}
+            </div>
+          </Dropdown>
+        </div>
+      );
+    },
+  },
+];
+
+const actions = [
+  {
+    name: "Valider l'inscription",
+    icon: "heroicons:pencil-square",
+    redirect:"/rh/infoPerso"
+  },
+
+  // {
+  //   name: "delete",
+  //   icon: "heroicons-outline:trash",
+  //   redirect:"/"
+  // },
+];
 const RhDashboard = () => {
   const [selectedFilter, setSelectedFilter] = useState("Tous les Consultants");
   const [showAddConsultantPopup, setShowAddConsultantPopup] = useState(false);
@@ -60,12 +326,25 @@ const RhDashboard = () => {
 const [statistiques, setstatistiques] = useState({})
 const [missionsPending, setmissionsPending] = useState([])
 const [missionsPendingLoading, setmissionsPendingLoading] = useState(false)
+const [mission, SetMission] = useState([])
 
 const getAllPendingMission = () => {
   setmissionsPendingLoading(true)
   rhServices.getPendingPreregistration().then((data) => {
     setmissionsPending(data);
     setmissionsPendingLoading(false)
+    console.log("+-+-+-+-+-+-+-+-+-", data)
+    const convertDate = (date) => {
+      const d = new Date(date);
+      return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`
+    }
+    SetMission(data.map((item)=>({
+      id:item?._id,
+      consultant : item?.personalInfo?.firstName?.value + " " + item?.personalInfo?.lastName?.value,
+      mission: item?.missionInfo?.profession?.value,
+      dateDebut: convertDate(item?.missionInfo?.startDate?.value),
+      dateFin: convertDate(item?.missionInfo?.endDate?.value),
+    })))
   }).catch((err) => {
     setmissionsPendingLoading(false)
   })
@@ -114,6 +393,7 @@ useEffect(() => {
   getstatistiques()
   getAllPendingMission()
 }, [])
+console.log("mission: ",mission)
 
 
 
@@ -330,7 +610,12 @@ useEffect(() => {
   (
     missionsPendingLoading ?  <Loading /> :
 
-  <Missions consultants={missionsPending} />
+    <CustomTable
+              title={`test`}
+              columns={COLUMNS}
+              data={mission}
+              tableLoading={missionsPendingLoading}
+            />
   )
 
   )

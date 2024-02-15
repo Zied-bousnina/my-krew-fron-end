@@ -21,8 +21,7 @@ const COLUMNS = [
     Header: "name",
     accessor: "name",
     Cell: (row) => {
-      console.log(row?.cell?.row?.original);
-      console.log(row?.cell?.row?.original?.personalInfo?.firstName?.value);
+     
       return (
         <div>
           <span className="inline-flex items-center">
@@ -157,8 +156,7 @@ const actions = [
 const MissionConsultantTable = ({ title = "All transactions", consultants }) => {
   const columns = useMemo(() => COLUMNS, []);
   const data = useMemo(() => consultants, [consultants]);
-console.log(data)
-console.log(consultants)
+
   const tableInstance = useTable(
     {
       columns,

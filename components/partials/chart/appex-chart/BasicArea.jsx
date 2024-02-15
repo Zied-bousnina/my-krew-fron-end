@@ -85,8 +85,7 @@ const BasicArea = ({ height = 350 }) => {
       left: 0,
     },
   };
-  console.log("Options:", options);
-console.log("Series:", series);
+
   return (
     <div>
     {/* {
