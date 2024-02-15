@@ -9,6 +9,7 @@ const initialState = {
   token: "",
   exp: null,
   iat: null,
+  status: "",
 };
 
 const authSlice = createSlice({
@@ -33,7 +34,7 @@ const authSlice = createSlice({
             action.payload.router.push("/rh");
             break;
           case "CONSULTANT":
-            switch (decodedToken.preRegister.status) {
+            switch (decodedToken?.preRegistration?.status) {
       case "NOTEXIST":
         action.payload.router.push(`/register`);
         break;

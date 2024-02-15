@@ -61,7 +61,7 @@ zIndex: '2',
 }}
 >
 
-  <Link href="/v4/public">
+  <Link href="/">
     <Image
       src={
         isDark
