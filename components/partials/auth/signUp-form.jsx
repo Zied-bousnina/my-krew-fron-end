@@ -40,7 +40,6 @@ const SignUpForm = () => {
       AuthService.registerUser(values)
         .then((res) => {
           // dispatch(authActions.login({token: res.token, router:router}))
-          console.log(res)
           toast.success("Bienvenue", {
             position: "top-right",
             autoClose: 1500,
@@ -51,6 +50,7 @@ const SignUpForm = () => {
             progress: undefined,
             theme: "light",
           });
+          router.push("/");
         })
         .catch((err) => {
 

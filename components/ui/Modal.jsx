@@ -7,7 +7,7 @@ const Modal = ({
   onClose,
   noFade,
   disableBackdrop,
-  className = "max-w-xl",
+  className = "max-w-3xl",
   children,
   footerContent,
   centered,

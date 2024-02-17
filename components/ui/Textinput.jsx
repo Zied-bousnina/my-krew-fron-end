@@ -124,7 +124,7 @@ const Textinput = ({
             </span>
           )}
 
-          {error && (
+          {error && type!=="date" && (
             <span className="text-danger-500">
               <Icon icon="heroicons-outline:information-circle" />
             </span>

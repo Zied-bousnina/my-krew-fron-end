@@ -3,10 +3,8 @@
 "use client";
 import Card from "@/components/ui/Card";
 import Icon from "@/components/ui/Icon";
-import BasicArea from "@/components/partials/chart/appex-chart/BasicArea";
 import ImageBlock1 from "@/components/partials/widget/block/image-block-1";
-import Button from "@/components/ui/Button";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
 import Loading from "@/app/loading";
@@ -14,6 +12,7 @@ import CustomTable from "@/components/partials/table/custom-table";
 import { consultantService } from "@/_services/consultant.service";
 import { format } from "date-fns";
 import MissionChart from "@/components/partials/chart/consultant/mission-chart";
+import AddNewMission from "@/components/ui/modals/pages/consultant-home/addNewMission";
 
 const MostSales = dynamic(
   () => import("@/components/partials/widget/most-sales"),
@@ -26,10 +25,41 @@ const COLUMNS = [
     Header: "Status",
     accessor: "status",
     Cell: (row) => {
+      const getStatusCredentials = () => {
+        switch (row?.cell?.value) {
+          case "PENDING":
+            return {
+              text: "En attente",
+              styles: "bg-[#fefcf1] text-[#959494]",
+            };
+          case "COMPLETED":
+            return {
+              text: "Terminée",
+              styles: "bg-success-200 text-success-500",
+            };
+          case "VALID":
+            return {
+              text: "Validée",
+              styles: "bg-success-200 text-success-500",
+            };
+          case "REJECTED":
+            return {
+              text: "Refusée",
+              styles: "bg-danger-200 text-danger-500",
+            };
+          default:
+            return {
+              text: "En cours",
+              styles: "bg-blue-200 text-blue-500",
+            };
+        }
+      };
       return (
-        <div>
-          <span className="text-slate-600 dark:text-slate-400 lowercase px-4 py-2 text-[#e0d6c3] bg-[#fefcf1]">
-            {row?.cell?.value}
+        <div className="py-2">
+          <span
+            className={`px-4 py-2 rounded-3xl ${getStatusCredentials().styles}`}
+          >
+            {getStatusCredentials().text}
           </span>
         </div>
       );
@@ -161,8 +191,6 @@ const COLUMNS = [
   // },
 ];
 const ConsultantDashboard = () => {
-  const [statistiques, setstatistiques] = useState({});
-
   const [isLoading, setIsLoading] = useState(true);
   const [allMissions, setAllMissions] = useState([]);
   const [pendingMissions, setPendingMissions] = useState([]);
@@ -178,7 +206,7 @@ const ConsultantDashboard = () => {
       .then((res) => {
         setAllMissions(
           res.data.map((item) => ({
-            status: item?.missionInfo?.status,
+            status: item?.missionInfo?.status || item.status,
             id: item._id,
             metier: item?.missionInfo?.profession?.value,
             client:
@@ -204,7 +232,7 @@ const ConsultantDashboard = () => {
       .then((res) => {
         setPendingMissions(
           res.data.map((item) => ({
-            status: item?.missionInfo?.status,
+            status: item?.missionInfo?.status || item.status,
             id: item._id,
             metier: item?.missionInfo?.profession?.value,
             client:
@@ -229,7 +257,7 @@ const ConsultantDashboard = () => {
       .then((res) => {
         setWaitingContractMissions(
           res.data.map((item) => ({
-            status: item?.missionInfo?.status,
+            status: item?.missionInfo?.status || item.status,
             id: item._id,
             metier: item?.missionInfo?.profession?.value,
             client:
@@ -254,7 +282,7 @@ const ConsultantDashboard = () => {
       .then((res) => {
         setValidatedMissions(
           res.data.map((item) => ({
-            status: item?.missionInfo?.status,
+            status: item?.missionInfo?.status || item.status,
             id: item._id,
             metier: item?.missionInfo?.profession?.value,
             client:
@@ -287,7 +315,7 @@ const ConsultantDashboard = () => {
       .finally(() => {});
   };
 
-  useEffect(() => {
+  const groupAsyncFunctions = () => {
     setIsLoading(true);
     Promise.all([
       getConsultantAllMissions(),
@@ -303,6 +331,10 @@ const ConsultantDashboard = () => {
       .finally(() => {
         setIsLoading(false);
       });
+  };
+
+  useEffect(() => {
+    groupAsyncFunctions();
   }, []);
 
   return (
@@ -313,10 +345,7 @@ const ConsultantDashboard = () => {
             <Icon icon="solar:document-outline" width={35} />
             <h1 className="font-bold text-4xl">Mes Missions</h1>
           </div>
-          <Button
-            text="Déclarer une nouvelle mission"
-            className=" bg-black-500 text-white text-[14px] font-semibold  h-[35px] flex items-center justify-center rounded-[10px]"
-          />
+          <AddNewMission />
         </div>
         {/* </Card> */}
         <Card>
@@ -328,9 +357,15 @@ const ConsultantDashboard = () => {
               <ImageBlock1
                 isLoading={isLoading}
                 title="Info Missions"
-                amount={lastMission?.missionInfo?.status}
-                subtitle1={lastMission?.missionInfo?.finalClient?.value}
-                subtitle2={lastMission?.missionInfo?.dailyRate?.value}
+                amount={lastMission?.missionInfo?.status || lastMission?.status}
+                subtitle1={
+                  lastMission?.missionInfo?.finalClient?.value ||
+                  lastMission?.finalClient?.value
+                }
+                subtitle2={
+                  lastMission?.missionInfo?.dailyRate?.value ||
+                  lastMission?.dailyRate?.value
+                }
               />
             </div>
             <div className="2xl:col-span-3 lg:col-span-4 col-span-12">

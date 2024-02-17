@@ -32,7 +32,7 @@ const ImageBlock1 = ({
       ) : (
         !!amount && (
           <div>
-            <div className="max-w-[169px]">
+            <div className="max-w-[169px] ">
               <div className="text-[18px] font-bold text-[#CDC7B9] mb-2">
                 {title}
               </div>
@@ -41,11 +41,11 @@ const ImageBlock1 = ({
                 {isMoney ? "€" : ""}
               </p>
               {subtitle1 !== "" && subtitle2 !== "" && (
-                <div className="flex items-center justify-between">
-                  <p className="italic text-sm font-extralight text-[#CDC7B9]">
+                <div className="w-[230px] flex items-center justify-between pb-5">
+                  <p className="flex-1 italic text-sm font-extralight text-[#CDC7B9]">
                     Client: {subtitle1}
                   </p>
-                  <p className="italic text-sm font-extralight text-[#CDC7B9]">
+                  <p className="flex-1 italic text-sm font-extralight text-[#CDC7B9]">
                     TJM: {subtitle2}€
                   </p>
                 </div>

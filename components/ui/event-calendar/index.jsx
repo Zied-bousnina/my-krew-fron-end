@@ -9,7 +9,7 @@ import {
   isSameDay,
 } from "date-fns";
 import Button from "../Button";
-import EventCalendarModal from "../modals/pages/compte-rendu-activite/even-calendar-modal";
+import EventCalendarModal from "../modals/pages/compte-rendu-activite/event-calendar-modal";
 
 const WEEKDAYS = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
 
