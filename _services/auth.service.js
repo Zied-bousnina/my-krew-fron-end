@@ -7,7 +7,10 @@ const AuthService = {
   login,
   Register1,
   Register2,
-  Register3
+  Register3,
+  ForgotPassword,
+  ResetPassword,
+  VerifyToken
 };
 
 async function registerUser(userData) {
@@ -67,18 +70,38 @@ async function handleResponse(response) {
       if (response.status === 401) {
 
         window.location.href = "/login";
-        
+
       }
 
       const error = (data) || response.statusText;
-     
+
       throw error;
     }
 
     return data;
   } catch (error) {
 
- 
+
+    throw error;
+  }
+}
+async function handleResponseForgotPAss(response) {
+  try {
+    const text = await response.text();
+    const data = text && JSON.parse(text);
+
+    if (!response.ok) {
+
+
+      const error = (data) || response.statusText;
+
+      throw error;
+    }
+
+    return data;
+  } catch (error) {
+
+
     throw error;
   }
 }
@@ -115,7 +138,7 @@ async function Register2(data) {
     body: data,
   };
 
- 
+
   const response = await fetch(
       ApiConfigs.base_url + ApiConfigs.apis.preregistration.createPreRegistration2,
       requestOptions
@@ -124,7 +147,59 @@ async function Register2(data) {
 
   return handleResponse(response);
 }
+async function ForgotPassword(data) {
 
+const requestOptions = {
+  method: "POST",
+  headers: { ...guestHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+};
+
+
+const response = await fetch(
+    ApiConfigs.base_url + ApiConfigs.apis.auth.forgotPassword,
+    requestOptions
+
+);
+
+return handleResponseForgotPAss(response);
+}
+
+async function ResetPassword(data,token,id) {
+
+const requestOptions = {
+  method: "POST",
+  headers: { ...guestHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+};
+
+
+const response = await fetch(
+    ApiConfigs.base_url + ApiConfigs.apis.auth.resetPassword+`?token=${token}&id=${id}`,
+    requestOptions
+
+);
+
+return handleResponseForgotPAss(response);
+}
+
+async function VerifyToken(token, id) {
+
+const requestOptions = {
+  method: "GET",
+  headers: { ...guestHeader()},
+
+};
+
+
+const response = await fetch(
+    ApiConfigs.base_url + ApiConfigs.apis.auth.verifyToken+`?token=${token}&id=${id}`,
+    requestOptions
+
+);
+
+return handleResponseForgotPAss(response);
+}
 async function Register3(data) {
   const requestOptions = {
     method: "POST",

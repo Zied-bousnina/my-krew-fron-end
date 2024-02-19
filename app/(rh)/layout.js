@@ -13,6 +13,7 @@ import useMenulayout from "@/hooks/useMenulayout";
 import useMenuHidden from "@/hooks/useMenuHidden";
 import Footer from "@/components/partials/footer";
 // import Breadcrumbs from "@/components/ui/Breadcrumbs";
+import Head from 'next/head'
 import MobileMenu from "@/components/partials/sidebar/MobileMenu";
 import useMobileMenu from "@/hooks/useMobileMenu";
 import useMonoChrome from "@/hooks/useMonoChrome";
@@ -78,6 +79,13 @@ export default function RootLayout({ children }) {
       ${navbarType === "floating" ? "has-floating" : ""}
       `}
     >
+     <Head>
+        <title>MY-KREW RH</title>
+        <meta property="og:title" content="My page title" key="title" />
+      </Head>
+      <Head>
+        <meta property="og:title" content="My new title" key="title" />
+      </Head>
       <ToastContainer />
       <Header
         isRh={true}

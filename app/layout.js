@@ -14,6 +14,11 @@ export default function RootLayout({ children }) {
   return (
     <>
       <html lang="en">
+      <head>
+        <title>
+        My krew
+        </title>
+      </head>
         <body className="font-inter  custom-tippy dashcode-app">
           <ChakraProvider>
             <ToastContainer />

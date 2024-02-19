@@ -2,10 +2,10 @@
 
 import React from "react";
 import Link from "next/link";
-import ForgotPass from "@/components/partials/auth/forgot-pass";
+import ResetPassword from "@/components/partials/auth/reset-password";
 import useDarkMode from "@/hooks/useDarkMode";
 
-const ForgotPassPage = () => {
+const RestPassPage = () => {
   const [isDark] = useDarkMode();
   return (
     <div className="loginwrapper">
@@ -91,7 +91,7 @@ const ForgotPassPage = () => {
               Entrez votre adresse e-mail et des instructions vous seront envoyées!
               </div>
 
-              <ForgotPass />
+              <ResetPassword />
               <div className="md:max-w-[345px] mx-auto font-normal text-slate-500 dark:text-slate-400 2xl:mt-12 mt-8 uppercase text-sm">
               Oubliez ça,
                 <Link
@@ -111,4 +111,4 @@ const ForgotPassPage = () => {
   );
 };
 
-export default ForgotPassPage;
+export default RestPassPage;

@@ -1,7 +1,7 @@
 
 
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Textinput from "@/components/ui/Textinput";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,21 +9,54 @@ import * as yup from "yup";
 import AuthService from "@/_services/auth.service";
 import { useFormik } from "formik";
 import { ToastContainer, toast } from "react-toastify";
+import { useSearchParams } from 'next/navigation'
 const validationSchema = yup
   .object({
-    email: yup.string().email("Invalid email").required("Email is Required"),
+    password: yup.string().required("Password is Required"),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref("password"), null], "Passwords must match")
+      .required("Password is Required"),
 
   })
   .required();
-const schema = yup
-  .object({
-    email: yup.string().email("Invalid email").required("Email is Required"),
 
-  })
-  .required();
-const ForgotPass = () => {
+const ResetPassword = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, seterrors] = useState("")
+  const searchParams = useSearchParams()
+
+  const token = searchParams.get('token')
+  const id = searchParams.get('id')
+
+  const [invalidUser, setinvalidUser] = useState('')
+  const [busy, setBusy] = useState(true)
+  const [error, setError] = useState('')
+
+  const verifyToken = () => {
+
+    AuthService.VerifyToken(token, id)
+        .then((res) => {
+            setBusy(false)
+            console.log(res)
+            setIsLoading(false);
+
+        })
+        .catch((err) => {
+            console.log(err)
+            seterrors(err)
+            if(!err.success) {
+                setinvalidUser(err.error)
+            }
+            setIsLoading(false);
+        })
+    }
+  useEffect(() => {
+    verifyToken()
+
+  }, [])
+
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -34,14 +67,14 @@ const ForgotPass = () => {
 
       seterrors("")
       setIsLoading(true);
-      AuthService.ForgotPassword(values)
+      AuthService.ResetPassword(values,token, id)
         .then((res) => {
 
-          seterrors(res)
+
           console.log(res)
 
           // dispatch(authActions.login({token: res.token, router:router}))
-          toast.success(" reset password link sent it  ", {
+          toast.success("mot de passe réinitialisé avec succès ", {
             position: "top-right",
             autoClose: 1500,
             hideProgressBar: false,
@@ -51,27 +84,54 @@ const ForgotPass = () => {
             progress: undefined,
             theme: "light",
           });
+          window.location.href = "/";
+          setIsLoading(false);
+
         })
         .catch((err) => {
           console.log(err)
-          seterrors(err)})
+          seterrors(err)
+          setIsLoading(false);
+        })
         .finally(() => {
           setIsLoading(false);
         });
     },
   });
   return (
+    <>
+{invalidUser ?
+    <div className='max-w-screen-sm m-auto pt-40'>
+    <h1 className='text-center text-3xl text-gray-500 mb-3' >
+      {invalidUser}
+    </h1>
+  </div> :
+
+
+
     <form onSubmit={formik.handleSubmit} className="space-y-4 ">
+
       <Textinput
-       id="email"
-        name="email"
-        label="email"
-        type="email"
-        value={formik.values.email}
+       id="password"
+        name="password"
+        label="password"
+        type="password"
+        value={formik.values.password}
           onChange={formik.handleChange}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
-        placeholder="Entrez votre adresse e-mail"
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}
+        placeholder="Entrez votre mot de passe"
+      />
+      <Textinput
+       id="confirmPassword"
+        name="confirmPassword"
+        label="confirmPassword"
+        type="password"
+        value={formik.values.confirmPassword}
+          onChange={formik.handleChange}
+          error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+          helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+        placeholder="Confirmez votre mot de passe"
       />
   {!errors.success && errors !="" ? (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
@@ -84,6 +144,23 @@ const ForgotPass = () => {
               ) : errors.error=="Sorry! User not found!" ?
               (
                 <span className="block sm:inline"> Désolé! Utilisateur non trouvé!</span>
+              ):errors.error=="Password must be between 8 and 20 characters" ?
+              (
+                <span className="block sm:inline">
+                Le mot de passe doit comporter entre 8 et 20 caractères
+                </span>
+              ):
+              errors.error=="reset Token Not found !" ?
+              (
+                <span className="block sm:inline">
+                Jeton de réinitialisation non trouvé!
+                </span>
+              ):
+              errors.error=="You cannot use the same password" ?
+              (
+                <span className="block sm:inline">
+                Vous ne pouvez pas utiliser le même mot de passe
+                </span>
               ):
              null
             }
@@ -163,11 +240,13 @@ const ForgotPass = () => {
               <span class="sr-only">Loading...</span>
             </div>
           ) : (
-            " Send recovery email"
+            "Reset"
           )}
         </button>
     </form>
+}
+    </>
   );
 };
 
-export default ForgotPass;
+export default ResetPassword;
