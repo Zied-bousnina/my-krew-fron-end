@@ -27,5 +27,6 @@ export function guestHeader() {
   return {
     "X-Requested-With": "XMLHttpRequest",
     "Content-Language": language || "en",
+    
   };
 }

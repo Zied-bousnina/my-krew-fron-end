@@ -177,6 +177,7 @@ console.log(data)
                 onChange={onChangeHandlerFile}
                 type="text"
                 placeholder="Pièce d’identité ( CNI )"
+                selectedFile={form.cin}
                 register={register}
                 error={errors.cin}
                 value={
@@ -193,6 +194,7 @@ console.log(data)
                 placeholder="Passeport"
                 register={register}
                 error={errors.passport}
+                selectedFile={form.passport}
             />{" "}
             <Textinput
 
@@ -214,6 +216,7 @@ console.log(data)
                 placeholder="RIB document"
                 register={register}
                 error={errors.ribDocument}
+                selectedFile={form.ribDocument}
             />{" "}
             <div className="text-[#76736E] text-base pt-5">
                 Possédez-vous une voiture ?
@@ -247,6 +250,7 @@ console.log(data)
                             placeholder="Permis de conduire"
                             register={register}
                             error={errors.passport}
+                            selectedFile={form.passport}
                         />{" "}
                     </div>
                 ) : null
