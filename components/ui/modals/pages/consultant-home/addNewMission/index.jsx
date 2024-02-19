@@ -10,6 +10,7 @@ import { useFormik } from "formik";
 import { missionService } from "@/_services/mission.service";
 import { ToastContainer, toast } from "react-toastify";
 import PageLoader from "@/components/ui/loaders/pageloader";
+import ButtonLoader from "@/components/ui/loaders/buttonLoader";
 
 const validationSchema = yup.object({
   firstName: yup.string().required("Ce champ est obligatoire"),
@@ -116,7 +117,6 @@ const AddNewMission = ({ refresh }) => {
 
   return (
     <div>
-      {isLoading && <PageLoader />}
       <ToastContainer />
       <Button
         text="Déclarer une nouvelle mission"
@@ -333,8 +333,9 @@ const AddNewMission = ({ refresh }) => {
             <button
               className="btn btn-dark  text-center rounded-xl"
               type="submit"
+              disabled={isLoading}
             >
-              Enregistrer
+              {isLoading ? <ButtonLoader /> : "Enregistrer"}
             </button>
           </div>
         </form>
