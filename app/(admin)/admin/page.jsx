@@ -12,18 +12,18 @@ import TeamTable from "@/components/partials/table/team-table";
 import { meets, files } from "@/constant/data";
 import CalendarView from "@/components/partials/widget/CalendarView";
 import HomeBredCurbs from "@/components/partials/HomeBredCurbs";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { useSelector } from "react-redux";
 import { useRouter, usePathname } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { refreshAuthentication } from "@/utils/auth";
 const ProjectPage = () => {
   const router = useRouter();
-  const { isAuth } = useSelector((state) => state.auth);
-  useEffect(() => {
-    if (!isAuth) {
-      router.push("/");
-    }
-    //darkMode;
-  }, [isAuth]);
+  const dispatch = useDispatch();
+
+  useLayoutEffect(() => {
+    refreshAuthentication(dispatch, router);
+  }, []);
   return (
     <div className="space-y-5">
       <HomeBredCurbs title="Tableau de bord- admin" />

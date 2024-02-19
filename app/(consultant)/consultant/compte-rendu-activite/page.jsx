@@ -7,7 +7,7 @@ import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import Textarea from "@/components/ui/Textarea";
 import EventCalendar from "@/components/ui/event-calendar";
-import { format } from "date-fns";
+import { eachDayOfInterval, endOfMonth, format, startOfMonth } from "date-fns";
 import { fr } from "date-fns/locale";
 
 import React, { useEffect, useState } from "react";
@@ -202,7 +202,37 @@ export default ConsultantCompteRenduActivitePage;
 
 const PrintableCard = React.forwardRef(
   ({ currentConsultant, selectedDates, signatureUrl }, ref) => {
-    console.log("currentConsultant", currentConsultant);
+    // Get the current date
+    const currentDate = new Date();
+
+    // Define the start and end of the current month
+    const startDate = startOfMonth(currentDate);
+    const endDate = endOfMonth(currentDate);
+
+    // Generate an array of dates for the current month
+    const daysArray = eachDayOfInterval({ start: startDate, end: endDate });
+
+    const isDaySelected = (day) => {
+      return selectedDates.some(
+        (selectedDate) =>
+          new Date(selectedDate).getTime() === new Date(day).getTime()
+      );
+    };
+
+    // Placeholder data for duration and note, this should come from your state or props
+    const durationNoteData = daysArray.map((day, _) => {
+      if (isDaySelected(day)) {
+        return {
+          duration: 1,
+          note: "",
+        };
+      } else {
+        return {
+          duration: 0,
+          note: "",
+        };
+      }
+    });
     return (
       <div className="  bg-white  pb-4" ref={ref}>
         <div className="p-4">
@@ -267,14 +297,45 @@ const PrintableCard = React.forwardRef(
                 </p>
               </div>
             </div>
-            <div className="flex justify-end mt-12">
-              <img
-                src={signatureUrl}
-                className="h-[150px] w-[200px] border-2 border-slate-800 border-dashed rounded-lg p-4"
-              />
-            </div>
+            {signatureUrl !== "" && (
+              <div className="flex justify-end mt-12">
+                <img
+                  src={signatureUrl}
+                  className="h-[150px] w-[200px] border-2 border-slate-800 border-dashed rounded-lg p-4"
+                />
+              </div>
+            )}
           </div>
-          <div className="flex-1"></div>
+          <div className="flex-1">
+            <table className="w-full  border border-slate-200 rounded-xl ">
+              <thead>
+                <tr className="flex gap-4 items-center p-4">
+                  <th>Jour</th>
+                  <th>Durée</th>
+                  <th>Note</th>
+                </tr>
+              </thead>
+              <tbody className="">
+                {daysArray.map((day, index) => {
+                  const { duration, note } = durationNoteData[index];
+                  return (
+                    <tr
+                      key={index}
+                      className={`flex gap-2 items-center px-4 py-2 text-slate-500 text-sm ${
+                        duration === 0 && "bg-slate-100"
+                      }`}
+                    >
+                      <td className="">
+                        {format(day, "EEE d", { locale: fr })}
+                      </td>
+                      <td>{duration}</td>
+                      <td>{note}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     );

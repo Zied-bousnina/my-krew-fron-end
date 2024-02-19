@@ -1,5 +1,4 @@
-export const rhMenuItems =
- [
+export const rhMenuItems = [
   {
     title: "Tableau de bord",
     isHide: true,
@@ -41,19 +40,15 @@ export const rhMenuItems =
     icon: "heroicons-outline:users",
     link: "/todo",
   },
-
-
 ];
-export const consultantMenuItems =
- [
+export const consultantMenuItems = [
   // {
   //   isHeadr: true,
   //   title: "menu",
   // },
 
-
   {
-    title: "Home",
+    title: "Acceuil",
     isHide: true,
     icon: "heroicons-outline:home",
     link: "/consultant",
@@ -70,37 +65,18 @@ export const consultantMenuItems =
   {
     title: "Virement",
     isHide: true,
-    icon: "heroicons:document-text",
-
+    icon: "heroicons-outline:rectangle-stack",
     link: "/consultant/virement",
   },
   {
     title: "Compte rendu d'activité",
     isHide: true,
-    icon: "heroicons-outline:rectangle-stack",
+    icon: "heroicons:document-text",
     link: "/consultant/compte-rendu-activite",
   },
-  {
-    title: "Nos Services",
-    isHide: true,
-    icon: "heroicons:inbox",
-    link: "#",
-  },
-
-  {
-    title: "Mes contacts",
-    isHide: true,
-    icon: "heroicons-outline:users",
-    link: "#",
-  },
-
-
 ];
 
-export const topMenu =  [
-
-
-
+export const topMenu = [
   {
     title: "Home",
     isHide: true,
@@ -142,8 +118,6 @@ export const topMenu =  [
     icon: "heroicons-outline:users",
     link: "/todo",
   },
-
-
 ];
 
 export const message = [
