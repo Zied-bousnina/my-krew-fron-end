@@ -31,6 +31,7 @@ const ValidationStep = ({ stepNumber, step, state, id }) => {
 
 
     const onchange = (status, step)=> {
+      console.log("selectedééééééééééééééééééééééééééé", stepSelected)
       const data = {
         status:status, step:step
       }
@@ -63,13 +64,28 @@ const ValidationStep = ({ stepNumber, step, state, id }) => {
       : state.toLowerCase() === "en cours"
       ? "bg-[#FCE9A4]"
       : "bg-[#EDEDED]";
+
+      const  getBackgroundColor=(status)=> {
+  const lowercaseStatus = status.toLowerCase();
+  console.log("Loawer case : ", lowercaseStatus)
+
+  const bgColor =
+  lowercaseStatus == "valideé"
+      ? "bg-[#C9E2C4]"
+      : lowercaseStatus == "en cours"
+      ? "bg-[#FCE9A4]": lowercaseStatus == "en attente" ? "bg-[#EDEDED]"
+      : "bg-[#C9E2C4]";
+
+  return bgColor;
+}
+
   return (
     <div className="w-full flex items-center justify-between">
       <p className="text-[14px] text-[#6E7787]">Etape : {stepNumber}</p>
       <InputBox placeholder={step} readOnly={true} />
 
 
-      <Dropdown  label={ProfileLabel(stepSelected,bgColor )} classMenuItems={`w-[211px] top-[50px]  ${bgColor} `} class={` ${bgColor}`}>
+      <Dropdown  label={ProfileLabel(stepSelected,getBackgroundColor(stepSelected) )} classMenuItems={`w-[211px] top-[50px]  ${getBackgroundColor(stepSelected)} `} class={` ${getBackgroundColor(stepSelected)}`}>
 
         <Menu.Item key={1} className="">
         {({ active }) => (

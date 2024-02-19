@@ -44,7 +44,7 @@ const RegForm4 = ({id}) => {
   const {
     register,
     formState: { errors },
-    handleSubmit, 
+    handleSubmit,
   } = useForm({
     resolver: yupResolver(schema),
     mode: "all",
@@ -208,7 +208,7 @@ const RegForm4 = ({id}) => {
 <Fileinput
         name="simulationfile"
         label="choisir un fichier"
-
+        selectedFile={form.simulationfile}
         type="text"
         placeholder="Simulation"
         register={register}
