@@ -12,6 +12,10 @@ export const ApiConfigs = {
     auth: {
       user: { register: "users" },
       login: "users/login",
+      logout: "users/logout",
+      forgotPassword: "users/forgot-password",
+      resetPassword: "users/reset-password",
+      verifyToken: "users/verify-token",
     },
     rh: {
       getConsultant: "users/consultants/getAllConsultant",

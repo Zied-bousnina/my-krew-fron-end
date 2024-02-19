@@ -26,7 +26,7 @@ const SignUpForm = () => {
   const  {error} = useSelector((state) => state.auth);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-
+  const [errors, seterrors] = useState("")
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -54,7 +54,7 @@ const SignUpForm = () => {
         })
         .catch((err) => {
 
-          console.log("erroe: ", err)
+          seterrors(err)
         })
         .finally(() => {
           setIsLoading(false);
@@ -144,6 +144,35 @@ helperText={formik.touched.password && formik.errors.password}
             "s'inscrire"
           )}
         </button>
+        {errors && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+            <strong className="font-bold">Erreur!</strong>
+            {
+              errors.email=="Email already exists" ?
+              <span className="block sm:inline"> L'adresse e-mail est déjà utilisée.</span>
+              :
+              <span className="block sm:inline"> Informations d'identification invalides.</span>
+
+            }
+            <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
+              <svg
+                onClick={() => seterrors("")}
+                className="fill-current h-6 w-6 text-red-500"
+                role="button"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <title>Close</title>
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M14.348 5.652a.5.5 0 0 0-.707 0L10 9.293 6.36 5.652a.5.5 0 0 0-.708.708L9.293 10l-3.64 3.64a.5.5 0 0 0 .708.708L10 10.707l3.64 3.64a.5.5 0 0 0 .708-.708L10.707 10l3.64-3.64a.5.5 0 0 0 0-.708z"
+                />
+              </svg>
+            </span>
+          </div>
+        )
+          }
     </form>
   );
 };
