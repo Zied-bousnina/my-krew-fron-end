@@ -7,7 +7,10 @@ export const consultantService = {
   getConsultantMissionsValidated,
   getConsultantMissionsNotValidated,
   getConsultantLastMission,
-  getCurrentConsultant
+  getCurrentConsultant,
+  updateConsultantProfileImage,
+  updateConsultantCIN,
+  updateConsultantRIB
 };
 
 async function getConsultantMissions(id) {
@@ -96,8 +99,44 @@ async function getCurrentConsultant() {
   };
 
   const response = await fetch(
-    ApiConfigs.base_url +
-      ApiConfigs.apis.consultant.getCurrentConsultant,
+    ApiConfigs.base_url + ApiConfigs.apis.consultant.getCurrentConsultant,
+    requestOptions
+  );
+  return handleResponse(response);
+}
+
+async function updateConsultantProfileImage(data) {
+  const requestOptions = {
+    method: "PUT",
+    headers: { ...authHeader() },
+    body: data,
+  };
+  const response = await fetch(
+    ApiConfigs.base_url + ApiConfigs.apis.consultant.updateImage,
+    requestOptions
+  );
+  return handleResponse(response);
+}
+async function updateConsultantCIN(data) {
+  const requestOptions = {
+    method: "PUT",
+    headers: { ...authHeader() },
+    body: data,
+  };
+  const response = await fetch(
+    ApiConfigs.base_url + ApiConfigs.apis.consultant.updateCin,
+    requestOptions
+  );
+  return handleResponse(response);
+}
+async function updateConsultantRIB(data) {
+  const requestOptions = {
+    method: "PUT",
+    headers: { ...authHeader() },
+    body: data,
+  };
+  const response = await fetch(
+    ApiConfigs.base_url + ApiConfigs.apis.consultant.updateRib,
     requestOptions
   );
   return handleResponse(response);

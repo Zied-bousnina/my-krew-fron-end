@@ -9,14 +9,11 @@ import {
   isSameDay,
 } from "date-fns";
 import Button from "../Button";
-import EventCalendarModal from "../modals/pages/compte-rendu-activite/event-calendar-modal";
+import { fr } from "date-fns/locale";
 
 const WEEKDAYS = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
 
-const EventCalendar = () => {
-  const [selectedDates, setSelectedDates] = useState([]);
-  const [activeModal, setActiveModal] = useState(false);
-
+const EventCalendar = ({ selectedDates, setSelectedDates }) => {
   const currentDate = new Date();
   const firstDayOfMonth = startOfMonth(currentDate);
   const lastDayOfMonth = endOfMonth(currentDate);
@@ -48,8 +45,6 @@ const EventCalendar = () => {
   const isDateSelected = (day) =>
     selectedDates.some((selectedDate) => isSameDay(selectedDate, day));
 
-  const closeModal = () => setActiveModal(false);
-  const openModal = () => setActiveModal(true);
   const clearCalendar = () => {
     setSelectedDates([]);
   };
@@ -57,7 +52,9 @@ const EventCalendar = () => {
   return (
     <>
       <div className="container">
-        <h2 className="text-2xl mb-4">{format(currentDate, "MMM yyyy")}</h2>
+        <h2 className="text-2xl mb-4">
+          {format(currentDate, "MMM yyyy", { locale: fr })}
+        </h2>
         <div className="border border-slate-800 rounded-xl overflow-hidden">
           <div className="grid grid-cols-7 bg-[#fefdf0] border border-b-slate-800 p-4">
             {WEEKDAYS.map((day) => (
@@ -127,4 +124,3 @@ const EventCalendar = () => {
 };
 
 export default EventCalendar;
-

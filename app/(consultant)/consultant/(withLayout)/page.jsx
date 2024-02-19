@@ -339,85 +339,91 @@ const ConsultantDashboard = () => {
 
   return (
     <>
-      <div className="lg:col-span-8 col-span-12 space-y-5">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-          <div className="flex gap-6 items-center">
-            <Icon icon="solar:document-outline" width={35} />
-            <h1 className="font-bold text-4xl">Mes Missions</h1>
-          </div>
-          <AddNewMission />
-        </div>
-        {/* </Card> */}
-        <Card>
-          <MissionChart data={allMissions} height={240} />
-        </Card>
-        <Card>
-          <div className="grid grid-cols-9 gap-5">
-            <div className="2xl:col-span-3 lg:col-span-4 col-span-12">
-              <ImageBlock1
-                isLoading={isLoading}
-                title="Info Missions"
-                amount={lastMission?.missionInfo?.status || lastMission?.status}
-                subtitle1={
-                  lastMission?.missionInfo?.finalClient?.value ||
-                  lastMission?.finalClient?.value
-                }
-                subtitle2={
-                  lastMission?.missionInfo?.dailyRate?.value ||
-                  lastMission?.dailyRate?.value
-                }
-              />
-            </div>
-            <div className="2xl:col-span-3 lg:col-span-4 col-span-12">
-              <ImageBlock1
-                title="TJM Moyen"
-                amount={lastMission?.missionInfo?.dailyRate?.value}
-                isLoading={isLoading}
-                amountColor="text-[#1E1E1E]"
-                bgColor="bg-[#FEFCF1]"
-                border="border border-[#EAE3D5]"
-                isMoney={true}
-              />
-            </div>
-            <div className="2xl:col-span-3 lg:col-span-4 col-span-12">
-              <ImageBlock1
-                title="Date de fin de Mission"
-                isLoading={isLoading}
-                amount={lastMission?.missionInfo?.endDate?.value}
-                isDate={true}
-                amountColor="text-[#1E1E1E]"
-                bgColor="bg-[#FEFCF1]"
-                border="border border-[#EAE3D5]"
-              />
-            </div>
-          </div>
-        </Card>
+      {
+        <div className="lg:col-span-8 col-span-12 space-y-5">
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div className="flex gap-6 items-center">
+                  <Icon icon="solar:document-outline" width={35} />
+                  <h1 className="font-bold text-4xl">Mes Missions</h1>
+                </div>
+                <AddNewMission refresh={groupAsyncFunctions} />
+              </div>
+              {/* </Card> */}
+              <Card>
+                <MissionChart data={allMissions} height={240} />
+              </Card>
+              <Card>
+                <div className="grid grid-cols-9 gap-5">
+                  <div className="2xl:col-span-3 lg:col-span-4 col-span-12">
+                    <ImageBlock1
+                      isLoading={isLoading}
+                      title="Info Missions"
+                      amount={
+                        lastMission?.missionInfo?.status || lastMission?.status
+                      }
+                      subtitle1={
+                        lastMission?.missionInfo?.finalClient?.value ||
+                        lastMission?.finalClient?.value
+                      }
+                      subtitle2={
+                        lastMission?.missionInfo?.dailyRate?.value ||
+                        lastMission?.dailyRate?.value
+                      }
+                    />
+                  </div>
+                  <div className="2xl:col-span-3 lg:col-span-4 col-span-12">
+                    <ImageBlock1
+                      title="TJM Moyen"
+                      amount={lastMission?.missionInfo?.dailyRate?.value}
+                      isLoading={isLoading}
+                      amountColor="text-[#1E1E1E]"
+                      bgColor="bg-[#FEFCF1]"
+                      border="border border-[#EAE3D5]"
+                      isMoney={true}
+                    />
+                  </div>
+                  <div className="2xl:col-span-3 lg:col-span-4 col-span-12">
+                    <ImageBlock1
+                      title="Date de fin de Mission"
+                      isLoading={isLoading}
+                      amount={lastMission?.missionInfo?.endDate?.value}
+                      isDate={true}
+                      amountColor="text-[#1E1E1E]"
+                      bgColor="bg-[#FEFCF1]"
+                      border="border border-[#EAE3D5]"
+                    />
+                  </div>
+                </div>
+              </Card>
 
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <div>
-            <CustomTable
-              title={`En attente (${pendingMissions?.length})`}
-              columns={COLUMNS}
-              data={pendingMissions}
-              tableLoading={isLoading}
-            />
-            <CustomTable
-              title={`En cours (${waitingContractMissions?.length})`}
-              columns={COLUMNS}
-              data={waitingContractMissions}
-              tableLoading={isLoading}
-            />
-            <CustomTable
-              title={`Validées (${validatedMissions?.length})`}
-              columns={COLUMNS}
-              data={validatedMissions}
-              tableLoading={isLoading}
-            />
-          </div>
-        )}
-      </div>
+              <div>
+                <CustomTable
+                  title={`En attente (${pendingMissions?.length})`}
+                  columns={COLUMNS}
+                  data={pendingMissions}
+                  tableLoading={isLoading}
+                />
+                <CustomTable
+                  title={`En cours (${waitingContractMissions?.length})`}
+                  columns={COLUMNS}
+                  data={waitingContractMissions}
+                  tableLoading={isLoading}
+                />
+                <CustomTable
+                  title={`Validées (${validatedMissions?.length})`}
+                  columns={COLUMNS}
+                  data={validatedMissions}
+                  tableLoading={isLoading}
+                />
+              </div>
+            </>
+          )}
+        </div>
+      }
 
       {/* <div className="grid xl:grid-cols-3 grid-cols-1 gap-5">
         <Card title="Task list" headerslot={<SelectMonth />}>

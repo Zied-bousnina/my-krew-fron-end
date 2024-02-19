@@ -29,7 +29,7 @@ const validationSchema = yup.object({
   debut: yup.string().required("Ce champ est obligatoire"),
   fin: yup.string().required("Ce champ est obligatoire"),
 });
-const AddNewMission = ({}) => {
+const AddNewMission = ({ refresh }) => {
   const [error, setError] = useState(null);
   const [activeModal, setActiveModal] = useState(false);
   const [simulationFile, setSimulationFile] = useState(null);
@@ -101,6 +101,7 @@ const AddNewMission = ({}) => {
           .then((res) => {
             toast.success("Mission ajoutée avec succès");
             onClose();
+            refresh();
           })
           .catch((err) => {
             console.log(err);
@@ -115,7 +116,7 @@ const AddNewMission = ({}) => {
 
   return (
     <div>
-        {isLoading && <PageLoader/>}
+      {isLoading && <PageLoader />}
       <ToastContainer />
       <Button
         text="Déclarer une nouvelle mission"
@@ -329,7 +330,10 @@ const AddNewMission = ({}) => {
           </div>
 
           <div className="flex items-center justify-end mt-4">
-            <button className="btn btn-dark  text-center rounded-xl" type="submit">
+            <button
+              className="btn btn-dark  text-center rounded-xl"
+              type="submit"
+            >
               Enregistrer
             </button>
           </div>

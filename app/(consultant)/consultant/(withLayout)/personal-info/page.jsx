@@ -7,6 +7,9 @@ import Button from "@/components/ui/Button";
 import { consultantService } from "@/_services/consultant.service";
 import Loading from "@/app/loading";
 import { format } from "date-fns";
+import UpdateInfoImage from "@/components/ui/modals/pages/personal-info/updateInfoImage";
+import UpdateInfoCIN from "@/components/ui/modals/pages/personal-info/updateInfoCIN";
+import UpdateInfoRIB from "@/components/ui/modals/pages/personal-info/updateInfoRIB";
 
 const ConsultantPersonalInfoPage = () => {
   const [currentConsultant, setCurrentConsultant] = useState({});
@@ -61,16 +64,14 @@ const ConsultantPersonalInfoPage = () => {
               <h1 className="font-extra text-4xl">Mes Infos Perso</h1>
             </div>
             <div className="flex items-center gap-6 pb-12">
-              <Image
+              <img
                 src={
                   !currentConsultant.image ||
                   currentConsultant.image === "default.jpg"
                     ? "/assets/images/placeholder/image-placeholder.png"
                     : currentConsultant.image
                 }
-                width={75}
-                height={75}
-                className="rounded-lg"
+                className="h-[75px] w-[75px] rounded-lg"
               />
               <h5 className=" font-semibold">
                 {currentConsultant?.preRegister?.personalInfo?.firstName
@@ -78,9 +79,7 @@ const ConsultantPersonalInfoPage = () => {
                   " " +
                   currentConsultant?.preRegister?.personalInfo?.lastName?.value}
               </h5>
-              <div>
-                <Icon icon="heroicons:pencil-square" width={25} />
-              </div>
+              <UpdateInfoImage refresh={getCurrentConsultant} />
             </div>
             <div className="pb-20">
               <h6 className="font-semibold">Information Personnelles</h6>
@@ -171,13 +170,7 @@ const ConsultantPersonalInfoPage = () => {
                         )
                       }
                     />
-                    <Button
-                      className="text-[#be6e25] text-sm font-light px-6 py-2 rounded-full bg-[#fff6df] "
-                      icon="heroicons:arrow-up-tray"
-                      iconPosition="right"
-                      iconClass="w-4"
-                      text="Remplacer"
-                    />
+                    <UpdateInfoCIN refresh={getCurrentConsultant} />
                   </div>
                 </div>
                 {/*-------------card----------------------*/}
@@ -219,13 +212,7 @@ const ConsultantPersonalInfoPage = () => {
                         )
                       }
                     />
-                    <Button
-                      className="text-[#be6e25] text-sm font-light px-6 py-2 rounded-full bg-[#fff6df] "
-                      icon="heroicons:arrow-up-tray"
-                      iconPosition="right"
-                      iconClass="w-4"
-                      text="Remplacer"
-                    />
+                    <UpdateInfoRIB refresh={getCurrentConsultant} />
                   </div>
                 </div>
               </div>
