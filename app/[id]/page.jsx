@@ -7,7 +7,7 @@ import Image from "next/image";
 import { ToastContainer } from "react-toastify";
 // image import
 
-const Login = () => {
+const Login = ({params}) => {
   const [isDark] = useDarkMode();
   return (
     <>
@@ -102,6 +102,7 @@ const Login = () => {
         }}
       />
                   <h4 className="font-medium">  Connectez-vous</h4>
+                  <h4 className="font-medium">  Welcome {params.id}</h4>
                   {/* <img
                       src={
                         isDark
