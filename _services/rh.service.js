@@ -108,7 +108,9 @@ async function getConsultantInfoWithMissionById(id) {
 async function updatePreregistrationClientInfo (id, data) {
   const requestOptions = {
     method: "PUT",
-    headers: authHeader(),
+    headers: {...authHeader(),
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify(data)
   };
 console.log(requestOptions)

@@ -15,6 +15,9 @@ import { useRouter } from 'next/router'
 import { useDispatch } from "react-redux";
 import { handleGetRegistrationByUserId } from "@/components/partials/auth/store";
 import { useSelector } from "react-redux";
+import Icons from "@/components/ui/Icon";
+import AddNewMission from "@/components/ui/modals/pages/consultant-home/addNewMission";
+import UpdateMissionClientInfo from "@/components/ui/modals/pages/preinscription/update-missionAndClient-info";
 const PendingDetails = ({params}) => {
   const [isDark] = useDarkMode();
   // const router = useRouter()
@@ -30,6 +33,9 @@ const PendingDetails = ({params}) => {
   console.log(preregistration)
 
   console.log(params.id)
+  const handleIconClick = () => {
+    dispatch(handleGetRegistrationByUserId(params.id))
+  }
   return (
     <>
     <div className="loginwrapper">
@@ -121,7 +127,21 @@ Nous vérifions vos informations. Nous vous tiendrons informé dans quelques ins
        paddingBottom: '10px',
       }}
     />
-                <h4 className="font-medium">  Votre demande est en cours de verification</h4>
+                <h4 className="font-medium">
+
+  <button onClick={handleIconClick}
+  disabled={isLoading}
+  >
+
+                 <Icons
+
+                    icon="mdi:reload"
+                    className="w-6 h-6"
+                    style={{ color: "#4669F2" }}
+                  />
+  </button>
+
+                  Votre demande est en cours de verification</h4>
                 {/* <img
                     src={
                       isDark
@@ -146,14 +166,17 @@ Nous vérifions vos informations. Nous vous tiendrons informé dans quelques ins
 
 <div className="mt-6 space-y-5">
   <div key={1} className="mb-3">
-    <Disclosure>
+  <UpdateMissionClientInfo
+  preregistration={preregistration}
+  />
+    {/* <Disclosure>
       {({ open }) => (
         <>
           <Disclosure.Button className={`
           ${
             preregistration?.validationRH == "PENDING" ? "bg-slate-400" : preregistration?.validationRH == "VALIDATED" ? "bg-[#128200]" : "bg-[#BC0000]"
           }
-          // bg-[#128200]
+
 
            bg-opacity-[23%] rounded-t-md flex justify-between cursor-pointer transition duration-150 font-medium w-full text-start text-base text-[#1E1E1E] px-8 py-4`}>
             <span>
@@ -167,12 +190,12 @@ Nous vérifions vos informations. Nous vous tiendrons informé dans quelques ins
                 open && "rotate-180 transform"
               }  transition-all duration-150 text-xl`}
             >
-              {/* <Icon icon="heroicons:chevron-down-solid" /> */}
+
             </span>
           </Disclosure.Button>
         </>
       )}
-    </Disclosure>
+    </Disclosure> */}
   </div>
 </div>
 }

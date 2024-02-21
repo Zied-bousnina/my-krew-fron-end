@@ -51,6 +51,7 @@ export const ApiConfigs = {
     },
     mission: {
       createMission: "mission/createMission",
+      UpdateInformationClientAndPersonalConsultantInfo: "mission/UpdateInformationClientAndPersonalConsultantInfo/",
     },
   },
 };
