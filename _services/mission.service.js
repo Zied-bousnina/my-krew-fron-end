@@ -4,6 +4,7 @@ export const missionService = {
   createMission,
   UpdateInformationClientAndPersonalConsultantInfo,
   updateTjm,
+  updateMissionStatus
 };
 
 async function createMission(data) {
@@ -30,6 +31,20 @@ async function updateTjm(id, data) {
   );
   return handleResponse(response);
 }
+
+async function updateMissionStatus(id, data) {
+  const requestOptions = {
+    method: "PUT",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  const response = await fetch(
+    ApiConfigs.base_url + ApiConfigs.apis.mission.updateMissionStatus+id,
+    requestOptions
+  );
+  return handleResponse(response);
+}
+
 
 async function UpdateInformationClientAndPersonalConsultantInfo(data, id) {
   const requestOptions = {

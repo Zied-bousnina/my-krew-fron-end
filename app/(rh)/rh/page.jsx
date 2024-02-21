@@ -301,6 +301,11 @@ const actions = [
     icon: "heroicons:pencil-square",
     redirect:"/rh/infoPerso"
   },
+  {
+    name: "Voir mission",
+    icon: "heroicons-outline:eye",
+    redirect:"/rh/consultant2"
+  },
 
   // {
   //   name: "delete",
@@ -340,12 +345,14 @@ const getAllPendingMission = () => {
       const d = new Date(date);
       return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`
     }
+    console.log("------------------------",data )
     SetMission(data.map((item)=>({
       id: item?.userId?.preRegister?item?.userId?.preRegister :  item?._id,
       consultant :item?.personalInfo?.firstName?.value ?  item?.personalInfo?.firstName?.value + " " + item?.personalInfo?.lastName?.value :item?.userId?.email.split('@')[0] ,
       mission: item?.missionInfo?.profession?.value ? item?.missionInfo?.profession?.value  : "Non défini",
       dateDebut: item?.missionInfo?.startDate?.value? convertDate(item?.missionInfo?.startDate?.value) : "27/2/2024",
       dateFin: item?.missionInfo?.endDate?.value ? convertDate(item?.missionInfo?.endDate?.value) : "27/2/2024",
+      userId:item?.userId?._id ? item?.userId?._id : item?._id
     })))
   }).catch((err) => {
     setmissionsPendingLoading(false)
@@ -365,7 +372,7 @@ const getAllPendingMission = () => {
         name: item?.preRegister?.personalInfo?.firstName?.value + " " + item?.preRegister?.personalInfo?.lastName?.value,
         Email: item?.preRegister?.personalInfo?.email?.value,
         téléphone: item?.preRegister?.personalInfo?.phoneNumber?.value,
-        nationalite: item?.preRegister?.personalInfo?.nationality?.value
+        nationalite: item?.preRegister?.personalInfo?.nationality?.value,
 
 
       })))
