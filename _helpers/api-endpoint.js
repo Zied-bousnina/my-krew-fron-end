@@ -43,7 +43,7 @@ export const ApiConfigs = {
       updateCin: "users/updateCin",
       updateRib: "users/updateRib",
       createCra: "consultant/createCra",
-      craAlreadyCreated:"consultant/craAlreadyCreated/{id}",
+      craAlreadyCreated: "consultant/craAlreadyCreated/{id}",
     },
     preregistration: {
       createPreRegistration1: "users/preRegistration/createPreRegistration1",
@@ -54,6 +54,8 @@ export const ApiConfigs = {
     mission: {
       createMission: "mission/createMission",
       updateTjm: "mission//updateTjm/{id}",
+      UpdateInformationClientAndPersonalConsultantInfo:
+        "mission/UpdateInformationClientAndPersonalConsultantInfo/",
     },
   },
 };

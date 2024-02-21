@@ -14,32 +14,32 @@ export const rhMenuItems = [
     link: "/rh/consultant/2",
   },
 
-  {
-    title: "Entreprise",
-    isHide: true,
-    icon: "heroicons-outline:newspaper",
+  // {
+  //   title: "Entreprise",
+  //   isHide: true,
+  //   icon: "heroicons-outline:newspaper",
 
-    link: "/rh/infoPerso/2",
-  },
-  {
-    title: "Nos Services",
-    isHide: true,
-    icon: "heroicons-outline:rectangle-stack",
-    link: "/calender",
-  },
-  {
-    title: "Nos Services",
-    isHide: true,
-    icon: "heroicons-outline:rectangle-stack",
-    link: "/rh/validationMission/2",
-  },
+  //   link: "/rh/infoPerso/2",
+  // },
+  // {
+  //   title: "Nos Services",
+  //   isHide: true,
+  //   icon: "heroicons-outline:rectangle-stack",
+  //   link: "/calender",
+  // },
+  // {
+  //   title: "Nos Services",
+  //   isHide: true,
+  //   icon: "heroicons-outline:rectangle-stack",
+  //   link: "/rh/validationMission/2",
+  // },
 
-  {
-    title: "Mes contacts",
-    isHide: true,
-    icon: "heroicons-outline:users",
-    link: "/todo",
-  },
+  // {
+  //   title: "Mes contacts",
+  //   isHide: true,
+  //   icon: "heroicons-outline:users",
+  //   link: "/todo",
+  // },
 ];
 export const consultantMenuItems = [
   // {

@@ -1,6 +1,10 @@
 import { authHeader, ApiConfigs } from "../_helpers";
 
-export const missionService = { createMission, updateTjm };
+export const missionService = {
+  createMission,
+  UpdateInformationClientAndPersonalConsultantInfo,
+  updateTjm,
+};
 
 async function createMission(data) {
   const requestOptions = {
@@ -27,6 +31,20 @@ async function updateTjm(id, data) {
   return handleResponse(response);
 }
 
+async function UpdateInformationClientAndPersonalConsultantInfo(data, id) {
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader() },
+    body: data,
+  };
+  const response = await fetch(
+    ApiConfigs.base_url +
+      ApiConfigs.apis.mission.UpdateInformationClientAndPersonalConsultantInfo +
+      id,
+    requestOptions
+  );
+  return handleResponse(response);
+}
 function handleResponse(response) {
   return response.text().then((text) => {
     const data = text && JSON.parse(text);

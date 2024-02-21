@@ -341,8 +341,8 @@ const getAllPendingMission = () => {
       return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`
     }
     SetMission(data.map((item)=>({
-      id:item?._id,
-      consultant : item?.personalInfo?.firstName?.value + " " + item?.personalInfo?.lastName?.value,
+      id: item?.userId?.preRegister?item?.userId?.preRegister :  item?._id,
+      consultant :item?.personalInfo?.firstName?.value ?  item?.personalInfo?.firstName?.value + " " + item?.personalInfo?.lastName?.value :item?.userId?.email.split('@')[0] ,
       mission: item?.missionInfo?.profession?.value,
       dateDebut: convertDate(item?.missionInfo?.startDate?.value),
       dateFin: convertDate(item?.missionInfo?.endDate?.value),

@@ -43,6 +43,7 @@ const [comment, setcomment] = useState({
 const [switchStates, setSwitchStates] = useState({});
 const [comments, setComments] = useState({});
 const onChange = (e, inputComment) => {
+  console.log("inputComment", inputComment)
   setComments({ ...comments, [inputComment]: e.target.value });
   console.log("comments", comments);
 };
