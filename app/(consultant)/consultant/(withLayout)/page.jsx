@@ -4,7 +4,7 @@
 import Card from "@/components/ui/Card";
 import Icon from "@/components/ui/Icon";
 import ImageBlock1 from "@/components/partials/widget/block/image-block-1";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
 import Loading from "@/app/loading";
@@ -17,6 +17,7 @@ import Dropdown from "@/components/ui/Dropdown";
 import Link from "next/link";
 import { Menu } from "@headlessui/react";
 import AddCRA from "@/components/ui/modals/pages/consultant-home/addCRA";
+import UpdateTJM from "@/components/ui/modals/pages/consultant-home/updateTJM";
 
 const MostSales = dynamic(
   () => import("@/components/partials/widget/most-sales"),
@@ -148,180 +149,184 @@ const COLUMNS = [
     },
   },
 ];
-const VALIDATED_COLUMNS = [
-  {
-    Header: "Status",
-    accessor: "status",
-    Cell: (row) => {
-      const getStatusCredentials = () => {
-        switch (row?.cell?.value) {
-          case "PENDING":
-            return {
-              text: "En attente",
-              styles: "bg-[#fefcf1] text-[#959494]",
-            };
-          case "COMPLETED":
-            return {
-              text: "Terminée",
-              styles: "bg-success-200 text-success-500",
-            };
-          case "VALID":
-            return {
-              text: "Validée",
-              styles: "bg-success-200 text-success-500",
-            };
-          case "REJECTED":
-            return {
-              text: "Refusée",
-              styles: "bg-danger-200 text-danger-500",
-            };
-          default:
-            return {
-              text: "En cours",
-              styles: "bg-blue-200 text-blue-500",
-            };
-        }
-      };
-      return (
-        <div className="py-2">
-          <span
-            className={`px-4 py-2 rounded-3xl ${getStatusCredentials().styles}`}
-          >
-            {getStatusCredentials().text}
-          </span>
-        </div>
-      );
-    },
-  },
-  {
-    Header: "ID",
-    accessor: "id",
-    Cell: (row) => {
-      return (
-        <span className="text-slate-600 dark:text-slate-400">
-          {row?.cell?.value}
-        </span>
-      );
-    },
-  },
-  {
-    Header: "Métier",
-    accessor: "metier",
-    Cell: (row) => {
-      return (
-        <span className="text-slate-600 dark:text-slate-400">
-          {row?.cell?.value}
-        </span>
-      );
-    },
-  },
 
-  {
-    Header: "Client",
-    accessor: "client",
-    Cell: (row) => {
-      return (
-        <span className="text-slate-600 dark:text-slate-400">
-          {row?.cell?.value}
-        </span>
-      );
-    },
-  },
-  {
-    Header: "Secteur",
-    accessor: "secteur",
-    Cell: (row) => {
-      return (
-        <span className="text-slate-600 dark:text-slate-400">
-          {row?.cell?.value}
-        </span>
-      );
-    },
-  },
-  {
-    Header: "TJM",
-    accessor: "tjm",
-    Cell: (row) => {
-      return (
-        <span className="text-slate-600 dark:text-slate-400">
-          {row?.cell?.value}
-        </span>
-      );
-    },
-  },
-  {
-    Header: "Début",
-    accessor: "debut",
-    Cell: (row) => {
-      return (
-        <span className="text-slate-600 dark:text-slate-400">
-          {row?.cell?.value}
-        </span>
-      );
-    },
-  },
-  {
-    Header: "Fin",
-    accessor: "fin",
-    Cell: (row) => {
-      return (
-        <span className="text-slate-600 dark:text-slate-400">
-          {row?.cell?.value}
-        </span>
-      );
-    },
-  },
-  {
-    Header: "Action",
-    accessor: "action",
-    Cell: (row) => {
-      const IsAction = () => {
-        switch (row?.cell?.row?.original?.status) {
-          case "VALID":
-            return true;
-          default:
-            return false;
-        }
-      };
-const [toggleDropdown, setToggleDropdown] = useState(false);
-      return (
-        <div className=" text-center">
-          {IsAction() && (
-            <Dropdown
-            toggleClose={toggleDropdown}
-              classMenuItems="right-0 w-[140px] bottom-[40%] z-1000  "
-              label={
-                <span className="text-xl text-center block w-full">
-                  <Icon icon="heroicons-outline:dots-vertical" />
-                </span>
-              }
-            >
-              <div className="divide-y divide-slate-100 dark:divide-slate-800">
-                  <AddCRA toggleDropdown={toggleDropdown} setToggleDropdown={setToggleDropdown}/>
-                <Menu.Item>
-                  <Link href={`#`}>
-                    <div
-                      className={`${"hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50"} 
-                      w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer
-                      first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
-                    >
-                      <span className="text-base">
-                        <Icon icon="heroicons:pencil-square" width={15} />
-                      </span>
-                      <span>zeazeazeaz</span>
-                    </div>
-                  </Link>
-                </Menu.Item>
-              </div>
-            </Dropdown>
-          )}
-        </div>
-      );
-    },
-  },
-];
 const ConsultantDashboard = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  
+  const VALIDATED_COLUMNS = [
+    {
+      Header: "Status",
+      accessor: "status",
+      Cell: (row) => {
+        const getStatusCredentials = () => {
+          switch (row?.cell?.value) {
+            case "PENDING":
+              return {
+                text: "En attente",
+                styles: "bg-[#fefcf1] text-[#959494]",
+              };
+            case "COMPLETED":
+              return {
+                text: "Terminée",
+                styles: "bg-success-200 text-success-500",
+              };
+            case "VALID":
+              return {
+                text: "Validée",
+                styles: "bg-success-200 text-success-500",
+              };
+            case "REJECTED":
+              return {
+                text: "Refusée",
+                styles: "bg-danger-200 text-danger-500",
+              };
+            default:
+              return {
+                text: "En cours",
+                styles: "bg-blue-200 text-blue-500",
+              };
+          }
+        };
+        return (
+          <div className="py-2">
+            <span
+              className={`px-4 py-2 rounded-3xl ${
+                getStatusCredentials().styles
+              }`}
+            >
+              {getStatusCredentials().text}
+            </span>
+          </div>
+        );
+      },
+    },
+    {
+      Header: "ID",
+      accessor: "id",
+      Cell: (row) => {
+        return (
+          <span className="text-slate-600 dark:text-slate-400">
+            {row?.cell?.value}
+          </span>
+        );
+      },
+    },
+    {
+      Header: "Métier",
+      accessor: "metier",
+      Cell: (row) => {
+        return (
+          <span className="text-slate-600 dark:text-slate-400">
+            {row?.cell?.value}
+          </span>
+        );
+      },
+    },
+
+    {
+      Header: "Client",
+      accessor: "client",
+      Cell: (row) => {
+        return (
+          <span className="text-slate-600 dark:text-slate-400">
+            {row?.cell?.value}
+          </span>
+        );
+      },
+    },
+    {
+      Header: "Secteur",
+      accessor: "secteur",
+      Cell: (row) => {
+        return (
+          <span className="text-slate-600 dark:text-slate-400">
+            {row?.cell?.value}
+          </span>
+        );
+      },
+    },
+    {
+      Header: "TJM",
+      accessor: "tjm",
+      Cell: (row) => {
+        return (
+          <span className="text-slate-600 dark:text-slate-400">
+            {row?.cell?.value}
+          </span>
+        );
+      },
+    },
+    {
+      Header: "Début",
+      accessor: "debut",
+      Cell: (row) => {
+        return (
+          <span className="text-slate-600 dark:text-slate-400">
+            {row?.cell?.value}
+          </span>
+        );
+      },
+    },
+    {
+      Header: "Fin",
+      accessor: "fin",
+      Cell: (row) => {
+        return (
+          <span className="text-slate-600 dark:text-slate-400">
+            {row?.cell?.value}
+          </span>
+        );
+      },
+    },
+    {
+      Header: "Action",
+      accessor: "action",
+      Cell: (row) => {
+        const IsAction = () => {
+          switch (row?.cell?.row?.original?.status) {
+            case "VALID":
+              return true;
+            default:
+              return false;
+          }
+        };
+        const [toggleDropdown, setToggleDropdown] = useState(false);
+
+        return (
+          <div className=" text-center">
+            {IsAction() && (
+              <Dropdown
+                toggleClose={toggleDropdown}
+                classMenuItems="right-0 w-[140px] bottom-[40%] z-1000  "
+                label={
+                  <span className="text-xl text-center block w-full">
+                    <Icon icon="heroicons-outline:dots-vertical" />
+                  </span>
+                }
+              >
+                <div className="divide-y divide-slate-100 dark:divide-slate-800">
+
+                    <AddCRA
+                      data={row?.cell?.row?.original}
+                      toggleDropdown={toggleDropdown}
+                      setToggleDropdown={setToggleDropdown}
+                      refresh={groupAsyncFunctions}
+                    />
+
+                  <UpdateTJM
+                    data={row?.cell?.row?.original}
+                    toggleDropdown={toggleDropdown}
+                    setToggleDropdown={setToggleDropdown}
+                    refresh={groupAsyncFunctions}
+                  />
+                </div>
+              </Dropdown>
+            )}
+          </div>
+        );
+      },
+    },
+  ];
+  const [isLoading, setIsLoading] = useState(false);
   const [allMissions, setAllMissions] = useState([]);
   const [pendingMissions, setPendingMissions] = useState([]);
   const [waitingContractMissions, setWaitingContractMissions] = useState([]);
