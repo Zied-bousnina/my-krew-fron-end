@@ -68,7 +68,7 @@ const [infoIsloading, setinfoIsloading] = useState(false)
   const fetchinfoPersoById = async () => {
   setinfoIsloading(true)
 
-  rhServices.getConsultantInfoWithMissionById(params.id).then((data) => {
+  rhServices.getConsultantInfoWithMissionById2(params.id).then((data) => {
     setmission([])
     console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++",data.AllMission)
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

@@ -26,6 +26,8 @@ export const ApiConfigs = {
       getConsultantInfoById: "users/getConsultantInfoById/",
       getConsultantInfoWithMissionById:
         "users/getConsultantInfoWithMissionById/",
+        getConsultantInfoWithMissionById2:
+        "users/getConsultantInfoWithMissionById2/",
       updatePreregistrationClientInfo:
         "users/validatePreregistrationClientInfo/",
       updateStatusProcess: "users/validateProcessus/",
@@ -54,8 +56,8 @@ export const ApiConfigs = {
     mission: {
       createMission: "mission/createMission",
       updateTjm: "mission//updateTjm/{id}",
-      UpdateInformationClientAndPersonalConsultantInfo:
-        "mission/UpdateInformationClientAndPersonalConsultantInfo/",
+      UpdateInformationClientAndPersonalConsultantInfo: "mission/UpdateInformationClientAndPersonalConsultantInfo/",
+      updateMissionStatus: "mission/updateMissionStatus/",
     },
   },
 };
