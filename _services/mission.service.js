@@ -18,7 +18,7 @@ async function createMission(data) {
 
 async function UpdateInformationClientAndPersonalConsultantInfo(data,id) {
   const requestOptions = {
-    method: "POST",
+    method: "PUT",
     headers: { ...authHeader() },
     body: data,
   };

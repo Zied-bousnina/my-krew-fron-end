@@ -343,9 +343,9 @@ const getAllPendingMission = () => {
     SetMission(data.map((item)=>({
       id: item?.userId?.preRegister?item?.userId?.preRegister :  item?._id,
       consultant :item?.personalInfo?.firstName?.value ?  item?.personalInfo?.firstName?.value + " " + item?.personalInfo?.lastName?.value :item?.userId?.email.split('@')[0] ,
-      mission: item?.missionInfo?.profession?.value,
-      dateDebut: convertDate(item?.missionInfo?.startDate?.value),
-      dateFin: convertDate(item?.missionInfo?.endDate?.value),
+      mission: item?.missionInfo?.profession?.value ? item?.missionInfo?.profession?.value  : "Non défini",
+      dateDebut: item?.missionInfo?.startDate?.value? convertDate(item?.missionInfo?.startDate?.value) : "27/2/2024",
+      dateFin: item?.missionInfo?.endDate?.value ? convertDate(item?.missionInfo?.endDate?.value) : "27/2/2024",
     })))
   }).catch((err) => {
     setmissionsPendingLoading(false)
