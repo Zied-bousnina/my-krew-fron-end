@@ -10,7 +10,8 @@ export const consultantService = {
   getCurrentConsultant,
   updateConsultantProfileImage,
   updateConsultantCIN,
-  updateConsultantRIB
+  updateConsultantRIB,
+  createCra
 };
 
 async function getConsultantMissions(id) {
@@ -137,6 +138,18 @@ async function updateConsultantRIB(data) {
   };
   const response = await fetch(
     ApiConfigs.base_url + ApiConfigs.apis.consultant.updateRib,
+    requestOptions
+  );
+  return handleResponse(response);
+}
+async function createCra(data) {
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader() },
+    body: data,
+  };
+  const response = await fetch(
+    ApiConfigs.base_url + ApiConfigs.apis.consultant.createCra,
     requestOptions
   );
   return handleResponse(response);

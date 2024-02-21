@@ -42,6 +42,7 @@ export const ApiConfigs = {
       updateImage: "users/updateImage",
       updateCin: "users/updateCin",
       updateRib: "users/updateRib",
+      createCra:"consultant/createCra",
     },
     preregistration: {
       createPreRegistration1: "users/preRegistration/createPreRegistration1",

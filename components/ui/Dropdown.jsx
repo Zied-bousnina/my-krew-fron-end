@@ -1,7 +1,8 @@
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import Icon from "@/components/ui/Icon";
+import { set } from "date-fns";
 
 const Dropdown = ({
   label = "Dropdown",
@@ -25,16 +26,28 @@ const Dropdown = ({
   ],
   classItem = "px-4 py-2",
   className = "",
+  toggleClose
 }) => {
+  // Example state and method to control visibility, for external use cases
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => setIsOpen(!isOpen);
+
+  useEffect(() => {
+    setIsOpen(false);
+  },[toggleClose])
+
   return (
     <div className={`relative ${wrapperClass}`}>
       <Menu as="div" className={`block w-full ${className}`}>
-        <Menu.Button className="block w-full">
+        {/* Modified to include an onClick handler for demonstration */}
+        <Menu.Button className="block w-full" onClick={toggleDropdown}>
           <div className={labelClass}>{label}</div>
         </Menu.Button>
 
         <Transition
           as={Fragment}
+          show={isOpen}
           enter="transition ease-out duration-100"
           enterFrom="transform opacity-0 scale-95"
           enterTo="transform opacity-100 scale-100"
@@ -43,7 +56,7 @@ const Dropdown = ({
           leaveTo="transform opacity-0 scale-95"
         >
           <Menu.Items
-            className={`absolute ltr:right-0 rtl:left-0 origin-top-right  border border-slate-100
+            className={`absolute ltr:right-0 rtl:left-0 origin-top-right bottom-6 border border-slate-100
             rounded bg-white dark:bg-slate-800 dark:border-slate-700 shadow-dropdown z-[9999]
             ${classMenuItems}
             `}
@@ -59,49 +72,36 @@ const Dropdown = ({
                             active
                               ? "bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-300 dark:bg-opacity-50"
                               : "text-slate-600 dark:text-slate-300"
-                          } block     ${
+                          } block ${
                             item.hasDivider
                               ? "border-t border-slate-100 dark:border-slate-700"
                               : ""
                           }`}
                         >
                           {item.link ? (
-                            <Link
-                              href={item.link}
-                              className={`block ${classItem}`}
-                            >
+                            <Link href={item.link} className={`block ${classItem}`}>
                               {item.icon ? (
                                 <div className="flex items-center">
                                   <span className="block text-xl ltr:mr-3 rtl:ml-3">
                                     <Icon icon={item.icon} />
                                   </span>
-                                  <span className="block text-sm">
-                                    {item.label}
-                                  </span>
+                                  <span className="block text-sm">{item.label}</span>
                                 </div>
                               ) : (
-                                <span className="block text-sm">
-                                  {item.label}
-                                </span>
+                                <span className="block text-sm">{item.label}</span>
                               )}
                             </Link>
                           ) : (
-                            <div
-                              className={`block cursor-pointer ${classItem}`}
-                            >
+                            <div className={`block cursor-pointer ${classItem}`}>
                               {item.icon ? (
                                 <div className="flex items-center">
                                   <span className="block text-xl ltr:mr-3 rtl:ml-3">
                                     <Icon icon={item.icon} />
                                   </span>
-                                  <span className="block text-sm">
-                                    {item.label}
-                                  </span>
+                                  <span className="block text-sm">{item.label}</span>
                                 </div>
                               ) : (
-                                <span className="block text-sm">
-                                  {item.label}
-                                </span>
+                                <span className="block text-sm">{item.label}</span>
                               )}
                             </div>
                           )}
