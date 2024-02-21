@@ -158,10 +158,7 @@ const ConsultantCompteRenduActivitePage = () => {
               />
 
               <div className="flex p-2 rounded-lg bg-[#f6f7f3] gap-2">
-                <Button
-                  text=" Enregistrer"
-                  className="border bg-white rounded-lg hover:bg-[#fefdf0]  py-2 px-4"
-                />
+         
                 <ReactToPrint
                   trigger={() => {
                     return (
@@ -173,13 +170,9 @@ const ConsultantCompteRenduActivitePage = () => {
                   }}
                   content={() => componentRef.current}
                 />
-                <Button
-                  text="Partager"
-                  className="border bg-[#00c97b] rounded-lg hover:bg-opacity-80 text-white py-2 px-4"
-                />
-                <Button
-                  text="Supprimer"
-                  className="border bg-danger-500 rounded-lg hover:bg-opacity-80 text-white py-2 px-4"
+          <Button
+                  text=" Partager"
+                  className="border bg-white rounded-lg hover:bg-[#fefdf0]  py-2 px-4"
                 />
               </div>
             </div>

@@ -33,7 +33,8 @@ const Modal = ({
   };
 
   return (
-    <>
+    <div
+    >
       {uncontrol ? (
         <>
           <button
@@ -176,7 +177,7 @@ const Modal = ({
           </Dialog>
         </Transition>
       )}
-    </>
+    </div>
   );
 };
 

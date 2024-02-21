@@ -110,6 +110,7 @@ const AddNewMission = ({ refresh }) => {
           .finally(() => {
             setIsLoading(false);
             formik.resetForm();
+            setSimulationFile(null);
           });
       }
     },
@@ -332,7 +333,7 @@ const AddNewMission = ({ refresh }) => {
           <div className="flex items-center justify-end mt-4">
             <button
               className="btn btn-dark  text-center rounded-xl"
-              type="submit"
+              type={isLoading ? "button" : "submit"}
               disabled={isLoading}
             >
               {isLoading ? <ButtonLoader /> : "Enregistrer"}
