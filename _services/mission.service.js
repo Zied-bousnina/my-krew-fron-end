@@ -1,6 +1,10 @@
 import { authHeader, ApiConfigs } from "../_helpers";
 
-export const missionService = {createMission, UpdateInformationClientAndPersonalConsultantInfo};
+export const missionService = {
+  createMission,
+  UpdateInformationClientAndPersonalConsultantInfo,
+  updateTjm,
+};
 
 async function createMission(data) {
   const requestOptions = {
@@ -9,14 +13,25 @@ async function createMission(data) {
     body: data,
   };
   const response = await fetch(
-    ApiConfigs.base_url +
-      ApiConfigs.apis.mission.createMission,
+    ApiConfigs.base_url + ApiConfigs.apis.mission.createMission,
+    requestOptions
+  );
+  return handleResponse(response);
+}
+async function updateTjm(id, data) {
+  const requestOptions = {
+    method: "PUT",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  const response = await fetch(
+    ApiConfigs.base_url + ApiConfigs.apis.mission.updateTjm.replace("{id}", id),
     requestOptions
   );
   return handleResponse(response);
 }
 
-async function UpdateInformationClientAndPersonalConsultantInfo(data,id) {
+async function UpdateInformationClientAndPersonalConsultantInfo(data, id) {
   const requestOptions = {
     method: "PUT",
     headers: { ...authHeader() },
@@ -24,7 +39,8 @@ async function UpdateInformationClientAndPersonalConsultantInfo(data,id) {
   };
   const response = await fetch(
     ApiConfigs.base_url +
-      ApiConfigs.apis.mission.UpdateInformationClientAndPersonalConsultantInfo+ id,
+      ApiConfigs.apis.mission.UpdateInformationClientAndPersonalConsultantInfo +
+      id,
     requestOptions
   );
   return handleResponse(response);

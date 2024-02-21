@@ -11,7 +11,8 @@ export const consultantService = {
   updateConsultantProfileImage,
   updateConsultantCIN,
   updateConsultantRIB,
-  createCra
+  createCra,
+  craAlreadyCreated
 };
 
 async function getConsultantMissions(id) {
@@ -150,6 +151,17 @@ async function createCra(data) {
   };
   const response = await fetch(
     ApiConfigs.base_url + ApiConfigs.apis.consultant.createCra,
+    requestOptions
+  );
+  return handleResponse(response);
+}
+async function craAlreadyCreated(missionId) {
+  const requestOptions = {
+    method: "GET",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  const response = await fetch(
+    ApiConfigs.base_url + ApiConfigs.apis.consultant.craAlreadyCreated.replace("{id}", missionId),
     requestOptions
   );
   return handleResponse(response);
