@@ -294,6 +294,7 @@ const ConsultantDashboard = () => {
           <div className=" text-center">
             {IsAction() && (
               <Dropdown
+                isFixed={true}
                 toggleClose={toggleDropdown}
                 classMenuItems="right-0 w-[140px] bottom-[40%] z-1000  "
                 label={
@@ -330,6 +331,7 @@ const ConsultantDashboard = () => {
   const [waitingContractMissions, setWaitingContractMissions] = useState([]);
   const [validatedMissions, setValidatedMissions] = useState([]);
   const [lastMission, setLastMission] = useState({});
+  const [closesEndDateMission, setClosesEndDateMission] = useState({});
 
   const userAuth = useSelector((state) => state.userAuth);
 
@@ -446,6 +448,17 @@ const ConsultantDashboard = () => {
       })
       .finally(() => {});
   };
+  const getClosestEndDateMission = () => {
+    return consultantService
+      .getConsultantClosestEndDateMission(userAuth.id)
+      .then((res) => {
+        setClosesEndDateMission(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {});
+  };
 
   const groupAsyncFunctions = () => {
     setIsLoading(true);
@@ -455,6 +468,7 @@ const ConsultantDashboard = () => {
       getConsultantMissionsWaitingContract(),
       getLastMission(),
       getConsultantMissionsValidated(),
+      getClosestEndDateMission(),
     ])
       .then((_) => {})
       .catch((err) => {
@@ -463,6 +477,13 @@ const ConsultantDashboard = () => {
       .finally(() => {
         setIsLoading(false);
       });
+  };
+
+  const calculateTJMAvg = (data) => {
+    console.log(data);
+    return Number(
+      data.reduce((acc, item) => acc + item.tjm, 0) / data.length
+    ).toFixed(0);
   };
 
   useEffect(() => {
@@ -510,7 +531,7 @@ const ConsultantDashboard = () => {
                   <div className="2xl:col-span-3 lg:col-span-4 col-span-12">
                     <ImageBlock1
                       title="TJM Moyen"
-                      amount={lastMission?.missionInfo?.dailyRate?.value}
+                      amount={calculateTJMAvg(validatedMissions)}
                       isLoading={isLoading}
                       amountColor="text-[#1E1E1E]"
                       bgColor="bg-[#FEFCF1]"
@@ -522,7 +543,7 @@ const ConsultantDashboard = () => {
                     <ImageBlock1
                       title="Date de fin de Mission"
                       isLoading={isLoading}
-                      amount={lastMission?.missionInfo?.endDate?.value}
+                      amount={closesEndDateMission?.missionInfo?.endDate?.value}
                       isDate={true}
                       amountColor="text-[#1E1E1E]"
                       bgColor="bg-[#FEFCF1]"

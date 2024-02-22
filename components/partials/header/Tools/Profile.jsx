@@ -100,33 +100,35 @@ const Profile = () => {
 
   return (
     <Dropdown label={ProfileLabel()} classMenuItems="w-[211px] top-[50px] ">
-      {ProfileMenu.map((item, index) => (
-        <Menu.Item key={index} className="">
-          {({ active }) => (
-            <div
-              onClick={() => item.action()}
-              className={`${
-                active
-                  ? "bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-300 dark:bg-opacity-50"
-                  : "text-slate-600 dark:text-slate-300"
-              } block     ${
-                item.hasDivider
-                  ? "border-t border-slate-100 dark:border-slate-700"
-                  : ""
-              }`}
-            >
-              <div className={`block cursor-pointer px-4 py-2`}>
-                <div className="flex items-center">
-                  <span className="block text-xl ltr:mr-3 rtl:ml-3">
-                    <Icon icon={item.icon} />
-                  </span>
-                  <span className="block text-sm">{item.label}</span>
+      <div className="bg-white rounded-xl">
+        {ProfileMenu.map((item, index) => (
+          <Menu.Item key={index} className="">
+            {({ active }) => (
+              <div
+                onClick={() => item.action()}
+                className={`${
+                  active
+                    ? "bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-300 dark:bg-opacity-50"
+                    : "text-slate-600 dark:text-slate-300"
+                } block     ${
+                  item.hasDivider
+                    ? "border-t border-slate-100 dark:border-slate-700"
+                    : ""
+                }`}
+              >
+                <div className={`block cursor-pointer px-4 py-2`}>
+                  <div className="flex items-center">
+                    <span className="block text-xl ltr:mr-3 rtl:ml-3">
+                      <Icon icon={item.icon} />
+                    </span>
+                    <span className="block text-sm">{item.label}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </Menu.Item>
-      ))}
+            )}
+          </Menu.Item>
+        ))}
+      </div>
     </Dropdown>
   );
 };

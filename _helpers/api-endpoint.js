@@ -46,6 +46,8 @@ export const ApiConfigs = {
       updateRib: "users/updateRib",
       createCra: "consultant/createCra",
       craAlreadyCreated: "consultant/craAlreadyCreated/{id}",
+      getClosestEndDateMission: "consultant/getClosestEndDateMission/{id}",
+      
     },
     preregistration: {
       createPreRegistration1: "users/preRegistration/createPreRegistration1",

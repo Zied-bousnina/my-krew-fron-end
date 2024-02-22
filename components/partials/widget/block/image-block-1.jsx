@@ -16,31 +16,21 @@ const ImageBlock1 = ({
   isDate = false,
   isMoney = false,
 }) => {
-  const getStatusCredentials = () => {
-    switch (amount) {
+  const getStatusCredentials = (value) => {
+    switch (value) {
       case "PENDING":
-        return "En attente";
-      
+        return "En attente"
+
       case "COMPLETED":
-        return {
-          text: "Terminée",
-          styles: "bg-success-200 text-success-500",
-        };
+        return  "Terminée"
+
       case "VALID":
-        return {
-          text: "Validée",
-          styles: "bg-success-200 text-success-500",
-        };
+        return "Validée"
+
       case "REJECTED":
-        return {
-          text: "Refusée",
-          styles: "bg-danger-200 text-danger-500",
-        };
+        return "Refusée"
       default:
-        return {
-          text: "En cours",
-          styles: "bg-blue-200 text-blue-500",
-        };
+        return amount
     }
   };
   return (
@@ -64,9 +54,10 @@ const ImageBlock1 = ({
                 {title}
               </div>
               <p className={`text-[27px] font-extrabold ${amountColor}`}>
-                {isDate ? format(new Date(amount), "dd/MM/yyyy") : amount}
+                {isDate
+                  ? format(new Date(amount), "dd/MM/yyyy")
+                  : getStatusCredentials(amount)}
                 {isMoney ? "€" : ""}
-                
               </p>
               {subtitle1 !== "" && subtitle2 !== "" && (
                 <div className="w-[230px] flex items-center justify-between pb-5">

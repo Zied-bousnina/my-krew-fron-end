@@ -65,7 +65,7 @@ const UpdateTJM = ({ data, setToggleDropdown, toggleDropdown,refresh }) => {
           <span className="text-base">
             <Icon icon="heroicons:pencil-square" width={15} />
           </span>
-          <span>mettre à jour TJM</span>
+          <span>Editer TJM</span>
         </div>
       </div>
 
