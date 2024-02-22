@@ -151,7 +151,6 @@ const COLUMNS = [
 ];
 
 const ConsultantDashboard = () => {
-  
   const VALIDATED_COLUMNS = [
     {
       Header: "Status",
@@ -304,13 +303,12 @@ const ConsultantDashboard = () => {
                 }
               >
                 <div className="divide-y divide-slate-100 dark:divide-slate-800">
-
-                    <AddCRA
-                      data={row?.cell?.row?.original}
-                      toggleDropdown={toggleDropdown}
-                      setToggleDropdown={setToggleDropdown}
-                      refresh={groupAsyncFunctions}
-                    />
+                  <AddCRA
+                    data={row?.cell?.row?.original}
+                    toggleDropdown={toggleDropdown}
+                    setToggleDropdown={setToggleDropdown}
+                    refresh={groupAsyncFunctions}
+                  />
 
                   <UpdateTJM
                     data={row?.cell?.row?.original}
@@ -336,7 +334,7 @@ const ConsultantDashboard = () => {
   const userAuth = useSelector((state) => state.userAuth);
 
   const getConsultantAllMissions = () => {
-    consultantService
+    return consultantService
       .getConsultantMissions(userAuth.id)
       .then((res) => {
         setAllMissions(
@@ -362,7 +360,7 @@ const ConsultantDashboard = () => {
       .finally(() => {});
   };
   const getConsultantMissionsPending = () => {
-    consultantService
+    return consultantService
       .getConsultantMissionsPending(userAuth.id)
       .then((res) => {
         setPendingMissions(
@@ -387,7 +385,7 @@ const ConsultantDashboard = () => {
       .finally(() => {});
   };
   const getConsultantMissionsWaitingContract = () => {
-    consultantService
+    return consultantService
       .getConsultantMissionsWaitingContract(userAuth.id)
       .then((res) => {
         setWaitingContractMissions(
@@ -412,7 +410,7 @@ const ConsultantDashboard = () => {
       .finally(() => {});
   };
   const getConsultantMissionsValidated = () => {
-    consultantService
+    return consultantService
       .getConsultantMissionsValidated(userAuth.id)
       .then((res) => {
         setValidatedMissions(
@@ -438,10 +436,9 @@ const ConsultantDashboard = () => {
   };
 
   const getLastMission = () => {
-    consultantService
+    return consultantService
       .getConsultantLastMission(userAuth.id)
       .then((res) => {
-        console.log("lastmission", res.data);
         setLastMission(res.data);
       })
       .catch((err) => {
