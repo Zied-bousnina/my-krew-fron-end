@@ -100,7 +100,7 @@ const Profile = () => {
 
   return (
     <Dropdown label={ProfileLabel()} classMenuItems="w-[211px] top-[50px] ">
-      <div className="bg-white rounded-xl">
+      <div className="bg-white rounded-xl border border-slate-400 overflow-hidden">
         {ProfileMenu.map((item, index) => (
           <Menu.Item key={index} className="">
             {({ active }) => (

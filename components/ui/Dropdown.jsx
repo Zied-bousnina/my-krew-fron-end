@@ -63,11 +63,13 @@ const Dropdown = ({
             ${classMenuItems}
             `}
             >
-              <div
-                className="flex justify-end p-1 "
-                onClick={() => setIsOpen(false)}
-              >
-                <Icon icon="heroicons:x-mark" className="cursor-pointer" width={15} />
+              <div className="flex justify-end">
+                <div
+                  className="p-1 hover:bg-slate-200 cursor-pointer rounded-md"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Icon icon="heroicons:x-mark" width={15} />
+                </div>
               </div>
 
               <div>
