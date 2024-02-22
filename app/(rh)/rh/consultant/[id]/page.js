@@ -42,11 +42,11 @@ const dispatch = useDispatch()
 const [infoPersoById, setinfoPersoById] = useState({})
 const [mission, setmission] = useState([])
 const [missionsPendingLoading, setmissionsPendingLoading] = useState(false)
-const valider = (paramss)=> {
+const valider = (paramss,id)=> {
 
   setmissionsPendingLoading(true)
   const data = {status:paramss}
-  missionService.updateMissionStatus( params.id,data).then((data) => {
+  missionService.updateMissionStatus( id,data).then((data) => {
     setmissionsPending(data);
     setmissionsPendingLoading(false)
 
@@ -68,24 +68,28 @@ const [infoIsloading, setinfoIsloading] = useState(false)
   const fetchinfoPersoById = async () => {
   setinfoIsloading(true)
 
-  rhServices.getConsultantInfoWithMissionById(params.id).then((data) => {
+  await rhServices.getConsultantInfoWithMissionById(params.id).then((data) => {
     setmission([])
-    console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++",data.AllMission)
+    console.log("zied++++++++++++++++++++++++++++++++++++++++++++++++++++",data)
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    setmission(
-      data?.AllMission?.map((item)=>( {
-
-        id:"1",
-        status: item?.status,
-        client: item?.finalClient?.value,
-        metier: item?.profession?.value,
-        secteur: item?.industrySector?.value,
-        date : `${months[new Date(item?.startDate.value).getMonth()]} ${new Date(item?.startDate.value).getDate()}`,
-
-
-      }))
-    )
     setinfoPersoById(data)
+    // setmission(
+    //   data?.AllMission?.map((item)=>( {
+
+    //     id:"1",
+    //     status: item?.status,
+    //     client: item?.finalClient?.value,
+    //     metier: item?.profession?.value,
+    //     secteur: item?.industrySector?.value,
+    //     date : `${months[new Date(item?.startDate.value).getMonth()]} ${new Date(item?.startDate.value).getDate()}`,
+
+
+    //   }))
+    // )
+    setmission(
+      data?.consultant?.missions
+    )
+    console.warning("infoPersoById",mission)
     setinfoIsloading(false)
   }
   )
@@ -125,6 +129,20 @@ const COLUMNS = [
     Header: "Status",
     accessor: "Status",
     Cell: (row) => {
+      // setmission(
+      //   data?.AllMission?.map((item)=>( {
+
+      //     id:"1",
+      //     status: item?.status,
+      //     client: item?.finalClient?.value,
+      //     metier: item?.profession?.value,
+      //     secteur: item?.industrySector?.value,
+      //     date : `${months[new Date(item?.startDate.value).getMonth()]} ${new Date(item?.startDate.value).getDate()}`,
+
+
+      //   }))
+      // )
+      console.log(row?.cell?.row?.original)
       return (
         <span className={`text-[${row?.cell?.row?.original?.status  =="PENDING" ? '#FCE9A4':row?.cell?.row?.original?.status  =="VALID" ? '#187111' :'#BF6F25' }] dark:text-slate-400`}>
           <span className={`block text-[${row?.cell?.row?.original?.status  =="PENDING" ? '#BF6F25':'#187111' }] bg-[${row?.cell?.row?.original?.status  =="PENDING" ?row?.cell?.row?.original?.status  =="VALID" ? '#187111' :'#FCE9A4':'#BF6F25' }] text-base px-3 py-2 border rounded-[12px]	 dark:text-slate-300`}>
@@ -145,9 +163,24 @@ const COLUMNS = [
     Header: "ID",
     accessor: "id",
     Cell: (row) => {
+      console.log("166+++++++++++++++++", row?.cell?.row?.original)
+       // setmission(
+      //   data?.AllMission?.map((item)=>( {
+
+      //     id:"1",
+      //     status: item?.status,
+      //     client: item?.finalClient?.value,
+      //     metier: item?.profession?.value,
+      //     secteur: item?.industrySector?.value,
+      //     date : `${months[new Date(item?.startDate.value).getMonth()]} ${new Date(item?.startDate.value).getDate()}`,
+
+
+      //   }))
+      // )
       return (
         <span className="text-slate-500 dark:text-slate-400">
-        {row?.cell?.row?.original?.id}
+        {row?.cell?.row?.original?._id
+        }
 
         </span>
       );
@@ -157,9 +190,22 @@ const COLUMNS = [
     Header: "Client",
     accessor: "Client",
     Cell: (row) => {
+       // setmission(
+      //   data?.AllMission?.map((item)=>( {
+
+      //     id:"1",
+      //     status: item?.status,
+      //     client: item?.finalClient?.value,
+      //     metier: item?.profession?.value,
+      //     secteur: item?.industrySector?.value,
+      //     date : `${months[new Date(item?.startDate.value).getMonth()]} ${new Date(item?.startDate.value).getDate()}`,
+
+
+      //   }))
+      // )
       return (
         <span className="text-slate-500 dark:text-slate-400">
-         {row?.cell?.row?.original?.client}
+         {row?.cell?.row?.original?.clientInfo?.clientContact?.firstName?.value}
 
         </span>
       );
@@ -169,10 +215,23 @@ const COLUMNS = [
     Header: "Métier",
     accessor: "Métier",
     Cell: (row) => {
+       // setmission(
+      //   data?.AllMission?.map((item)=>( {
+
+      //     id:"1",
+      //     status: item?.status,
+      //     client: item?.finalClient?.value,
+      //     metier: item?.profession?.value,
+      //     secteur: item?.industrySector?.value,
+      //     date : `${months[new Date(item?.startDate.value).getMonth()]} ${new Date(item?.startDate.value).getDate()}`,
+
+
+      //   }))
+      // )
       return (
         <span className="text-slate-500 dark:text-slate-400">
           <span className="block text-slate-600 dark:text-slate-300">
-          {row?.cell?.row?.original?.metier}
+          {row?.cell?.row?.original?.missionInfo?.profession?.value}
           </span>
 
         </span>
@@ -184,11 +243,24 @@ const COLUMNS = [
     Header: "Secteur",
     accessor: "Secteur",
     Cell: (row) => {
+       // setmission(
+      //   data?.AllMission?.map((item)=>( {
+
+      //     id:"1",
+      //     status: item?.status,
+      //     client: item?.finalClient?.value,
+      //     metier: item?.profession?.value,
+      //     secteur: item?.industrySector?.value,
+      //     date : `${months[new Date(item?.startDate.value).getMonth()]} ${new Date(item?.startDate.value).getDate()}`,
+
+
+      //   }))
+      // )
       return (
         <span className="text-slate-500 dark:text-slate-400">
           <span className="block text-slate-900 bg-slate-100 text-base px-3 py-2 border rounded-xl	 dark:text-slate-300">
-          {row?.cell?.row?.original?.secteur
-          }
+
+          {row?.cell?.row?.original?.missionInfo?.industrySector?.value}
           </span>
 
         </span>
@@ -199,11 +271,28 @@ const COLUMNS = [
     Header: "Date",
     accessor: "date",
     Cell: (row) => {
+       // setmission(
+      //   data?.AllMission?.map((item)=>( {
+
+      //     id:"1",
+      //     status: item?.status,
+      //     client: item?.finalClient?.value,
+      //     metier: item?.profession?.value,
+      //     secteur: item?.industrySector?.value,
+      //     date : `${months[new Date(item?.startDate.value).getMonth()]} ${new Date(item?.startDate.value).getDate()}`,
+
+
+      //   }))
+      // )
+      console.log('+++++++++++++++++++++++++++---------------------------', row?.cell?.row?.original)
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       return (
         <span className="text-slate-500 dark:text-slate-400">
           <span className="block text-slate-900 bg-slate-100 text-base px-3 py-2 border rounded-xl	 dark:text-slate-300">
-          {row?.cell?.row?.original?.date
+          {
+            `${months[new Date(row?.cell?.row?.original?.missionInfo?.startDate?.value).getMonth()]} ${new Date(row?.cell?.row?.original?.missionInfo?.startDate?.value).getDate()}`
           }
+
           </span>
 
         </span>
@@ -230,7 +319,8 @@ const COLUMNS = [
                 <button
                 onClick={()=>{
 
-                  valider(item.redirect)
+                  valider(item.redirect,  row?.cell?.row?.original?._id
+)
                 }
                 }
                 >
@@ -270,7 +360,8 @@ console.log("mision-------------------", mission)
 
   console.log(infoPersoById)
   console.log(infoPersoById?.AllMission)
-  const personalInfo = infoPersoById?.consultant
+  const personalInfo = infoPersoById
+  console.log("personal info",personalInfo )
 
   return (
     <>

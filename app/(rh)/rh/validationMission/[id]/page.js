@@ -40,12 +40,15 @@ const [infoIsloading, setinfoIsloading] = useState(false)
   rhServices.getConsultantInfoById(params.id).then((data) => {
     setinfoPersoById(data)
     setinfoIsloading(false)
+    console.log("zied++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", data)
   }
   )
   .catch(err=> {
     setinfoIsloading(false)
-    console.log(err)
+
   }).finally(()=> {
+    console.log("zied++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", infoPersoById)
+
     setinfoIsloading(false)
   }
   )
@@ -54,7 +57,7 @@ const [infoIsloading, setinfoIsloading] = useState(false)
 useEffect(() => {
   fetchinfoPersoById()
 }, [])
-console.log(infoPersoById)
+
 const preregister = infoPersoById?.consultant?.preRegister?.personalInfo
 const validation = infoPersoById?.consultant?.preRegister
 // const preregister = infoPersoById?.consultant?.preRegister?.personalInfo
@@ -84,20 +87,21 @@ const SendNoteToConsultant = (id)=> {
         // setinfoPersoById(data)
         // setinfoIsloading(false)
         setisloading(false)
-        console.log(data)
+
+
       }
       )
       .catch(err=> {
         // setinfoIsloading(false)
         setisloading(false)
-        console.log(err)
+
       }).finally(()=> {
         // setinfoIsloading(false)
         setisloading(false)
       }
       )
 }
-console.log("preregister",validation)
+
   return (
     <>
 {

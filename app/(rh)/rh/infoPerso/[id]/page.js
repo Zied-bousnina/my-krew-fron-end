@@ -43,9 +43,9 @@ const [comment, setcomment] = useState({
 const [switchStates, setSwitchStates] = useState({});
 const [comments, setComments] = useState({});
 const onChange = (e, inputComment) => {
-  console.log("inputComment", inputComment)
+
   setComments({ ...comments, [inputComment]: e.target.value });
-  console.log("comments", comments);
+
 };
 const onSwitchChange = (inputComment) => {
   setSwitchStates((prevStates) => ({
@@ -72,7 +72,7 @@ const fetchinfoPersoById = async () => {
   )
   .catch(err=> {
     setinfoIsloading(false)
-    console.log(err)
+
   }).finally(()=> {
     setinfoIsloading(false)
   }
@@ -88,13 +88,13 @@ const updatePreregistrationClientInfo= async (id, data) => {
   rhServices.updatePreregistrationClientInfo(id, data).then((data) => {
     setupdateIsloading(false)
     setConfirmationPopup(false)
-    console.log(data)
+
   }
   )
   .catch(err=> {
     setupdateIsloading(false)
     setConfirmationPopup(false)
-    // console.log(err)
+
   }).finally(()=> {
     setupdateIsloading(false)
     setConfirmationPopup(false)
@@ -108,13 +108,13 @@ const update=()=> {
   const data = {
     comments: comments
   }
-  console.log(data.comments)
+
   updatePreregistrationClientInfo(params.id, comments)
   // setConfirmationPopup(false)
 
 }
 
-console.log("infoPersoById",infoPersoById?.[0])
+
 const personalInfo = infoPersoById?.preRegister
 
 const inputs = [

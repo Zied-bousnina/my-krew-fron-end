@@ -49,8 +49,7 @@ const COLUMNSConsultant = [
     Header: "name",
     accessor: "name",
     Cell: (row) => {
-      console.log(row?.cell?.row?.original);
-      console.log(row?.cell?.row?.original?.preRegister?.personalInfo?.firstName);
+
       return (
         <div>
           <span className="inline-flex items-center">
@@ -103,7 +102,7 @@ const COLUMNSConsultant = [
     Header: "Nationalité",
     accessor: "nationalite",
     Cell: (row) => {
-      console.log("546464646494964 :",row?.cell?.row?.original)
+
       return (
         <span className="text-slate-500 dark:text-slate-400">
           <span className="block text-slate-900 bg-slate-100 text-base px-3 py-2 border rounded-xl	 dark:text-slate-300">
@@ -121,10 +120,11 @@ const COLUMNSConsultant = [
     Header: "action",
     accessor: "action",
     Cell: (row) => {
+
       return (
         <div className=" text-center">
           <Dropdown
-            classMenuItems="right-0 w-[140px] bottom-[40%] z-1000  "
+            classMenuItems="right-0 w-[140px] bottom-[0%]  z-1000  "
             label={
               <span className="text-xl text-center block w-full">
                 <Icon icon="heroicons-outline:dots-vertical" />
@@ -134,7 +134,7 @@ const COLUMNSConsultant = [
             <div className="divide-y divide-slate-100 dark:divide-slate-800">
               {actionsConsult.map((item, i) => (
                 <Menu.Item key={i}>
-                <Link href={`${item.redirect}/${row?.cell?.row?.original?.id}`}>
+                <Link href={`${item.redirect}/${item?.name=="Valider l'inscription"?row?.cell?.row?.original?.preregister:  row?.cell?.row?.original?.id}`}>
                   <div
                     className={`
 
@@ -165,6 +165,11 @@ const COLUMNSConsultant = [
 
 const actionsConsult = [
   {
+    name: "Valider l'inscription",
+    icon: "heroicons:pencil-square",
+    redirect:"/rh/infoPerso"
+  },
+  {
     name: "Process de validation",
     icon: "heroicons:pencil-square",
     redirect:"/rh/validationMission"
@@ -185,8 +190,7 @@ const COLUMNS = [
     Header: "Consultant",
     accessor: "consultant",
     Cell: (row) => {
-      console.log(row);
-      console.log(row?.cell?.row?.original?.personalInfo?.firstName?.value);
+
       return (
         <div>
           <span className="inline-flex items-center">
@@ -340,12 +344,12 @@ const getAllPendingMission = () => {
   rhServices.getPendingPreregistration().then((data) => {
     setmissionsPending(data);
     setmissionsPendingLoading(false)
-    console.log("+-+-+-+-+-+-+-+-+-", data)
+
     const convertDate = (date) => {
       const d = new Date(date);
       return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`
     }
-    console.log("------------------------",data )
+
     SetMission(data.map((item)=>({
       id: item?.userId?.preRegister?item?.userId?.preRegister :  item?._id,
       consultant :item?.personalInfo?.firstName?.value ?  item?.personalInfo?.firstName?.value + " " + item?.personalInfo?.lastName?.value :item?.userId?.email.split('@')[0] ,
@@ -364,7 +368,7 @@ const getAllPendingMission = () => {
   const getAllConsultant = () => {
     setIsConsultLoading(true);
     rhServices.getAllConsultant().then((data) => {
-      console.log("--------------------------------",data)
+
       setIsConsultLoading(false);
       setconsultantV2(data);
       setConsultant(data.map((item)=> ({
@@ -373,6 +377,8 @@ const getAllPendingMission = () => {
         Email: item?.preRegister?.personalInfo?.email?.value,
         téléphone: item?.preRegister?.personalInfo?.phoneNumber?.value,
         nationalite: item?.preRegister?.personalInfo?.nationality?.value,
+        preregister:item?.preRegister?._id
+
 
 
       })))
@@ -411,8 +417,7 @@ useEffect(() => {
   getstatistiques()
   getAllPendingMission()
 }, [])
-console.log("mission: ",mission)
-console.log("-+-+-+-+-",consultant)
+
 
 
 
