@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import useDarkMode from "@/hooks/useDarkMode";
 import RegForm from "@/components/partials/auth/reg-from";
@@ -18,23 +18,51 @@ import { useSelector } from "react-redux";
 import Icons from "@/components/ui/Icon";
 import AddNewMission from "@/components/ui/modals/pages/consultant-home/addNewMission";
 import UpdateMissionClientInfo from "@/components/ui/modals/pages/preinscription/update-missionAndClient-info";
+import AuthService from "@/_services/auth.service";
 const PendingDetails = ({params}) => {
   const [isDark] = useDarkMode();
   // const router = useRouter()
   // console.log(router.query)
-  const  {isLoading}  = useSelector((state) => state.auth);
+  // const  {isLoading}  = useSelector((state) => state.auth);
   const  {preregistration}  = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const [isLoading, setisLoading] = useState(false)
+  const [infoPersoById, setinfoPersoById] = useState()
   useEffect(() => {
 
     dispatch(handleGetRegistrationByUserId(params.id))
+    fetchinfoPersoById()
 
   }, [preregistration?.status])
+  const fetchinfoPersoById = async () => {
+    setisLoading(true)
+
+    AuthService.getPreregistrationByconsultant().then((data) => {
+      console.log("+++++++++++++ abc :", data)
+      setinfoPersoById(data)
+      setisLoading(false)
+
+    }
+    )
+    .catch(err=> {
+      setisLoading(false)
+
+    }).finally(()=> {
+
+
+      setisLoading(false)
+    }
+    )
+  }
+
   console.log(preregistration)
 
   console.log(params.id)
+
+
   const handleIconClick = () => {
-    dispatch(handleGetRegistrationByUserId(params.id))
+    fetchinfoPersoById()
+    // dispatch(handleGetRegistrationByUserId(params.id))
   }
   return (
     <>
@@ -167,7 +195,7 @@ Nous vérifions vos informations. Nous vous tiendrons informé dans quelques ins
 <div className="mt-6 space-y-5">
   <div key={1} className="mb-3">
   <UpdateMissionClientInfo
-  preregistration={preregistration}
+  preregistration={infoPersoById}
   />
     {/* <Disclosure>
       {({ open }) => (

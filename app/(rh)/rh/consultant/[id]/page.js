@@ -160,6 +160,8 @@ const COLUMNS = [
       :
       row?.cell?.row?.original?.status === "VALID" ?
       "Valid" :
+      row?.cell?.row?.original?.status === "WAITINGCONTRACT" ?
+      "WAITINGCONTRACT":
 
       "Nouvelle"
 

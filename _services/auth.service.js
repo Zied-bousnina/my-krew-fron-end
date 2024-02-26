@@ -10,7 +10,8 @@ const AuthService = {
   Register3,
   ForgotPassword,
   ResetPassword,
-  VerifyToken
+  VerifyToken,
+  getPreregistrationByconsultant
 };
 
 async function registerUser(userData) {
@@ -116,6 +117,22 @@ async function Register1(data) {
 
   const response = await fetch(
       ApiConfigs.base_url + ApiConfigs.apis.preregistration.createPreRegistration1,
+      requestOptions
+
+  );
+
+  return handleResponse(response);
+}
+
+async function getPreregistrationByconsultant() {
+  const requestOptions = {
+    method: "GET",
+  headers: { ...authHeader(), "Content-Type": "application/json" },
+    };
+
+
+  const response = await fetch(
+      ApiConfigs.base_url + ApiConfigs.apis.preregistration.getPreregistrationByconsultant,
       requestOptions
 
   );

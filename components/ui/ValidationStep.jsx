@@ -81,14 +81,14 @@ const ValidationStep = ({ stepNumber, step, state, id }) => {
 }
 
   return (
-    <div className="w-full flex items-center justify-between">
+    <div className="w-full flex items-center dark:bg-slate-800 justify-between">
       <p className="text-[14px] text-[#6E7787]">Etape : {stepNumber}</p>
       <InputBox placeholder={step} readOnly={true} />
 
 
-      <Dropdown  label={ProfileLabel(stepSelected,getBackgroundColor(stepSelected) )} classMenuItems={`w-[211px] top-[50px]  ${getBackgroundColor(stepSelected)} `} class={` ${getBackgroundColor(stepSelected)}`}>
+      <Dropdown  label={ProfileLabel(stepSelected,getBackgroundColor(stepSelected) )} classMenuItems={`w-[211px] top-[50px] ${getBackgroundColor(stepSelected)} `} class={` ${getBackgroundColor(stepSelected)}`}>
 
-        <Menu.Item key={1} className="">
+        <Menu.Item key={1} className="bg-slate-100">
         {({ active }) => (
             <div
                onClick={(e) => {
@@ -98,7 +98,7 @@ const ValidationStep = ({ stepNumber, step, state, id }) => {
               className={`${
                 active
                   ? " ${bgColor} text-slate-900 dark:bg-slate-600 dark:text-slate-300 dark:bg-opacity-50"
-                  : "text-slate-600 dark:text-slate-300"
+                  : "text-slate-600 dark:text-slate-300 "
               } block     ${
                 true
                   ? "border-t border-slate-100 dark:border-slate-700"
@@ -116,7 +116,7 @@ const ValidationStep = ({ stepNumber, step, state, id }) => {
             </div>
           )}
         </Menu.Item>
-        <Menu.Item key={2} className="">
+        <Menu.Item key={2} className="bg-slate-100">
         {({ active }) => (
             <div
               onClick={(e) => {
@@ -144,7 +144,7 @@ const ValidationStep = ({ stepNumber, step, state, id }) => {
             </div>
           )}
         </Menu.Item>
-        <Menu.Item key={3} className="">
+        <Menu.Item key={3} className="bg-slate-100">
         {({ active }) => (
             <div
               onClick={(e) => {

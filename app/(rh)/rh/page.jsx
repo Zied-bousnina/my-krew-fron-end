@@ -272,7 +272,7 @@ const COLUMNS = [
             <div className="divide-y divide-slate-100 dark:divide-slate-800">
               {actions.map((item, i) => (
                 <Menu.Item key={i}>
-                <Link href={`${item.redirect}/${row.cell?.row?.original?.id}`}>
+                <Link href={`${item.redirect}/${ item.name =="Valider l'inscription" ? row.cell?.row?.original?.preRegister_id: row.cell?.row?.original?.userId}`}>
                   <div
                     className={`
 
@@ -310,12 +310,7 @@ const actions = [
   {
     name: "Voir mission",
     icon: "heroicons-outline:eye",
-    redirect:"/rh/consultant2"
-  },
-  {
-    name: "Voir mission",
-    icon: "heroicons-outline:eye",
-    redirect:"/rh/consultant2"
+    redirect:"/rh/consultant"
   },
 
   // {

@@ -9,7 +9,8 @@ export const missionService = {
   getMissionById,
   ValidateMissionClientInfo,
   getConsultantInfoById,
-  updateContractStatus
+  updateContractStatus,
+  killMission
 };
 
 async function createMission(data) {
@@ -107,6 +108,21 @@ async function UpdateInformationClientAndPersonalConsultantInfo(data, id) {
   );
   return handleResponse(response);
 }
+
+async function killMission(id) {
+  const requestOptions = {
+    method: "PUT",
+    headers: { ...authHeader() },
+  };
+  const response = await fetch(
+    ApiConfigs.base_url +
+      ApiConfigs.apis.mission.killMission +
+      id,
+    requestOptions
+  );
+  return handleResponse(response);
+}
+
 
 async function getConsultantInfoById(id) {
   const requestOptions = {

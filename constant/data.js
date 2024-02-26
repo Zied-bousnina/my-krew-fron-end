@@ -7,12 +7,12 @@ export const rhMenuItems = [
     // project
   },
 
-  {
-    title: "Consultants",
-    isHide: true,
-    icon: "heroicons-outline:shopping-bag",
-    link: "/rh/consultant/2",
-  },
+  // {
+  //   title: "Consultants",
+  //   isHide: true,
+  //   icon: "heroicons-outline:shopping-bag",
+  //   link: "/rh/consultant/2",
+  // },
 
   // {
   //   title: "Entreprise",

@@ -54,7 +54,7 @@ export const handlelogin2 = createAsyncThunk(
     // const router = useRouter();
     // console.log(router)
     const response = await axios.post(
-      "http://localhost:3600/api/users/login",
+      "https://my-krew-t2j4.onrender.com/api/users/login",
       data
     );
     console.log(response.data);
@@ -80,7 +80,7 @@ export const handleRegister2 = createAsyncThunk(
   async (data, thunkAPI) => {
     console.log(data);
     const response = await axios.post(
-      `http://localhost:3600/api/users`,
+      `https://my-krew-t2j4.onrender.com/api/users`,
       data
     );
     console.log(response.data);
@@ -94,7 +94,7 @@ export const handleRegistretionStep1 = createAsyncThunk(
     const token = localStorage.getItem("jwtToken");
     console.log(data);
     const response = await axios.post(
-      `http://localhost:3600/api/users/preRegistration/createPreRegistration1`,
+      `https://my-krew-t2j4.onrender.com/api/users/preRegistration/createPreRegistration1`,
       data,
       {
         headers: { Authorization: `${token}` },
@@ -130,7 +130,7 @@ export const handleRegistretionStep4 = createAsyncThunk(
   async (data, thunkAPI) => {
     const token = localStorage.getItem("jwtToken");
     console.log(data);
-    // const response = await axios.post(`http://localhost:3600/api/users/preRegistration/createPreRegistration4`, data,
+    // const response = await axios.post(`https://my-krew-t2j4.onrender.com/api/users/preRegistration/createPreRegistration4`, data,
     // {
     //   headers: { "Content-Type": "multipart/form-data",
     //   Authorization: `${token}`,
@@ -139,7 +139,7 @@ export const handleRegistretionStep4 = createAsyncThunk(
     // }
     // );
     const response = await axios.post(
-      `http://localhost:3600/api/users/preRegistration/createPreRegistration4`,
+      `https://my-krew-t2j4.onrender.com/api/users/preRegistration/createPreRegistration4`,
       data,
       {
         headers: {
@@ -159,7 +159,7 @@ export const handleGetRegistrationByUserId = createAsyncThunk(
     const token = localStorage.getItem("jwtToken");
     console.log(data);
     const response = await axios.get(
-      `http://localhost:3600/api/users/preRegistration/getPreregistration`,
+      `https://my-krew-t2j4.onrender.com/api/users/preRegistration/getPreregistration`,
       {
         headers: { Authorization: `${token}` },
       }

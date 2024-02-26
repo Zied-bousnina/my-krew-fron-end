@@ -54,6 +54,8 @@ export const ApiConfigs = {
       createPreRegistration2: "users/preRegistration/createPreRegistration2",
       createPreRegistration3: "users/preRegistration/createPreRegistration3",
       createPreRegistration4: "users/preRegistration/createPreRegistration4",
+    //  getPreregistrationByconsultant :"users/preRegistration/getPreregistration",
+     getPreregistrationByconsultant :"users/preRegistration/getPreregistrationFirstMission",
     },
     mission: {
       createMission: "mission/createMission",
@@ -64,7 +66,8 @@ export const ApiConfigs = {
       getMissionById : "mission/getMissionById/",
       validateMissionAndClientInf : "mission/validateMissionClientInfo/",
       getConsultantInfoByMissionId : "mission/getConsultantInfoById/",
-      updateStatusContract : "mission/validateProcessus/"
+      updateStatusContract : "mission/validateProcessus/",
+      killMission: "mission/killMission/"
 
     },
   },

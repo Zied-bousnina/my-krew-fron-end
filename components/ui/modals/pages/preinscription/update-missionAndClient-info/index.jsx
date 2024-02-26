@@ -43,6 +43,16 @@ const validationSchema = yup.object({
 
 
   position: yup.string().required("Ce champ est obligatoire"),
+  // Mission
+  metier: yup.string().required("Ce champ est obligatoire"),
+  secteur: yup.string().required("Ce champ est obligatoire"),
+  client: yup.string().required("Ce champ est obligatoire"),
+  simulation: yup.string().required("Ce champ est obligatoire"),
+  tjm: yup.number().required("Ce champ est obligatoire"),
+  debut: yup.string().required("Ce champ est obligatoire"),
+  fin: yup.string().required("Ce champ est obligatoire"),
+
+
 });
 const   UpdateMissionClientInfo = ({ refresh,preregistration }) => {
   const [error, setError] = useState(null);
@@ -100,6 +110,10 @@ console.log("Modal //////////////////",preregistration)
       setPermisError("Ce champ est obligatoire");
       return false;
     }
+    if (!simulationFile) {
+      setError("Ce champ est obligatoire");
+      return false;
+    }
 
     return true;
   };
@@ -122,9 +136,16 @@ console.log("Modal //////////////////",preregistration)
        emailClient: "",
        phoneNumberClient: "",
       company: "",
+      position:"",
 
-
-      position:""
+      // Mission
+      metier: "",//
+      secteur: "",//
+      client: "",//
+      simulation: "",//
+      tjm: "",//
+      debut: "",//
+      fin: ""//
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -152,8 +173,18 @@ console.log("Modal //////////////////",preregistration)
         formData.append("emailClient", values.emailClient);
         formData.append("phoneNumberClient", values.phoneNumberClient);
 
+        // Mission
+        formData.append("metier", values.metier);
+        formData.append("secteur", values.secteur);
+        formData.append("client", values.client);
+        formData.append("simulation", values.simulation);
+        formData.append("tjm", values.tjm);
+        formData.append("debut", values.debut);
+        formData.append("fin", values.fin);
+        formData.append("simulationfile", simulationFile);
+
         missionService
-        .UpdateInformationClientAndPersonalConsultantInfo(formData, preregistration?._id)
+        .UpdateInformationClientAndPersonalConsultantInfo(formData, preregistration?.userId?.preRegister?._id)
         .then((res) => {
           toast.success("Mission ajoutée avec succès");
           onClose();
@@ -164,7 +195,7 @@ console.log("Modal //////////////////",preregistration)
         })
         .finally(() => {
           setIsLoading(false);
-          formik.resetForm();
+          // formik.resetForm();
         });
       }
     },
@@ -172,8 +203,8 @@ console.log("Modal //////////////////",preregistration)
   const COMMENTS_CLIENT = [
     {
       title: "Nom",
-      validated: preregistration?.clientInfo?.clientContact?.validated,
-      causeNonValidation: preregistration?.clientInfo?.clientContact?.causeNonValidation,
+      validated: preregistration?.clientInfo?.clientContact?.firstName?.validated,
+      causeNonValidation: preregistration?.clientInfo?.clientContact?.firstName?.causeNonValidation,
     },
     {
       title: "Prenom",
@@ -193,66 +224,104 @@ console.log("Modal //////////////////",preregistration)
 
 
   ];
+  const COMMENTS_MISSION = [
+    {
+      title: "Métier",
+      validated: preregistration?.missionInfo?.profession?.validated,
+      causeNonValidation: preregistration?.missionInfo?.profession?.causeNonValidation,
+    },
+    {
+      title: "TJM",
+      validated: preregistration?.missionInfo?.dailyRate?.validated,
+      causeNonValidation: preregistration?.missionInfo?.dailyRate?.causeNonValidation,
+    },
+    {
+      title: "Secteur d'activité",
+      validated: preregistration?.missionInfo?.industrySector?.validated,
+      causeNonValidation: preregistration?.missionInfo?.industrySector?.causeNonValidation,
+    },
+    {
+      title: "Client final : ",
+      validated: preregistration?.missionInfo?.finalClient?.validated,
+      causeNonValidation: preregistration?.missionInfo?.finalClient?.causeNonValidation,
+    },
+    {
+      title: "Date de début :  ",
+      validated: preregistration?.missionInfo?.startDate?.validated,
+      causeNonValidation: preregistration?.missionInfo?.startDate?.causeNonValidation,
+    },
+    {
+      title: "Date de fin de mission : ",
+      validated: preregistration?.missionInfo?.endDate?.validated,
+      causeNonValidation: preregistration?.missionInfo?.endDate?.causeNonValidation,
+    },
+    {
+      title: "Simulation :",
+      validated: preregistration?.missionInfo?.isSimulationValidated?.validated,
+      causeNonValidation: preregistration?.missionInfo?.isSimulationValidated?.causeNonValidation,
+    },
+
+  ];
   const COMMENT_CONSULTANT = [
     {
       title: "Nom",
-      validated: preregistration?.personalInfo?.firstName?.validated,
-      causeNonValidation: preregistration?.personalInfo?.firstName?.causeNonValidation,
+      validated: preregistration?.userId?.preRegister?.personalInfo?.firstName?.validated,
+      causeNonValidation: preregistration?.userId?.preRegister?.personalInfo?.firstName?.causeNonValidation,
     },
     {
       title: "Prenom",
-      validated: preregistration?.personalInfo?.lastName?.validated,
-      causeNonValidation: preregistration?.personalInfo?.lastName?.causeNonValidation,
+      validated: preregistration?.userId?.preRegister?.personalInfo?.lastName?.validated,
+      causeNonValidation: preregistration?.userId?.preRegister?.personalInfo?.lastName?.causeNonValidation,
     },
     {
       title: "Car info ",
-      validated: preregistration?.personalInfo?.carInfo?.drivingLicense?.validated,
-      causeNonValidation: preregistration?.personalInfo?.carInfo?.drivingLicense?.causeNonValidation,
+      validated: preregistration?.userId?.preRegister?.personalInfo?.carInfo?.drivingLicense?.validated,
+      causeNonValidation: preregistration?.userId?.preRegister?.personalInfo?.carInfo?.drivingLicense?.causeNonValidation,
     },
     {
       title: "Date de naissance",
-      validated: preregistration?.personalInfo?.dateOfBirth?.validated,
-      causeNonValidation: preregistration?.personalInfo?.dateOfBirth?.causeNonValidation,
+      validated: preregistration?.userId?.preRegister?.personalInfo?.dateOfBirth?.validated,
+      causeNonValidation: preregistration?.userId?.preRegister?.personalInfo?.dateOfBirth?.causeNonValidation,
     },
     {
       title: "E-mail",
-      validated: preregistration?.personalInfo?.email?.validated,
-      causeNonValidation: preregistration?.personalInfo?.email?.causeNonValidation,
+      validated: preregistration?.userId?.preRegister?.personalInfo?.email?.validated,
+      causeNonValidation: preregistration?.userId?.preRegister?.personalInfo?.email?.causeNonValidation,
     },
     {
       title: "CIN",
-      validated: preregistration?.personalInfo?.identificationDocument?.validated,
-      causeNonValidation: preregistration?.personalInfo?.identificationDocument?.causeNonValidation,
+      validated: preregistration?.userId?.preRegister?.personalInfo?.identificationDocument?.validated,
+      causeNonValidation: preregistration?.userId?.preRegister?.personalInfo?.identificationDocument?.causeNonValidation,
     },
     {
       title: "Location",
-      validated: preregistration?.personalInfo?.location?.validated,
-      causeNonValidation: preregistration?.personalInfo?.location?.causeNonValidation,
+      validated: preregistration?.userId?.preRegister?.personalInfo?.location?.validated,
+      causeNonValidation: preregistration?.userId?.preRegister?.personalInfo?.location?.causeNonValidation,
     },
     {
       title: "Nationalité",
-      validated: preregistration?.personalInfo?.nationality?.validated,
-      causeNonValidation: preregistration?.personalInfo?.nationality?.causeNonValidation,
+      validated: preregistration?.userId?.preRegister?.personalInfo?.nationality?.validated,
+      causeNonValidation: preregistration?.userId?.preRegister?.personalInfo?.nationality?.causeNonValidation,
     },
     {
       title: "Tel",
-      validated: preregistration?.personalInfo?.phoneNumber?.validated,
-      causeNonValidation: preregistration?.personalInfo?.phoneNumber?.causeNonValidation,
+      validated: preregistration?.userId?.preRegister?.personalInfo?.phoneNumber?.validated,
+      causeNonValidation: preregistration?.userId?.preRegister?.personalInfo?.phoneNumber?.causeNonValidation,
     },
     {
       title: "Rib",
-      validated: preregistration?.personalInfo?.rib?.validated,
-      causeNonValidation: preregistration?.personalInfo?.rib?.causeNonValidation,
+      validated: preregistration?.userId?.preRegister?.personalInfo?.rib?.validated,
+      causeNonValidation: preregistration?.userId?.preRegister?.personalInfo?.rib?.causeNonValidation,
     },
     {
       title: "Rib document",
-      validated: preregistration?.personalInfo?.ribDocument?.validated,
-      causeNonValidation: preregistration?.personalInfo?.ribDocument?.causeNonValidation,
+      validated: preregistration?.userId?.preRegister?.personalInfo?.ribDocument?.validated,
+      causeNonValidation: preregistration?.userId?.preRegister?.personalInfo?.ribDocument?.causeNonValidation,
     },
     {
       title: "Numéro de sécurité sociale",
-      validated: preregistration?.personalInfo?.socialSecurityNumber?.validated,
-      causeNonValidation: preregistration?.personalInfo?.socialSecurityNumber?.causeNonValidation,
+      validated: preregistration?.userId?.preRegister?.personalInfo?.socialSecurityNumber?.validated,
+      causeNonValidation: preregistration?.userId?.preRegister?.personalInfo?.socialSecurityNumber?.causeNonValidation,
     }
 
 
@@ -273,7 +342,7 @@ console.log("Modal //////////////////",preregistration)
            onClick={onOpen}
            className={`
           ${
-            preregistration?.validationRH == "PENDING" ? "bg-slate-400" : preregistration?.validationRH == "VALIDATED" ? "bg-[#128200]" : "bg-[#BC0000]"
+            preregistration?.userId?.preRegister?.validationRH == "PENDING" ? "bg-slate-400" : preregistration?.userId?.preRegister?.validationRH == "VALIDATED" ? "bg-[#128200]" : "bg-[#BC0000]"
           }
           // bg-[#128200]
 
@@ -298,7 +367,7 @@ console.log("Modal //////////////////",preregistration)
       <Modal
         title="Update Info"
         labelclassName="btn-outline-dark"
-        activeModal={activeModal && preregistration?.validationRH=="NOTVALIDATED"}
+        activeModal={activeModal && preregistration?.userId?.preRegister?.validationRH=="NOTVALIDATED"}
         onClose={onClose}
       >
       {/* <ButtonBase
@@ -307,6 +376,7 @@ console.log("Modal //////////////////",preregistration)
       >
         Déclarer une nouvelle mission
       </ButtonBase> */}
+
           <Button
         text={screen =="errors"? "Ajouter info": "Les remarques de la RH"}
         className=" bg-black-500 text-white text-[14px] font-semibold  h-[35px] flex items-center justify-center rounded-[10px]"
@@ -340,6 +410,16 @@ console.log("Modal //////////////////",preregistration)
 ))
 }
         </h1>
+        <h1 className="text-lg font-bold bg-[#f7f5ef] px-4 py-2 mb-2 mt-6 rounded-xl inline-block">
+        Remarques de la RH sur les informations du Mission
+           :
+
+         { COMMENTS_MISSION.map(item=>(
+
+!item.validated&& <ErrorAlert text={item.causeNonValidation} title={item.title} />
+))
+}
+        </h1>
           </div>
         )
 
@@ -358,7 +438,7 @@ console.log("Modal //////////////////",preregistration)
                 placeholder="Nom"
                 value={formik.values.firstNameClient}
                 onChange={formik.handleChange}
-                defaultValue={preregistration?.clientInfo?.clientContact?.firstNameClient?.value}
+                defaultValue={preregistration?.userId?.preRegister?.clientInfo?.clientContact?.firstNameClient?.value}
                 error={
                   formik.touched.firstNameClient && Boolean(formik.errors.firstNameClient)
                 }
@@ -451,7 +531,7 @@ console.log("Modal //////////////////",preregistration)
                 placeholder="Nom"
                 value={formik.values.firstName}
                 onChange={formik.handleChange}
-                defaultValue={preregistration?.clientInfo?.clientContact?.firstName?.value}
+                defaultValue={preregistration?.userId?.preRegister?.clientInfo?.clientContact?.firstName?.value}
                 error={
                   formik.touched.firstName && Boolean(formik.errors.firstName)
                 }
@@ -463,7 +543,7 @@ console.log("Modal //////////////////",preregistration)
               <Textinput
                 id="lastName"
                 name="lastName"
-                defaultValue={preregistration?.clientInfo?.lastName?.value}
+                defaultValue={preregistration?.userId?.preRegister?.clientInfo?.lastName?.value}
 
                 placeholder="Prenom"
                 value={formik.values.lastName}
@@ -634,6 +714,116 @@ console.log("Modal //////////////////",preregistration)
 
                 ) : null
             }
+          </div>
+          <p className="text-lg font-bold bg-[#f7f5ef] px-4 py-2 mb-2 mt-6 rounded-xl inline-block">
+            Info du mission:
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="form-label">Metier</label>
+              <Textinput
+                id="metier"
+                name="metier"
+                placeholder="metier"
+                value={formik.values.metier}
+                onChange={formik.handleChange}
+                error={formik.touched.metier && Boolean(formik.errors.metier)}
+                helperText={formik.touched.metier && formik.errors.metier}
+              />
+            </div>
+            <div>
+              <label className="form-label">Secteur d'activité</label>
+              <Textinput
+                id="secteur"
+                name="secteur"
+                placeholder="secteur d'activité"
+                value={formik.values.secteur}
+                onChange={formik.handleChange}
+                error={formik.touched.secteur && Boolean(formik.errors.secteur)}
+                helperText={formik.touched.secteur && formik.errors.secteur}
+              />
+            </div>
+            <div>
+              <label className="form-label">Client final</label>
+              <Textinput
+                id="client"
+                name="client"
+                placeholder="client final"
+                value={formik.values.client}
+                onChange={formik.handleChange}
+                error={formik.touched.client && Boolean(formik.errors.client)}
+                helperText={formik.touched.client && formik.errors.client}
+              />
+            </div>
+            <div>
+              <label className="form-label">Simulation</label>
+              <Textinput
+                id="simulation"
+                name="simulation"
+                placeholder="simulation"
+                value={formik.values.simulation}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.simulation && Boolean(formik.errors.simulation)
+                }
+                helperText={
+                  formik.touched.simulation && formik.errors.simulation
+                }
+              />
+            </div>
+            <div>
+              <label className="form-label">TJM</label>
+              <Textinput
+                id="tjm"
+                name="tjm"
+                placeholder="tjm"
+                type="number"
+                value={formik.values.tjm}
+                onChange={formik.handleChange}
+                error={formik.touched.tjm && Boolean(formik.errors.tjm)}
+                helperText={formik.touched.tjm && formik.errors.tjm}
+              />
+            </div>
+            <div>
+              <label className="form-label">Date debut</label>
+              <Textinput
+                id="debut"
+                name="debut"
+                placeholder="date debut"
+                type="date"
+                value={formik.values.debut}
+                onChange={formik.handleChange}
+                error={formik.touched.debut && Boolean(formik.errors.debut)}
+                helperText={formik.touched.debut && formik.errors.debut}
+              />
+            </div>
+            <div>
+              <label className="form-label">Date fin</label>
+              <Textinput
+                id="fin"
+                name="fin"
+                placeholder="date fin"
+                type="date"
+                value={formik.values.fin}
+                onChange={formik.handleChange}
+                error={formik.touched.fin && Boolean(formik.errors.fin)}
+                helperText={formik.touched.fin && formik.errors.fin}
+              />
+            </div>
+            <div>
+              <label className="form-label">fichier Simulation</label>
+              <Fileinput
+                name="simulationfile"
+                label="choisir un fichier"
+                placeholder="Simulation"
+                selectedFile={simulationFile}
+                className={`pl-3 ${!!error && "border-2 border-danger-500"} `}
+                onChange={handleSimulationFileChange}
+              />
+              {!!error && (
+                <p className="text-danger-500 text-sm mt-2">{error}</p>
+              )}
+            </div>
           </div>
 
           <div className="flex items-center justify-end mt-4">

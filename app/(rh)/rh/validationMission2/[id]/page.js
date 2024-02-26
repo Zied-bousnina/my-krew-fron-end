@@ -30,7 +30,7 @@ import { rhServices } from "@/_services/rh.service";
 import Loading from "@/components/Loading";
 import { set } from "date-fns";
 import { missionService } from "@/_services/mission.service";
-
+import Modal from "@/components/ui/Modal";
 const ProjectPage = ({params}) => {
   const [selectedFilter, setSelectedFilter] = useState("Tous les Consultants");
   const [infoPersoById, setinfoPersoById] = useState({})
@@ -84,7 +84,7 @@ const onchangeVlaue =(e)=> {
 }
 const SendNoteToConsultant = (id)=> {
   setisloading(true)
-      rhServices.SendNoteToConsultant(id, {note:note}).then((data) => {
+      rhServices.SendNoteToConsultant(params.id, {note:note}).then((data) => {
         // setinfoPersoById(data)
         // setinfoIsloading(false)
         setisloading(false)
@@ -102,9 +102,81 @@ const SendNoteToConsultant = (id)=> {
       }
       )
 }
+const [updateIsloading , setupdateIsloading ] = useState(false);
+const [showConfirmationPopup, setConfirmationPopup] = useState(false);
+const setOnCloseConfirmationPopupHandler = () => setConfirmationPopup(false);
+const killMission = ()=> {
+  console.log("yes")
+  setupdateIsloading(true)
+      missionService.killMission(params.id).then((data) => {
+        // setinfoPersoById(data)
+        // setinfoIsloading(false)
+        setupdateIsloading(false)
+        setOnCloseConfirmationPopupHandler()
+
+
+      }
+      )
+      .catch(err=> {
+        // setinfoIsloading(false)
+        setupdateIsloading(false)
+
+      }).finally(()=> {
+        // setinfoIsloading(false)
+        setupdateIsloading(false)
+      }
+      )
+
+}
 
   return (
     <>
+        <Modal
+        title="..."
+        labelclassName="btn-outline-dark"
+        activeModal={showConfirmationPopup}
+        onClose={setOnCloseConfirmationPopupHandler}
+      >
+          <div className="flex flex-col items-center justify-between gap-5">
+            <p className="text-bold text-[32px] text-black-500">
+              Confirmez
+            </p>
+            <div className="flex flex-col gap-2 text-center w-[350px] text-[18px] text-[#1E1E1E]">
+              <p>
+              Êtes-vous sûr de vouloir de terminer la mission?
+                ?{" "}
+              </p>
+
+            </div>
+            <div className="flex gap-4">
+              <Button
+                text="Annuler"
+                className="bg-[#1E1E1E] w-[168px] h-[49px] text-white"
+                onClick={setOnCloseConfirmationPopupHandler}
+              />
+
+              <Button
+              type="button"
+                text={
+                  updateIsloading ? (
+                    <div className="flex items-center gap-2">
+                      <span>En cours...</span>
+                      <div className="animate-spin w-5 h-5 border-t-2 border-b-2 border-[#1E1E1E] rounded-full"></div>
+                    </div>
+                  ) : (
+                    "Confirmer"
+                  )
+                }
+
+                className="bg-[#C9E2C4] w-[168px] h-[49px] text-[#1E1E1E]"
+                onClick={()=> {
+                  killMission()
+                }}
+                disabled={updateIsloading}
+              />
+            </div>
+          </div>
+          </Modal>
 {
   infoIsloading ?
   <Loading />:
@@ -281,6 +353,11 @@ const SendNoteToConsultant = (id)=> {
                   />
 
                   <div>
+                  <button
+                  onClick={() => setConfirmationPopup(true)}
+                  type="button"
+                  >
+
                     <Contact
                       label="Pas d'accord"
                       text="Terminer la mission"
@@ -288,7 +365,9 @@ const SendNoteToConsultant = (id)=> {
                       textColor="text-[#DE3B40]"
                       badgeIcon="/assets/icons/close.svg"
                       isBadge={true}
+
                     />
+                  </button>
                   </div>
                 </div>
                 <Card className="bg-white border border-[#EAE3D5]">

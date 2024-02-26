@@ -526,11 +526,16 @@ input.commentaire =="carInfo" ?
                     className="bg-black-500 text-white text-[12px] font-semibold w-[130px] h-[35px] flex items-center justify-center rounded-[10px] mt-10"
                     onClick={() => setConfirmationPopup(true)}
                   /> */}
+                  <Button
+                    text="Terminer"
+                    className="bg-black-500 text-white text-[12px] font-semibold w-[130px] h-[35px] flex items-center justify-center rounded-[10px] mt-10"
+                    onClick={() => setConfirmationPopup(true)}
+                  />
                 </div>
               </div>
             </Card>
             {/* Information du client (pour la contractualisation) */}
-            <Card
+            {/* <Card
               title="Information du client (pour la contractualisation)"
               className="border border-[#EAE3D5] bg-white text-bold"
             >
@@ -555,9 +560,7 @@ input.commentaire =="carInfo" ?
               />
               {!switchStates[input.commentaire] && (
                 <>
-                  {/* <label htmlFor={input.commentaire} className="text-[12px] text-[#FF0000] font-bold">
-                    Commentaire
-                  </label> */}
+
                   <input
                     id={input.commentaire}
                     type="text"
@@ -605,9 +608,7 @@ input.commentaire =="carInfo" ?
               />
               {!switchStates[input.commentaire] && (
                 <>
-                  {/* <label htmlFor={input.commentaire} className="text-[12px] text-[#FF0000] font-bold">
-                    Commentaire
-                  </label> */}
+
                   <input
                     id={input.commentaire}
                     type="text"
@@ -638,7 +639,7 @@ input.commentaire =="carInfo" ?
                   />
                 </div>
               </div>
-            </Card>
+            </Card> */}
           </div>
           <div className="lg:col-span-4 col-span-12 space-y-5">
             <Card
