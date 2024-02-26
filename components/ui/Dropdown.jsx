@@ -58,7 +58,7 @@ const Dropdown = ({
             leaveTo="transform opacity-0 scale-95"
           >
             <Menu.Items
-              className={`absolute ltr:right-0 rtl:left-0 origin-top-right border -bottom-2 border-slate-100
+              className={`absolute ltr:right-0 rtl:left-0 origin-top-right border -bottom-4 border-slate-100
             rounded bg-white dark:bg-slate-800 dark:border-slate-700 shadow-dropdown z-[9999]
             ${classMenuItems}
             `}
