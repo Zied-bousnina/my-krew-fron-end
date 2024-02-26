@@ -327,6 +327,8 @@ console.log("Modal //////////////////",preregistration)
 
 
   ]
+
+  console.log("preregistration?.userId?.preRegister?.validationRH", preregistration?.status, preregistration?.userId?.preRegister?.validationRH)
   return (
     <div>
       {isLoading && <PageLoader />}
@@ -346,7 +348,11 @@ console.log("Modal //////////////////",preregistration)
             (preregistration?.userId?.preRegister?.validationRH == "PENDING"
              && preregistration?.status =="PENDING") ? "bg-slate-400" :
               (preregistration?.userId?.preRegister?.validationRH == "VALIDATED"
-              && (preregistration?.status =="WAITINGCONTRACT" || preregistration?.status =="VALID" || preregistration?.status =="COMPLETED")) ? "bg-[#128200]" : "bg-[#BC0000]"
+              && (preregistration?.status =="WAITINGCONTRACT" || preregistration?.status =="VALID" || preregistration?.status =="COMPLETED")) ? "bg-[#128200]" :
+              (preregistration?.userId?.preRegister?.validationRH == "NOTVALIDATED"
+             || preregistration?.status =="REJECTED") ?
+               "bg-[#BC0000]":
+               "bg-slate-400"
           }
           // bg-[#128200]
 
