@@ -38,6 +38,7 @@ import CustomTable from "@/components/partials/table/custom-table";
 import Dropdown from "@/components/ui/Dropdown";
 import { Menu } from "@headlessui/react";
 import Link from "next/link";
+import { missionService } from "@/_services/mission.service";
 const MostSales = dynamic(
   () => import("@/components/partials/widget/most-sales"),
   {
@@ -124,7 +125,8 @@ const COLUMNSConsultant = [
       return (
         <div className=" text-center">
           <Dropdown
-            classMenuItems="right-0 w-[140px] bottom-[0%]  z-1000  "
+            // classMenuItems="right-[120] w-[140px] bottom-[0%]  z-1000  "
+            classMenuItems="right-0  w-[140px] bottom-[-220%] z-1000  "
             label={
               <span className="text-xl text-center block w-full">
                 <Icon icon="heroicons-outline:dots-vertical" />
@@ -133,7 +135,7 @@ const COLUMNSConsultant = [
           >
             <div className="divide-y divide-slate-100 dark:divide-slate-800">
               {actionsConsult.map((item, i) => (
-                <Menu.Item key={i}>
+                <Menu.Item key={row?.cell?.row?.original?._id}>
                 <Link href={`${item.redirect}/${item?.name=="Valider l'inscription"?row?.cell?.row?.original?.preregister:  row?.cell?.row?.original?.id}`}>
                   <div
                     className={`
@@ -169,11 +171,11 @@ const actionsConsult = [
     icon: "heroicons:pencil-square",
     redirect:"/rh/infoPerso"
   },
-  {
-    name: "Process de validation",
-    icon: "heroicons:pencil-square",
-    redirect:"/rh/validationMission"
-  },
+  // {
+  //   name: "Process de validation",
+  //   icon: "heroicons:pencil-square",
+  //   redirect:"/rh/validationMission"
+  // },
   {
     name: "Voir mission",
     icon: "heroicons-outline:eye",
@@ -310,6 +312,11 @@ const actions = [
     icon: "heroicons-outline:eye",
     redirect:"/rh/consultant2"
   },
+  {
+    name: "Voir mission",
+    icon: "heroicons-outline:eye",
+    redirect:"/rh/consultant2"
+  },
 
   // {
   //   name: "delete",
@@ -317,6 +324,7 @@ const actions = [
   //   redirect:"/"
   // },
 ];
+
 const RhDashboard = () => {
   const [selectedFilter, setSelectedFilter] = useState("Tous les Consultants");
   const [showAddConsultantPopup, setShowAddConsultantPopup] = useState(false);
@@ -341,7 +349,7 @@ const [consultant, setConsultant]= useState([])
 
 const getAllPendingMission = () => {
   setmissionsPendingLoading(true)
-  rhServices.getPendingPreregistration().then((data) => {
+  missionService.getPendingMissions().then((data) => {
     setmissionsPending(data);
     setmissionsPendingLoading(false)
 
@@ -349,14 +357,15 @@ const getAllPendingMission = () => {
       const d = new Date(date);
       return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`
     }
-
+console.log('"*************************"', data)
     SetMission(data.map((item)=>({
-      id: item?.userId?.preRegister?item?.userId?.preRegister :  item?._id,
-      consultant :item?.personalInfo?.firstName?.value ?  item?.personalInfo?.firstName?.value + " " + item?.personalInfo?.lastName?.value :item?.userId?.email.split('@')[0] ,
-      mission: item?.missionInfo?.profession?.value ? item?.missionInfo?.profession?.value  : "Non défini",
-      dateDebut: item?.missionInfo?.startDate?.value? convertDate(item?.missionInfo?.startDate?.value) : "27/2/2024",
-      dateFin: item?.missionInfo?.endDate?.value ? convertDate(item?.missionInfo?.endDate?.value) : "27/2/2024",
-      userId:item?.userId?._id ? item?.userId?._id : item?._id
+      id_mission: item?._id,
+      consultant :item?.userId?.preRegister?.personalInfo?.firstName?.value + " " + item?.userId?.preRegister?.personalInfo?.lastName?.value ,
+      mission: item?.missionInfo?.profession?.value,
+      dateDebut: convertDate(item?.missionInfo?.startDate?.value),
+      dateFin:  convertDate(item?.missionInfo?.endDate?.value) ,
+      userId:item?.userId?._id ,
+      preRegister_id: item?.userId?.preRegister?._id,
     })))
   }).catch((err) => {
     setmissionsPendingLoading(false)

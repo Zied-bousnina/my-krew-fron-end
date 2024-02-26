@@ -29,6 +29,7 @@ import ValidationStep from "@/components/ui/ValidationStep";
 import { rhServices } from "@/_services/rh.service";
 import Loading from "@/components/Loading";
 import { set } from "date-fns";
+import { missionService } from "@/_services/mission.service";
 
 const ProjectPage = ({params}) => {
   const [selectedFilter, setSelectedFilter] = useState("Tous les Consultants");
@@ -37,7 +38,7 @@ const [infoIsloading, setinfoIsloading] = useState(false)
   const fetchinfoPersoById = async () => {
   setinfoIsloading(true)
 
-  rhServices.getConsultantInfoById(params.id).then((data) => {
+  missionService.getConsultantInfoById(params.id).then((data) => {
     setinfoPersoById(data)
     setinfoIsloading(false)
 
@@ -59,7 +60,7 @@ useEffect(() => {
 }, [])
 
 const preregister = infoPersoById?.consultant?.preRegister?.personalInfo
-const validation = infoPersoById?.consultant?.preRegister
+const validation = infoPersoById?.Mission?.contractProcess
 // const preregister = infoPersoById?.consultant?.preRegister?.personalInfo
 
 const switchValidation = (value) => {
@@ -257,25 +258,25 @@ const SendNoteToConsultant = (id)=> {
                   <ValidationStep
                     stepNumber={1}
                     step="Validation Informations Personnelles"
-                    state={switchValidation(validation?.validateClient)}
+                    state={switchValidation(validation?.contactClient)}
                     id={validation?._id}
                   />
                   <ValidationStep
                     stepNumber={2}
                     step="Prise de contact avec le client"
-                    state={switchValidation(validation?.validateContractWithClient)}
+                    state={switchValidation(validation?.clientValidation)}
                     id={validation?._id}
                   />
                   <ValidationStep
                     stepNumber={3}
                     step="Contrat de service validé avec le client"
-                    state={switchValidation(validation?.validateContractTravail)}
+                    state={switchValidation(validation?.jobCotractEdition)}
                     id={validation?._id}
                   />
                   <ValidationStep
                     stepNumber={4}
                     step="Transmission et validation du contrat"
-                    state={switchValidation(validation?.transmissionContract)}
+                    state={switchValidation(validation?.contractValidation)}
                     id={validation?._id}
                   />
 

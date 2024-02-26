@@ -47,7 +47,7 @@ export const ApiConfigs = {
       createCra: "consultant/createCra",
       craAlreadyCreated: "consultant/craAlreadyCreated/{id}",
       getClosestEndDateMission: "consultant/getClosestEndDateMission/{id}",
-      
+
     },
     preregistration: {
       createPreRegistration1: "users/preRegistration/createPreRegistration1",
@@ -60,6 +60,12 @@ export const ApiConfigs = {
       updateTjm: "mission//updateTjm/{id}",
       UpdateInformationClientAndPersonalConsultantInfo: "mission/UpdateInformationClientAndPersonalConsultantInfo/",
       updateMissionStatus: "mission/updateMissionStatus/",
+      getPendingMissions:"users/missions/getPendingMissions",
+      getMissionById : "mission/getMissionById/",
+      validateMissionAndClientInf : "mission/validateMissionClientInfo/",
+      getConsultantInfoByMissionId : "mission/getConsultantInfoById/",
+      updateStatusContract : "mission/validateProcessus/"
+
     },
   },
 };

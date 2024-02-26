@@ -26,13 +26,13 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.exp = decodedToken.exp;
         state.iat = decodedToken.iat;
-        console.log("connected++++++++++++++",decodedToken?.preRegister?.status )
+        console.log("connected++++++++++++++",decodedToken?.preRegister[0]?.status )
         switch (decodedToken.role) {
           case "RH":
             action.payload.router.push("/rh");
             break;
           case "CONSULTANT":
-            switch (decodedToken?.preRegister?.status) {
+            switch (decodedToken?.preRegister?.[0]?.status) {
               case "NOTEXIST":
                 action.payload.router.push(`/register`);
                 break;

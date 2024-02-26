@@ -68,22 +68,13 @@ const CustomTable = ({
 
   return (
     <>
-      <p className="text-xl mt-12 mb-4">{title}</p>
+      <p className="text-xl mt-12 mb-4 ">{title}</p>
 
-      <Card bodyClass="pb-6 px-6">
-        {/* <div className="flex flex-col justify-start sm:flex-row sm:justify-between sm:items-end">
-          <div className="mb-4 flex flex-col gap-2">
-            <h4 className="card-title ">{title}</h4>
-            <div>
-              <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
-            </div>
-          </div>
-          {actionModal}
-        </div> */}
+      <Card bodyClass="pb-6 px-6 z-1000">
 
-        <div className="overflow-x-auto -mx-6 rounded-lg">
+        <div className="overflow-x-auto pb-20 pt-10 z-1000  -mx-6 rounded-lg">
           <div className="inline-block min-w-full align-middle rounded-lg">
-            <div className="overflow-hidden rounded-lg">
+            <div className=" rounded-lg">
               {tableLoading ? (
                 <>
                   <SkeletionTable rowCount={3} columnsCount={5} />

@@ -7,13 +7,14 @@ import RegForm from "@/components/partials/auth/reg-from";
 import Social from "@/components/partials/auth/social";
 import Image from "next/image";
 import RegForm2 from "@/components/partials/auth/reg-form2";
-
+import { ToastContainer, toast } from "react-toastify";
 const RegisterPage2 = ({params}) => {
   const [isDark] = useDarkMode();
 
   console.log(params)
   return (
     <>
+       <ToastContainer/>
     <div className="loginwrapper">
       <div className="lg-inner-column">
       <div className="left-column relative z-[1]"

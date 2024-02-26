@@ -5,6 +5,7 @@ import { Menu, Transition } from "@headlessui/react";
 import Dropdown from "@/components/ui/Dropdown";
 import Icon from "@/components/ui/Icon";
 import { rhServices } from "@/_services/rh.service";
+import { missionService } from "@/_services/mission.service";
 const ProfileLabel = (state, bgcolor) => {
 
 
@@ -37,7 +38,7 @@ const ValidationStep = ({ stepNumber, step, state, id }) => {
       }
       console.log("3333333333333333333333",data)
       setisloading(true)
-      rhServices.updatePreregistrationStatus(id, data).then((data) => {
+      missionService.updateContractStatus(id, data).then((data) => {
         // setinfoPersoById(data)
         // setinfoIsloading(false)
         setisloading(false)

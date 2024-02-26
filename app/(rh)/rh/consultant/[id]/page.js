@@ -68,26 +68,23 @@ const [infoIsloading, setinfoIsloading] = useState(false)
   const fetchinfoPersoById = async () => {
   setinfoIsloading(true)
 
-  await rhServices.getConsultantInfoWithMissionById(params.id).then((data) => {
+   rhServices.getConsultantInfoWithMissionById(params.id).then((data) => {
     setmission([])
-    console.log("zied++++++++++++++++++++++++++++++++++++++++++++++++++++",data)
+    console.log("zied++++++++++++++++++++++++++++++++++++++++++++++++++++",data?.AllMission)
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     setinfoPersoById(data)
     // setmission(
-    //   data?.AllMission?.map((item)=>( {
-
-    //     id:"1",
-    //     status: item?.status,
-    //     client: item?.finalClient?.value,
-    //     metier: item?.profession?.value,
-    //     secteur: item?.industrySector?.value,
-    //     date : `${months[new Date(item?.startDate.value).getMonth()]} ${new Date(item?.startDate.value).getDate()}`,
-
-
-    //   }))
-    // )
+    //    data?.AllMission?.map((item) => ({
+    //      id: item?._id,
+    //      status: item?.status,
+    //      client: item?.finalClient?.value,
+    //      metier: item?.profession?.value,
+    //      secteur: item?.industrySector?.value,
+    //      date: `${months[new Date(item?.startDate.value).getMonth()]} ${new Date(item?.startDate.value).getDate()}`,
+    //    }))
+    //  )
     setmission(
-      data?.consultant?.missions
+      data?.AllMission
     )
     console.warning("infoPersoById",mission)
     setinfoIsloading(false)
@@ -106,21 +103,32 @@ useEffect(() => {
   fetchinfoPersoById()
 }, [])
 const actionsConsult = [
-  {
-    name: "valider",
-    icon: "heroicons:pencil-square",
-    redirect:"VALID"
-  },
-  {
-    name: "rejeter",
-    icon: "heroicons-outline:eye",
-    redirect:"REJECTED"
-  },
   // {
-  //   name: "delete",
-  //   icon: "heroicons-outline:trash",
-  //   redirect:"/"
+  //   name: "valider",
+  //   icon: "heroicons:pencil-square",
+  //   redirect:"VALID"
   // },
+  // {
+  //   name: "rejeter",
+  //   icon: "heroicons-outline:eye",
+  //   redirect:"REJECTED"
+  // },
+  // {
+  //   name: "rejeter",
+  //   icon: "heroicons-outline:eye",
+  //   redirect:"COMPLETED"
+  // },
+
+  {
+    name: "voir details",
+    icon: "heroicons:pencil-square",
+    redirect:"/rh/missionsDetails/"
+  },
+  {
+    name: "Process De Validation",
+    icon: "heroicons:pencil-square",
+    redirect:"/rh/validationMission2/"
+  },
 ];
 
 
@@ -129,6 +137,7 @@ const COLUMNS = [
     Header: "Status",
     accessor: "Status",
     Cell: (row) => {
+      console?.log("++++132",row)
       // setmission(
       //   data?.AllMission?.map((item)=>( {
 
@@ -144,18 +153,20 @@ const COLUMNS = [
       // )
       console.log(row?.cell?.row?.original)
       return (
-        <span className={`text-[${row?.cell?.row?.original?.status  =="PENDING" ? '#FCE9A4':row?.cell?.row?.original?.status  =="VALID" ? '#187111' :'#BF6F25' }] dark:text-slate-400`}>
-          <span className={`block text-[${row?.cell?.row?.original?.status  =="PENDING" ? '#BF6F25':'#187111' }] bg-[${row?.cell?.row?.original?.status  =="PENDING" ?row?.cell?.row?.original?.status  =="VALID" ? '#187111' :'#FCE9A4':'#BF6F25' }] text-base px-3 py-2 border rounded-[12px]	 dark:text-slate-300`}>
-          {row?.cell?.row?.original?.status  =="REJECTED" ?
-          "rejected"
-          :
-          row?.cell?.row?.original?.status  =="VALID" ?
-          "Valid" :
-          "Nouvelle"
-          }
-          </span>
+        <span className={`text-[${row?.cell?.row?.original?.status === "PENDING" ? '#FCE9A4' : row?.cell?.row?.original?.status === "VALID" ? '#187111' : '#BF6F25'}] dark:text-slate-400`}>
+  <span className={`block text-[${row?.cell?.row?.original?.status === "PENDING" ? '#BF6F25' : row?.cell?.row?.original?.status === "VALID" ? '#FFFFFF' : '#FF0000'}] bg-[${row?.cell?.row?.original?.status === "PENDING" ? row?.cell?.row?.original?.status === "VALID" ? '#187111' : '#FCE9A4' : '#FF0000'}] text-base px-3 py-2 border rounded-[12px] dark:text-slate-300`}>
+    {row?.cell?.row?.original?.status === "REJECTED" ?
+      "rejected"
+      :
+      row?.cell?.row?.original?.status === "VALID" ?
+      "Valid" :
 
-        </span>
+      "Nouvelle"
+
+    }
+  </span>
+</span>
+
       );
     },
   },
@@ -179,7 +190,7 @@ const COLUMNS = [
       // )
       return (
         <span className="text-slate-500 dark:text-slate-400">
-        {row?.cell?.row?.original?._id
+       {'#'+row?.cell?.row?.original?._id.slice(0, 5)
         }
 
         </span>
@@ -215,6 +226,7 @@ const COLUMNS = [
     Header: "Métier",
     accessor: "Métier",
     Cell: (row) => {
+      console.log("**********************", row?.cell?.row?.original)
        // setmission(
       //   data?.AllMission?.map((item)=>( {
 
@@ -316,7 +328,7 @@ const COLUMNS = [
             <div className="divide-y divide-slate-100 dark:divide-slate-800">
               {actionsConsult.map((item, i) => (
                 <Menu.Item key={i}>
-                <button
+                {/* <button
                 onClick={()=>{
 
                   valider(item.redirect,  row?.cell?.row?.original?._id
@@ -341,7 +353,26 @@ const COLUMNS = [
                     </span>
                     <span>{item.name}</span>
                   </div>
-                  </button>
+                  </button> */}
+                  <Link href={`${item.redirect}/${row.cell?.row?.original?._id}`}>
+                  <div
+                    className={`
+
+                  ${
+                    item.name === "delete"
+                      ? "bg-danger-500 text-danger-500 bg-opacity-30   hover:bg-opacity-100 hover:text-white"
+                      :
+                      "hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50"
+                  }
+                   w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer
+                   first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
+                  >
+                    <span className="text-base">
+                      <Icon icon={item.icon} />
+                    </span>
+                    <span>{item.name}</span>
+                  </div>
+                  </Link>
                 </Menu.Item>
               ))}
             </div>
