@@ -103,6 +103,20 @@ async function getConsultantInfoWithMissionById(id) {
   return handleResponse(response);
 
 }
+
+async function getCRAinfoByMissionId(id) {
+  const requestOptions = {
+    method: "GET",
+    headers: authHeader(),
+  };
+
+  const response = await fetch(
+    ApiConfigs.base_url + ApiConfigs.apis.rh.getCRAinfoByMissionId + id,
+    requestOptions
+  );
+  return handleResponse(response);
+
+}
 async function getConsultantInfoWithMissionById2(id) {
   const requestOptions = {
     method: "GET",
@@ -129,6 +143,23 @@ async function updatePreregistrationClientInfo (id, data) {
 console.log(requestOptions)
   const response = await fetch(
     ApiConfigs.base_url + ApiConfigs.apis.rh.updatePreregistrationClientInfo + id,
+
+    requestOptions
+  );
+  return handleResponse(response);
+}
+
+async function validateCRA (id, data) {
+  const requestOptions = {
+    method: "PUT",
+    headers: {...authHeader(),
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  };
+console.log(requestOptions)
+  const response = await fetch(
+    ApiConfigs.base_url + ApiConfigs.apis.rh.validateCRA + id,
 
     requestOptions
   );
@@ -182,6 +213,8 @@ export const rhServices = {
   updatePreregistrationStatus,
   SendNoteToConsultant,
   getConsultantInfoWithMissionById,
-  getConsultantInfoWithMissionById2
+  getConsultantInfoWithMissionById2,
+  getCRAinfoByMissionId,
+  validateCRA
 
 };

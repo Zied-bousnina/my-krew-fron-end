@@ -32,6 +32,8 @@ export const ApiConfigs = {
         "users/validatePreregistrationClientInfo/",
       updateStatusProcess: "users/validateProcessus/",
       sendNote: "users/sendNote/",
+      getCRAinfoByMissionId : "users/GetCraByMissionId/",
+      validateCRA : "users/ValidateCRA/"
     },
     consultant: {
       getAllMissions: "consultant/getAllMissions/{id}",
@@ -47,6 +49,7 @@ export const ApiConfigs = {
       createCra: "consultant/createCra",
       craAlreadyCreated: "consultant/craAlreadyCreated/{id}",
       getClosestEndDateMission: "consultant/getClosestEndDateMission/{id}",
+
 
     },
     preregistration: {

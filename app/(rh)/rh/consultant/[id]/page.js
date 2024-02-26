@@ -129,6 +129,11 @@ const actionsConsult = [
     icon: "heroicons:pencil-square",
     redirect:"/rh/validationMission2/"
   },
+  {
+    name: "CRA",
+    icon: "heroicons:pencil-square",
+    redirect:"/rh/CRA/"
+  },
 ];
 
 
