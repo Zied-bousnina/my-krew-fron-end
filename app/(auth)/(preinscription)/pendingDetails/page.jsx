@@ -245,7 +245,9 @@ Nous vérifions vos informations. Nous vous tiendrons informé dans quelques ins
                       <Disclosure.Button
                       className={`
                         ${
-            preregistration?.validateClient == "PENDING" ? "bg-slate-400" : preregistration?.validateClient == "VALIDATED" ? "bg-[#128200]" : "bg-[#BC0000]"}
+                          infoPersoById?.contractProcess?.contactClient
+ == "PENDING" ? "bg-slate-400" :  infoPersoById?.contractProcess?.contactClient
+ == "VALIDATED" ? "bg-[#128200]" : "bg-[#BC0000]"}
 
                       bg-opacity-[23%] rounded-t-md flex justify-between cursor-pointer transition duration-150 font-medium w-full text-start text-base  text-[#1E1E1E] px-8 py-4`}>
                         <span>
@@ -285,8 +287,10 @@ Nous vérifions vos informations. Nous vous tiendrons informé dans quelques ins
                     <>
                       <Disclosure.Button  className={`
                         ${
-            preregistration?.validateContractWithClient
- == "PENDING" ? "bg-slate-400" : preregistration?.validateContractWithClient
+            infoPersoById?.contractProcess?.contractValidation
+
+ == "PENDING" ? "bg-slate-400" : infoPersoById?.contractProcess?.contractValidation
+
  == "VALIDATED" ? "bg-[#128200]" : "bg-[#BC0000]"}
 
                       bg-opacity-[23%] rounded-t-md flex justify-between cursor-pointer transition duration-150 font-medium w-full text-start text-base  text-[#1E1E1E] px-8 py-4`}>
@@ -326,9 +330,11 @@ Nous vérifions vos informations. Nous vous tiendrons informé dans quelques ins
                     <>
                       <Disclosure.Button className={`
                         ${
-            preregistration?.validateContractTravail
+           infoPersoById?.contractProcess?.jobCotractEdition
 
- == "PENDING" ? "bg-slate-400" : preregistration?.validateContractTravail
+
+ == "PENDING" ? "bg-slate-400" :infoPersoById?.contractProcess?.jobCotractEdition
+
 
  == "VALIDATED" ? "bg-[#128200]" : "bg-[#BC0000]"}
 
@@ -370,10 +376,10 @@ Nous vérifions vos informations. Nous vous tiendrons informé dans quelques ins
                     <>
                       <Disclosure.Button className={`
                         ${
-            preregistration?.transmissionContract
+           infoPersoById?.contractProcess?.clientValidation
 
 
- == "PENDING" ? "bg-slate-400" : preregistration?.transmissionContract
+ == "PENDING" ? "bg-slate-400" :infoPersoById?.contractProcess?.clientValidation
 
 
  == "VALIDATED" ? "bg-[#128200]" : "bg-[#BC0000]"}

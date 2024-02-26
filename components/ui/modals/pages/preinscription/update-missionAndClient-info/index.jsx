@@ -64,6 +64,7 @@ const   UpdateMissionClientInfo = ({ refresh,preregistration }) => {
   const [RIBfile, setRIBfile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [screen, setscreen] = useState("errors")
+  console.log("absbjhkdjgiugisdugsmi :", preregistration?.status  )
 console.log("Modal //////////////////",preregistration)
   const onClose = () => {
     setActiveModal(false);
@@ -342,7 +343,10 @@ console.log("Modal //////////////////",preregistration)
            onClick={onOpen}
            className={`
           ${
-            preregistration?.userId?.preRegister?.validationRH == "PENDING" ? "bg-slate-400" : preregistration?.userId?.preRegister?.validationRH == "VALIDATED" ? "bg-[#128200]" : "bg-[#BC0000]"
+            (preregistration?.userId?.preRegister?.validationRH == "PENDING"
+             && preregistration?.status =="PENDING") ? "bg-slate-400" :
+              (preregistration?.userId?.preRegister?.validationRH == "VALIDATED"
+              && (preregistration?.status =="WAITINGCONTRACT" || preregistration?.status =="VALID" || preregistration?.status =="COMPLETED")) ? "bg-[#128200]" : "bg-[#BC0000]"
           }
           // bg-[#128200]
 
@@ -367,7 +371,7 @@ console.log("Modal //////////////////",preregistration)
       <Modal
         title="Update Info"
         labelclassName="btn-outline-dark"
-        activeModal={activeModal && preregistration?.userId?.preRegister?.validationRH=="NOTVALIDATED"}
+        activeModal={activeModal && (preregistration?.userId?.preRegister?.validationRH=="NOTVALIDATED" || preregistration?.status =="REJECTED")}
         onClose={onClose}
       >
       {/* <ButtonBase

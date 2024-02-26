@@ -138,8 +138,10 @@ export const handleRegistretionStep4 = createAsyncThunk(
     //  }
     // }
     // );
+    console.log(token)
     const response = await axios.post(
-      `https://my-krew-t2j4.onrender.com/api/users/preRegistration/createPreRegistration4`,
+      ApiConfigs.base_url +
+        ApiConfigs.apis.preregistration.createPreRegistration4,
       data,
       {
         headers: {
