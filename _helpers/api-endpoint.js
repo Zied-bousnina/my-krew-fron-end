@@ -50,6 +50,7 @@ export const ApiConfigs = {
       createCra: "consultant/createCra",
       craAlreadyCreated: "consultant/craAlreadyCreated/{id}",
       getClosestEndDateMission: "consultant/getClosestEndDateMission/{id}",
+      getVirements:"users/getVirements/{id}"
 
 
     },

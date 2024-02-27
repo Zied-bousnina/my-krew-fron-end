@@ -1,8 +1,21 @@
 /* eslint-disable react/display-name */
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 
 import Icon from "@/components/ui/Icon";
-import Select from 'react-select';
+import Select from "react-select";
+import {
+  endOfMonth,
+  endOfYear,
+  format,
+  isSameDay,
+  isWithinInterval,
+  startOfMonth,
+  startOfYear,
+  subDays,
+  subMonths,
+  subYears,
+} from "date-fns";
+import { fr } from "date-fns/locale"; // Import the French locale
 
 import {
   useTable,
@@ -15,80 +28,43 @@ import { homeTable } from "@/constant/table-data";
 
 const COLUMNS = [
   {
-    Header: "company",
-    accessor: "company",
+    Header: "Date",
+    accessor: "createdAt",
     Cell: (row) => {
-      return (
-        <span className="flex items-center">
-          <div className="flex-none">
-            <div className="w-8 h-8 rounded-[100%] ltr:mr-3 rtl:ml-3">
-              <img
-                src={row?.cell?.value}
-                alt=""
-                className="w-full h-full rounded-[100%] object-cover"
-              />
-            </div>
-          </div>
-          <div className="flex-1 text-start">
-            <h4 className="text-sm font-medium text-slate-600 whitespace-nowrap">
-              Biffco Enterprises Ltd.
-            </h4>
-            <div className="text-xs font-normal text-slate-600 dark:text-slate-400">
-              Biffco@example.com
-            </div>
-          </div>
-        </span>
-      );
+      return <span>{format(new Date(row?.cell?.value), "dd.MM.yyyy")}</span>;
     },
   },
   {
-    Header: "Category",
-    accessor: "category",
-    Cell: (row) => {
-      return <span>Technology</span>;
-    },
-  },
-  {
-    Header: "sales",
-    accessor: "sales",
+    Header: "titre",
+    accessor: "title",
     Cell: (row) => {
       return (
         <div className="flex space-x-6 items-center rtl:space-x-reverse">
-          <span> {row?.cell?.value + "%"}</span>
-          <span
-            className={` text-xl
-             ${row?.cell?.value > 100 ? "text-success-500" : "text-danger-500"}
-              `}
-          >
-            {row?.cell?.value > 100 ? (
-              <Icon icon="heroicons:arrow-trending-up" />
-            ) : (
-              <Icon icon="heroicons:arrow-trending-down" />
-            )}
-          </span>
+          {row?.cell?.row?.original?.typeVirement +
+            " / " +
+            format(new Date(row?.cell?.row?.original?.createdAt), "MMMM yyyy", {
+              locale: fr,
+            })}
         </div>
       );
     },
   },
   {
-    Header: "views",
-    accessor: "views",
+    Header: "Montant",
+    accessor: "montant",
     Cell: (row) => {
-      return <span>{row?.cell?.value}</span>;
-    },
-  },
-  {
-    Header: "revenue",
-    accessor: "revenue",
-    Cell: (row) => {
-      return <span>{row?.cell?.value}</span>;
+      return <span>{row?.cell?.value}Є</span>;
     },
   },
 ];
 
-const VirementTable = ({ title }) => {
+const VirementTable = ({ title, virementData }) => {
+  const [filteredData, setFilteredData] = useState(virementData);
+  const [dateFilter, setDateFilter] = useState("tous");
+  const [typeVirementFilter, setTypeVirementFilter] = useState("tous");
+
   const columns = useMemo(() => COLUMNS, []);
-  const data = useMemo(() => homeTable, []);
+  const data = useMemo(() => filteredData, [filteredData]);
 
   const tableInstance = useTable(
     {
@@ -125,6 +101,58 @@ const VirementTable = ({ title }) => {
 
   const { pageIndex, pageSize } = state;
 
+  // Table instance setup remains the same
+
+  useEffect(() => {
+    let filtered = [...virementData]; // Make a copy of the original data
+
+    const now = new Date();
+
+    if (dateFilter !== "tous") {
+      switch (dateFilter) {
+        case "aujourd'hui":
+          filtered = filtered.filter((item) =>
+            isSameDay(new Date(item.createdAt), now)
+          );
+          break;
+        case "7_Dernier_Jours":
+          filtered = filtered.filter((item) =>
+            isWithinInterval(new Date(item.createdAt), {
+              start: subDays(now, 7),
+              end: now,
+            })
+          );
+          break;
+        case "Dernier_Mois":
+          filtered = filtered.filter((item) =>
+            isWithinInterval(new Date(item.createdAt), {
+              start: startOfMonth(subMonths(now, 1)),
+              end: endOfMonth(subMonths(now, 1)),
+            })
+          );
+          break;
+        case "Derniére_Année":
+          filtered = filtered.filter((item) =>
+            isWithinInterval(new Date(item.createdAt), {
+              start: startOfYear(subYears(now, 1)),
+              end: endOfYear(subYears(now, 1)),
+            })
+          );
+          break;
+        default:
+          break;
+      }
+    }
+
+    if (typeVirementFilter !== "tous") {
+      filtered = filtered.filter(
+        (item) => item.typeVirement === typeVirementFilter
+      );
+    }
+
+    setFilteredData(filtered);
+  }, [dateFilter, typeVirementFilter, virementData]);
+
   return (
     <>
       <div className="bg-[#f7f5ef] p-6 rounded-lg">
@@ -132,27 +160,6 @@ const VirementTable = ({ title }) => {
           <p className="text-3xl font-semibold">{title}</p>
           <div className="flex items-center gap-2">
             <Select
-              // value={selectedOption}
-              // onChange={this.handleChange}
-              styles={{
-                control: (baseStyles, state) => ({
-                  ...baseStyles,
-                  borderRadius: "12px",
-                }),
-              }}
-              className="react-select "
-              classNamePrefix="select"
-              placeholder="dernier mois"
-              options={[
-                { label: "Aujourd'hui", value: "aujourd'hui" },
-                { label: "7 Dernier Jours", value: "7_Dernier_Jours" },
-                { label: "Dernier Mois", value: "Dernier_Mois" },
-                { label: "Derniére Année", value: "Derniére_Année" },
-              ]}
-            />
-            <Select
-              // value={selectedOption}
-              // onChange={this.handleChange}
               styles={{
                 control: (baseStyles, state) => ({
                   ...baseStyles,
@@ -161,10 +168,35 @@ const VirementTable = ({ title }) => {
               }}
               className="react-select"
               classNamePrefix="select"
+              // Update for date filter select
+              onChange={(option) => setDateFilter(option.value)}
+              // Existing styles and className configurations
+              placeholder="dernier mois"
+              options={[
+                { label: "tous", value: "tous" },
+                { label: "Aujourd'hui", value: "aujourd'hui" },
+                { label: "7 Dernier Jours", value: "7_Dernier_Jours" },
+                { label: "Dernier Mois", value: "Dernier_Mois" },
+                { label: "Derniére Année", value: "Derniére_Année" },
+              ]}
+            />
+            <Select
+              styles={{
+                control: (baseStyles, state) => ({
+                  ...baseStyles,
+                  borderRadius: "12px",
+                }),
+              }}
+              className="react-select"
+              classNamePrefix="select"
+              // Update for type of virement select
+              onChange={(option) => setTypeVirementFilter(option.value)}
+              // Existing styles and className configurations
               placeholder="type de virement"
               options={[
-                { label: "Participation", value: "participation" },
-                { label: "Cooptation", value: "cooptation" },
+                { label: "tous", value: "tous" },
+                { label: "Participation", value: "Participation" },
+                { label: "Cooptation", value: "Cooptation" },
               ]}
             />
           </div>

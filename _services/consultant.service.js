@@ -13,7 +13,8 @@ export const consultantService = {
   updateConsultantRIB,
   createCra,
   craAlreadyCreated,
-  getConsultantClosestEndDateMission
+  getConsultantClosestEndDateMission,
+  getConsultantVirements
 };
 
 async function getConsultantMissions(id) {
@@ -178,6 +179,20 @@ async function getConsultantClosestEndDateMission(id) {
   const response = await fetch(
     ApiConfigs.base_url +
       ApiConfigs.apis.consultant.getClosestEndDateMission.replace("{id}", id),
+    requestOptions
+  );
+  return handleResponse(response);
+}
+
+async function getConsultantVirements(id) {
+  const requestOptions = {
+    method: "GET",
+    headers: authHeader(),
+  };
+
+  const response = await fetch(
+    ApiConfigs.base_url +
+      ApiConfigs.apis.consultant.getVirements.replace("{id}", id),
     requestOptions
   );
   return handleResponse(response);
