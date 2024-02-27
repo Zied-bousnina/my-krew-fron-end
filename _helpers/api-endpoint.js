@@ -33,7 +33,8 @@ export const ApiConfigs = {
       updateStatusProcess: "users/validateProcessus/",
       sendNote: "users/sendNote/",
       getCRAinfoByMissionId : "users/GetCraByMissionId/",
-      validateCRA : "users/ValidateCRA/"
+      validateCRA : "users/ValidateCRA/",
+      AddVirement : "users/AddVirement/"
     },
     consultant: {
       getAllMissions: "consultant/getAllMissions/{id}",
@@ -57,7 +58,7 @@ export const ApiConfigs = {
       createPreRegistration2: "users/preRegistration/createPreRegistration2",
       createPreRegistration3: "users/preRegistration/createPreRegistration3",
       createPreRegistration4: "users/preRegistration/createPreRegistration4",
-      
+
     //  getPreregistrationByconsultant :"users/preRegistration/getPreregistration",
      getPreregistrationByconsultant :"users/preRegistration/getPreregistrationFirstMission",
     },

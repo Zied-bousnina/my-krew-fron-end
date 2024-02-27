@@ -35,6 +35,35 @@ import { Menu } from "@headlessui/react";
 import Link from "next/link";
 import { missionService } from "@/_services/mission.service";
 import Loading from "@/app/loading";
+import Modal from "@/components/ui/Modal";
+import Textinput from "@/components/ui/Textinput";
+import { useFormik } from "formik";
+import * as yup from "yup";
+const validationSchema = yup.object({
+    montant: yup.string()
+        .required("Ce champ est obligatoire")
+        .matches(/^\d+(\.\d{1,2})?€?$/, "Le montant doit être au format monétaire en euros"),
+});
+const ProfileLabel = (state, bgcolor) => {
+
+
+  return (
+    <div className={`flex items-center justify-between gap-3 p-4 w-[211px] h-[50px] ${bgcolor} border-[1.5px] border-[#EAE3D5] rounded-[8px]`}>
+      <div className="flex gap-2">
+
+        <div className="flex-none text-slate-600 dark:text-white text-sm font-normal items-center lg:flex  overflow-hidden text-ellipsis whitespace-nowrap">
+          <span className="overflow-hidden text-ellipsis whitespace-nowrap w-[85px] block font-semibold">
+           {state}
+          </span>
+        </div>
+      </div>
+      <span className="text-base inline-block ltr:ml-[10px] rtl:mr-[10px]">
+        <Icon icon="heroicons-outline:chevron-down"></Icon>
+      </span>
+    </div>
+  );
+};
+// import Virement from "@/components/ui/Virement";
 const ProjectPage = ({params}) => {
   const [selectedFilter, setSelectedFilter] = useState("Tous les Consultants");
   const  {consultants}  = useSelector((state) => state.rhconsultant);
@@ -42,6 +71,58 @@ const dispatch = useDispatch()
 const [infoPersoById, setinfoPersoById] = useState({})
 const [mission, setmission] = useState([])
 const [missionsPendingLoading, setmissionsPendingLoading] = useState(false)
+const [isloading, setisloading] = useState(false)
+const [showConfirmationPopup, setConfirmationPopup] = useState(false);
+const [updateIsloading, setupdateIsloading] = useState(false)
+const setOnCloseConfirmationPopupHandler = () => setConfirmationPopup(false);
+const [stepSelected, setstepSelected] = useState("Participation")
+
+
+const formik = useFormik({
+  initialValues: {
+      montant: "",
+
+  },
+  validationSchema: validationSchema,
+  onSubmit: (values) => {
+console.log(values, stepSelected)
+
+setupdateIsloading(true);
+      const formData = new FormData();
+      formData.append("montant", values.montant);
+
+      rhServices
+        .AddVirement({montant:values.montant, typeVirement:stepSelected}, params.id)
+        .then((res) => {
+          // toast.success("Mission ajoutée avec succès");
+
+          console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",res)
+          setOnCloseConfirmationPopupHandler()
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setupdateIsloading(false);
+          formik.resetForm();
+
+        });
+
+  },
+});
+const switchValidation = (value) => {
+  switch (value) {
+    case 'VALIDATED':
+      return 'Valideé';
+    case 'PENDING':
+      return 'En cours';
+    case 'NOTVALIDATED':
+      return 'En attente';
+    default:
+      // Handle other cases or invalid values
+      return 'En attente';
+  }
+};
 const valider = (paramss,id)=> {
 
   setmissionsPendingLoading(true)
@@ -401,8 +482,150 @@ console.log("mision-------------------", mission)
   const personalInfo = infoPersoById
   console.log("personal info",personalInfo )
 
+  const onchange = (status, step)=> {
+    console.log("selectedééééééééééééééééééééééééééé", stepSelected)
+    const data = {
+      status:status, step:step
+    }
+    console.log("3333333333333333333333",data)
+    setisloading(true)
+    // missionService.updateContractStatus(id, data).then((data) => {
+
+    //   setisloading(false)
+    //   console.log(data)
+    // }
+    // )
+    // .catch(err=> {
+
+    //   setisloading(false)
+    //   console.log(err)
+    // }).finally(()=> {
+
+    //   setisloading(false)
+    // }
+    // )
+  }
+
   return (
     <>
+      <Modal
+        title="..."
+        labelclassName="btn-outline-dark"
+        activeModal={showConfirmationPopup}
+        onClose={setOnCloseConfirmationPopupHandler}
+      >
+      <form onSubmit={formik.handleSubmit} dir="ltr">
+          <div className="flex flex-col items-center justify-between gap-5">
+            <p className="text-bold text-[32px] text-black-500">
+              Confirmez Vos Informations
+            </p>
+            <div className="flex flex-row gap-2 items-center justify-center text-center w-[350px] text-[18px] text-[#1E1E1E]">
+              <p>
+              <Textinput
+                id="montant"
+                name="montant"
+                placeholder="montant"
+                value={formik.values.montant}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.montant && Boolean(formik.errors.montant)
+                }
+                helperText={formik.touched.montant && formik.errors.montant}
+              />
+                   <Dropdown  label={ProfileLabel(stepSelected,"white" )} classMenuItems={`w-[211px] top-[50px] ${"black"} `} class={` ${"black"}`}>
+
+<Menu.Item key={1} className="bg-slate-100">
+{({ active }) => (
+    <div
+       onClick={(e) => {
+        setstepSelected(e.target.innerText)
+        onchange(e.target.innerText)
+        console.log("Step: ",e.target.innerText, "abc :")}}
+      className={`${
+        active
+          ? " ${bgColor} text-slate-900 dark:bg-slate-600 dark:text-slate-300 dark:bg-opacity-50"
+          : "text-slate-600 dark:text-slate-300 "
+      } block     ${
+        true
+          ? "border-t border-slate-100 dark:border-slate-700"
+          : ""
+      }`}
+    >
+      <div className={`block cursor-pointer px-4 py-2`}>
+        <div className="flex items-center">
+          <span className="block text-xl ltr:mr-3 rtl:ml-3">
+            {/* <Icon icon={item.icon} /> */}
+          </span>
+          <span className="block text-sm">Participation</span>
+        </div>
+      </div>
+    </div>
+  )}
+</Menu.Item>
+<Menu.Item key={2} className="bg-slate-100">
+{({ active }) => (
+    <div
+      onClick={(e) => {
+        setstepSelected(e.target.innerText)
+        onchange(e.target.innerText)
+        console.log(e.target.innerText)}}
+      className={`${
+        active
+          ? " ${bgColor} text-slate-900 dark:bg-slate-600 dark:text-slate-300 dark:bg-opacity-50"
+          : "text-slate-600 dark:text-slate-300"
+      } block     ${
+        true
+          ? "border-t border-slate-100 dark:border-slate-700"
+          : ""
+      }`}
+    >
+      <div className={`block cursor-pointer px-4 py-2`}>
+        <div className="flex items-center">
+          <span className="block text-xl ltr:mr-3 rtl:ml-3">
+            {/* <Icon icon={item.icon} /> */}
+          </span>
+          <span className="block text-sm">Cooptation</span>
+        </div>
+      </div>
+    </div>
+  )}
+</Menu.Item>
+
+</Dropdown>
+              </p>
+
+            </div>
+            <div className="flex gap-4">
+              <Button
+                text="Annuler"
+                className="bg-[#1E1E1E] w-[168px] h-[49px] text-white"
+                onClick={setOnCloseConfirmationPopupHandler}
+              />
+
+              <Button
+              type="submit"
+
+                text={
+                  updateIsloading ? (
+                    <div className="flex items-center gap-2">
+                      <span>En cours...</span>
+                      <div className="animate-spin w-5 h-5 border-t-2 border-b-2 border-[#1E1E1E] rounded-full"></div>
+                    </div>
+                  ) : (
+                    "Confirmer"
+                  )
+                }
+
+                className="bg-[#C9E2C4] w-[168px] h-[49px] text-[#1E1E1E]"
+                onClick={()=> {
+                  // update()
+                }}
+                disabled={updateIsloading}
+              />
+            </div>
+          </div>
+          </form>
+          </Modal>
     {
       infoIsloading ?
       <Loading />:
@@ -454,7 +677,9 @@ console.log("mision-------------------", mission)
                   <Image src="/assets/icons/chat.svg" className="w-4 h-4" />
                   <p className="text-[#503515] text-[14px]">Envoyer mail</p>
                 </div>
-                <div className="flex items-center justify-between bg-[#F7F5EF] px-3 rounded-[6px] gap-2 min-w-[127px] h-[36px] cursor-pointer">
+                <div
+                onClick={()=>setConfirmationPopup(true)}
+                 className="flex items-center justify-between bg-[#F7F5EF] px-3 rounded-[6px] gap-2 min-w-[127px] h-[36px] cursor-pointer">
                   <Image src="/assets/icons/plus.svg" className="w-4 h-4" />
                   <p className="text-[#503515] text-[14px]">Nv Virement</p>
                   <Image

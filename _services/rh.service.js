@@ -203,6 +203,24 @@ console.log(requestOptions)
   console.log("response",response)
   return handleResponse(response);
 }
+async function AddVirement ( data,id) {
+  console.log("++++++++++++++++++++++++++++", data)
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      ...authHeader(),
+      'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  };
+console.log(requestOptions)
+  const response = await fetch(
+    ApiConfigs.base_url + ApiConfigs.apis.rh.AddVirement + id,
+
+    requestOptions
+  );
+  console.log("response",response)
+  return handleResponse(response);
+}
 export const rhServices = {
   getAllConsultant,
   getStatistiques,
@@ -215,6 +233,7 @@ export const rhServices = {
   getConsultantInfoWithMissionById,
   getConsultantInfoWithMissionById2,
   getCRAinfoByMissionId,
-  validateCRA
+  validateCRA,
+  AddVirement
 
 };
