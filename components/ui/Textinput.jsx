@@ -27,7 +27,7 @@ const Textinput = ({
   onFocus,
   defaultValue,
   helperText,
-
+  comment=null,
   ...rest
 }) => {
   const [open, setOpen] = useState(false);
@@ -146,6 +146,17 @@ const Textinput = ({
           }`}
         >
           {helperText}
+        </div>
+      )}
+      {!!comment && (
+        <div
+          className={` mt-2 ${
+            msgTooltip
+              ? " inline-block bg-danger-500 text-white text-[10px] px-2 py-1 rounded"
+              : " text-danger-500 block text-sm"
+          }`}
+        >
+          <span className="font-semibold">Commentaire: </span>{comment}
         </div>
       )}
       {/* validated and success message*/}

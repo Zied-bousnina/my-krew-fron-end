@@ -6,6 +6,25 @@ import Textinput from "@/components/ui/Textinput";
 import Button from "@/components/ui/Button";
 import { missionService } from "@/_services/mission.service";
 import Loading from "@/app/loading";
+import * as yup from "yup";
+const validationSchema = yup.object({
+  firstName: yup.string().required("Ce champ est obligatoire"),
+  lastName: yup.string().required("Ce champ est obligatoire"),
+  position: yup.string().required("Ce champ est obligatoire"),
+  email: yup
+    .string()
+    .email("Email invalide")
+    .required("Ce champ est obligatoire"),
+  phoneNumber: yup.string().required("Ce champ est obligatoire"),
+  company: yup.string().required("Ce champ est obligatoire"),
+  metier: yup.string().required("Ce champ est obligatoire"),
+  secteur: yup.string().required("Ce champ est obligatoire"),
+  client: yup.string().required("Ce champ est obligatoire"),
+  simulation: yup.string().required("Ce champ est obligatoire"),
+  tjm: yup.number().required("Ce champ est obligatoire"),
+  debut: yup.string().required("Ce champ est obligatoire"),
+  fin: yup.string().required("Ce champ est obligatoire"),
+});
 
 const ConsultantMissionDetailsPage = () => {
   const { id } = useParams();
@@ -62,6 +81,22 @@ const ConsultantMissionDetailsPage = () => {
                   type="text"
                   placeholder="Votre nom"
                   className="bg-transparent rounded-xl"
+                  defaultValue={
+                    mission?.clientInfo?.clientContact?.lastName?.value
+                  }
+                  disabled={
+                    mission?.clientInfo?.clientContact?.lastName?.validated !==
+                    false
+                      ? true
+                      : false
+                  }
+                  comment={
+                    mission?.clientInfo?.clientContact?.lastName?.validated ===
+                    false
+                      ? mission?.clientInfo?.clientContact?.lastName
+                          ?.causeNonValidation
+                      : null
+                  }
                 />
                 <Icon
                   className={`absolute top-0 right-0 ${
@@ -76,50 +111,167 @@ const ConsultantMissionDetailsPage = () => {
                   }
                 />
               </div>
-              <Textinput
-                name="prenom"
-                label="Prenom"
-                type="text"
-                placeholder="Votre prenom"
-                className="bg-transparent rounded-xl"
-              />
-
-              <Textinput
-                name="email"
-                label="Addresse e-mail"
-                type="email"
-                placeholder="Votre addresse e-mail"
-                className="bg-transparent rounded-xl"
-              />
-              <Textinput
-                name="poste"
-                label="Poste"
-                type="text"
-                placeholder="Votre poste"
-                className="bg-transparent rounded-xl"
-              />
-              <Textinput
-                name="phone"
-                label="Numéro de téléphone"
-                type="number"
-                placeholder="Votre numéro de téléphone"
-                className="bg-transparent rounded-xl"
-              />
-              <Textinput
-                name="company"
-                label="Entreprise"
-                type="text"
-                placeholder="Votre Entreprise"
-                className="bg-transparent rounded-xl"
-              />
+              <div className="relative ">
+                <Textinput
+                  name="prenom"
+                  label="Prenom"
+                  type="text"
+                  placeholder="Votre prenom"
+                  className="bg-transparent rounded-xl"
+                  defaultValue={
+                    mission?.clientInfo?.clientContact?.firstName?.value
+                  }
+                  disabled={
+                    mission?.clientInfo?.clientContact?.firstName?.validated !==
+                    false
+                      ? true
+                      : false
+                  }
+                />
+                <Icon
+                  className={`absolute top-0 right-0 ${
+                    getTheRightIcon(
+                      mission?.clientInfo?.clientContact?.firstName?.validated
+                    ).color
+                  }`}
+                  icon={
+                    getTheRightIcon(
+                      mission?.clientInfo?.clientContact?.firstName?.validated
+                    ).icon
+                  }
+                />
+              </div>
+              <div className="relative ">
+                <Textinput
+                  name="email"
+                  label="Addresse e-mail"
+                  type="email"
+                  placeholder="Votre addresse e-mail"
+                  className="bg-transparent rounded-xl"
+                  defaultValue={
+                    mission?.clientInfo?.clientContact?.email?.value
+                  }
+                  disabled={
+                    mission?.clientInfo?.clientContact?.email?.validated !==
+                    false
+                      ? true
+                      : false
+                  }
+                />
+                <Icon
+                  className={`absolute top-0 right-0 ${
+                    getTheRightIcon(
+                      mission?.clientInfo?.clientContact?.email?.validated
+                    ).color
+                  }`}
+                  icon={
+                    getTheRightIcon(
+                      mission?.clientInfo?.clientContact?.email?.validated
+                    ).icon
+                  }
+                />
+              </div>
+              <div className="relative ">
+                <Textinput
+                  name="poste"
+                  label="Poste"
+                  type="text"
+                  placeholder="Votre poste"
+                  className="bg-transparent rounded-xl"
+                  defaultValue={
+                    mission?.clientInfo?.clientContact?.position?.value
+                  }
+                  disabled={
+                    mission?.clientInfo?.clientContact?.position?.validated !==
+                    false
+                      ? true
+                      : false
+                  }
+                />
+                <Icon
+                  className={`absolute top-0 right-0 ${
+                    getTheRightIcon(
+                      mission?.clientInfo?.clientContact?.position?.validated
+                    ).color
+                  }`}
+                  icon={
+                    getTheRightIcon(
+                      mission?.clientInfo?.clientContact?.position?.validated
+                    ).icon
+                  }
+                />
+              </div>
+              <div className="relative ">
+                <Textinput
+                  name="phone"
+                  label="Numéro de téléphone"
+                  type="text"
+                  placeholder="Votre numéro de téléphone"
+                  className="bg-transparent rounded-xl"
+                  defaultValue={
+                    mission?.clientInfo?.clientContact?.phoneNumber?.value
+                  }
+                  disabled={
+                    mission?.clientInfo?.clientContact?.phoneNumber
+                      ?.validated !== false
+                      ? true
+                      : false
+                  }
+                />
+                <Icon
+                  className={`absolute top-0 right-0 ${
+                    getTheRightIcon(
+                      mission?.clientInfo?.clientContact?.phoneNumber?.validated
+                    ).color
+                  }`}
+                  icon={
+                    getTheRightIcon(
+                      mission?.clientInfo?.clientContact?.phoneNumber?.validated
+                    ).icon
+                  }
+                />
+              </div>
+              <div className="relative ">
+                <Textinput
+                  name="company"
+                  label="Entreprise"
+                  type="text"
+                  placeholder="Votre Entreprise"
+                  className="bg-transparent rounded-xl"
+                  defaultValue={mission?.clientInfo?.company?.value}
+                  disabled={
+                    mission?.clientInfo?.company?.validated !== false
+                      ? true
+                      : false
+                  }
+                />
+                <Icon
+                  className={`absolute top-0 right-0 ${
+                    getTheRightIcon(mission?.clientInfo?.company?.validated)
+                      .color
+                  }`}
+                  icon={
+                    getTheRightIcon(mission?.clientInfo?.company?.validated)
+                      .icon
+                  }
+                />
+              </div>
             </div>
           </div>
-          <div>
+
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ConsultantMissionDetailsPage;
+
+
+{/* <div>
             <h6 className="font-semibold">Documents Associés</h6>
             <div className="flex sm:flex-row flex-col gap-4 mt-8">
-              {/*-------------card----------------------*/}
               <div className="flex flex-col items-center justify-between border rounded-lg p-6">
-                {/*icon*/}
                 <div className="flex item-center gap-2">
                   <Icon
                     icon="heroicons:identification"
@@ -128,14 +280,11 @@ const ConsultantMissionDetailsPage = () => {
                   />
                   <p className="text-xl font-semibold">CIN</p>
                 </div>
-                {/*ivoice date */}
                 <p className="text-gray-400 text-sm mt-2">Invoice date:</p>
-                {/*image*/}
                 <img
                   src={"/assets/images/placeholder/image-placeholder.png"}
                   className="mt-6 w-[250px] h-[150px] object-cover rounded-lg"
                 />
-                {/*button*/}
                 <div className="mt-6 flex justify-between items-center gap-2">
                   <Button
                     className="text-[#369ae7] text-sm font-light px-6 py-2 rounded-full bg-[#f0f8fc] "
@@ -147,9 +296,7 @@ const ConsultantMissionDetailsPage = () => {
                   />
                 </div>
               </div>
-              {/*-------------card----------------------*/}
               <div className="flex flex-col items-center justify-between border rounded-lg p-6">
-                {/*icon*/}
                 <div className="flex item-center gap-2">
                   <Icon
                     icon="heroicons:identification"
@@ -158,9 +305,7 @@ const ConsultantMissionDetailsPage = () => {
                   />
                   <p className="text-xl font-semibold">RIB</p>
                 </div>
-                {/*ivoice date */}
                 <p className="text-gray-400 text-sm mt-2">Invoice date:</p>
-                {/*image*/}
                 <img
                   src={"/assets/images/placeholder/image-placeholder.png"}
                   className="mt-6 w-[250px] h-[150px] object-cover rounded-lg"
@@ -178,11 +323,4 @@ const ConsultantMissionDetailsPage = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default ConsultantMissionDetailsPage;
+          </div> */}
