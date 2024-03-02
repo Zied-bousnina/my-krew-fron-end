@@ -41,6 +41,22 @@ export const rhMenuItems = [
   //   link: "/todo",
   // },
 ];
+export const AdminMenuItems = [
+  {
+    title: "Tableau de bord",
+    isHide: true,
+    icon: "heroicons-outline:home",
+    link: "/admin",
+    // project
+  },
+  {
+    title: "Members",
+    isHide: true,
+    icon: "heroicons-outline:home",
+    link: "/admin/members",
+    // project
+  },
+]
 export const consultantMenuItems = [
   // {
   //   isHeadr: true,

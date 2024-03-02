@@ -29,6 +29,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { rhMenuItems } from "@/constant/data";
 import { useDispatch } from "react-redux";
 import { refreshAuthentication } from "@/utils/auth";
+import AuthService from "@/_services/auth.service";
 export default function RootLayout({ children }) {
   const { width, breakpoints } = useWidth();
   const [collapsed] = useSidebar();
@@ -41,10 +42,21 @@ export default function RootLayout({ children }) {
   const userAuth = useSelector((state) => state.userAuth);
   const dispatch = useDispatch();
 
-  useLayoutEffect(() => {
-    refreshAuthentication(dispatch, router);
-  }, []);
 
+  const userShouldChangePassword = async () => {
+    const user = await AuthService.ShouldChangePassword();
+ if(user.shouldChangePass){
+    router.push("/change-password");
+
+ }
+}
+
+
+
+useLayoutEffect(() => {
+  refreshAuthentication(dispatch, router);
+  userShouldChangePassword()
+}, []);
   useEffect(() => {
     if (userAuth.role !== "RH" && userAuth.isLoggedIn) {
       router.push("/");

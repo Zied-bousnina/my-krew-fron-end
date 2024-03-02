@@ -76,5 +76,14 @@ export const ApiConfigs = {
       killMission: "mission/killMission/"
 
     },
+
+    admin: {
+      getALlRhUsers : "admin/Rh/getALlRhUsers",
+      changePassword : "admin/RH/reset-password",
+      AddNewRH : "admin/Rh/AddRH",
+
+      ShouldChangePassword : "admin/RH/ShouldChangePassword",
+      deleteRhAccount : "admin/RH/deleteRhAccount/"
+    }
   },
 };

@@ -10,7 +10,9 @@ const AuthService = {
   Register3,
   ForgotPassword,
   ResetPassword,
+  ChangePassword,
   VerifyToken,
+  ShouldChangePassword,
   getPreregistrationByconsultant
 };
 
@@ -69,6 +71,7 @@ async function handleResponse(response) {
 
     if (!response.ok) {
       if (response.status === 401) {
+        console.log("*********************************************************************** : ", response)
 
         window.location.href = "/login";
 
@@ -199,6 +202,47 @@ const response = await fetch(
 
 return handleResponseForgotPAss(response);
 }
+async function ChangePassword(data) {
+
+const requestOptions = {
+  method: "POST",
+  headers: {
+      ...authHeader(),
+
+    },
+    body:data,
+};
+
+
+const response = await fetch(
+    ApiConfigs.base_url + ApiConfigs.apis.admin.changePassword,
+    requestOptions
+
+);
+
+return handleResponseForgotPAss(response);
+}
+async function ShouldChangePassword() {
+
+const requestOptions = {
+  method: "GET",
+  headers: {
+      ...authHeader(),
+
+    },
+
+};
+
+
+const response = await fetch(
+    ApiConfigs.base_url + ApiConfigs.apis.admin.ShouldChangePassword,
+    requestOptions
+
+);
+
+return handleResponse(response);
+}
+
 
 async function VerifyToken(token, id) {
 

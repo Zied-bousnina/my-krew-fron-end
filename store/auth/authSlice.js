@@ -31,6 +31,9 @@ const authSlice = createSlice({
           case "RH":
             action.payload.router.push("/rh");
             break;
+          case "ADMIN":
+            action.payload.router.push("/admin");
+            break;
           case "CONSULTANT":
             switch (decodedToken?.preRegister?.[0]?.status) {
               case "NOTEXIST":

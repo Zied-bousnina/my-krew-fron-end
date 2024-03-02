@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, useLayoutEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { ToastContainer } from "react-toastify";
 import Header from "@/components/partials/header";
@@ -13,6 +13,7 @@ import useMenulayout from "@/hooks/useMenulayout";
 import useMenuHidden from "@/hooks/useMenuHidden";
 import Footer from "@/components/partials/footer";
 // import Breadcrumbs from "@/components/ui/Breadcrumbs";
+import Head from 'next/head'
 import MobileMenu from "@/components/partials/sidebar/MobileMenu";
 import useMobileMenu from "@/hooks/useMobileMenu";
 import useMonoChrome from "@/hooks/useMonoChrome";
@@ -25,7 +26,9 @@ import Loading from "@/components/Loading";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import useNavbarType from "@/hooks/useNavbarType";
 import { motion, AnimatePresence } from "framer-motion";
-import { rhMenuItems } from "@/constant/data";
+import { AdminMenuItems } from "@/constant/data";
+import { useDispatch } from "react-redux";
+import { refreshAuthentication } from "@/utils/auth";
 export default function RootLayout({ children }) {
   const { width, breakpoints } = useWidth();
   const [collapsed] = useSidebar();
@@ -35,14 +38,20 @@ export default function RootLayout({ children }) {
   const [navbarType] = useNavbarType();
   const [isMonoChrome] = useMonoChrome();
   const router = useRouter();
-  const { isAuth } = useSelector((state) => state.auth);
+  const userAuth = useSelector((state) => state.userAuth);
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   if (!isAuth) {
-  //     router.push("/");
-  //   }
-  //   //darkMode;
-  // }, [isAuth]);
+  useLayoutEffect(() => {
+    refreshAuthentication(dispatch, router);
+  }, []);
+
+  useEffect(() => {
+    console.log(userAuth.role )
+    if (userAuth.role !== "ADMIN" && userAuth.isLoggedIn) {
+      router.push("/");
+    }
+  }, [userAuth]);
+
   const location = usePathname();
   // header switch class
   const switchHeaderClass = () => {
@@ -71,13 +80,23 @@ export default function RootLayout({ children }) {
       ${navbarType === "floating" ? "has-floating" : ""}
       `}
     >
+     <Head>
+        <title>MY-KREW RH</title>
+        <meta property="og:title" content="My page title" key="title" />
+      </Head>
+      <Head>
+        <meta property="og:title" content="My new title" key="title" />
+      </Head>
       <ToastContainer />
-      <Header className={width > breakpoints.xl ? switchHeaderClass() : ""} />
+      <Header
+        isRh={true}
+        className={width > breakpoints.xl ? switchHeaderClass() : ""}
+      />
       {menuType === "vertical" && width > breakpoints.xl && !menuHidden && (
-        <Sidebar menuItems={rhMenuItems} />
+        <Sidebar menuItems={AdminMenuItems} />
       )}
       <MobileMenu
-        menuItems={rhMenuItems}
+        menuItems={AdminMenuItems}
         className={`${
           width < breakpoints.xl && mobileMenu
             ? "left-0 visible opacity-100  z-[9999]"
@@ -91,7 +110,7 @@ export default function RootLayout({ children }) {
           onClick={() => setMobileMenu(false)}
         ></div>
       )}
-      <Settings />
+      {/* <Settings /> */}
       <div
         className={`content-wrapper transition-all duration-150 ${
           width > 1280 ? switchHeaderClass() : ""
@@ -130,7 +149,7 @@ export default function RootLayout({ children }) {
               }}
             >
               <Suspense fallback={<Loading />}>
-                <Breadcrumbs menuItems={rhMenuItems} />
+                <Breadcrumbs menuItems={AdminMenuItems} />
                 {children}
               </Suspense>
             </motion.div>
