@@ -39,6 +39,7 @@ import Modal from "@/components/ui/Modal";
 import Textinput from "@/components/ui/Textinput";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import Adddocument from "@/components/ui/modals/pages/admin-home/addnewRhAccount/add-document-consultan";
 const validationSchema = yup.object({
     montant: yup.string()
         .required("Ce champ est obligatoire")
@@ -505,7 +506,8 @@ console.log("mision-------------------", mission)
     // }
     // )
   }
-
+  const [toggleDropdown, setToggleDropdown] = useState(false);
+  const [openAll, setopenAll] = useState(false);
   return (
     <>
       <Modal
@@ -665,7 +667,9 @@ console.log("mision-------------------", mission)
                     </p>
                   </div>
                 </div>
-                <div className="w-10 h-10 flex items-center justify-center bg-[#F7F5EF] rounded-full cursor-pointer hover:bg-[#EAE3D5]">
+                <div
+
+                className="w-10 h-10 flex items-center justify-center bg-[#F7F5EF] rounded-full cursor-pointer hover:bg-[#EAE3D5]">
                   <Image
                     src="/assets/icons/edit-pen.svg"
                     className="w-5 h-5 "
@@ -673,10 +677,12 @@ console.log("mision-------------------", mission)
                 </div>
               </div>
               <div className="mt-2 py-4 flex items-center gap-2 border-b-2 border-dotted  border-[#EFEBE1]">
-                <div className="flex items-center bg-[#F7F5EF] px-3 rounded-[6px] gap-2 min-w-[127px] h-[36px] cursor-pointer">
-                  <Image src="/assets/icons/chat.svg" className="w-4 h-4" />
-                  <p className="text-[#503515] text-[14px]">Envoyer mail</p>
-                </div>
+              <Adddocument
+                    data={params.id}
+                    toggleDropdown={toggleDropdown}
+                    setToggleDropdown={setToggleDropdown}
+                    refresh={()=>{fetchinfoPersoById()}}
+                  />
                 <div
                 onClick={()=>setConfirmationPopup(true)}
                  className="flex items-center justify-between bg-[#F7F5EF] px-3 rounded-[6px] gap-2 min-w-[127px] h-[36px] cursor-pointer">
@@ -708,7 +714,7 @@ console.log("mision-------------------", mission)
                   <Document
                     title="Fichier Simulation"
                     icon="/assets/icons/document.svg"
-                    date="May 29, 2022"
+                    date={infoPersoById?.consultant?.preRegister?.addedDate|| "2024-03-09T23:39:46.915Z"}
                     bgColor="bg-[#DD6E42]/20"
                     url={infoPersoById?.consultant?.preRegister?.missionInfo?.isSimulationValidated?.value}
                   />
@@ -717,17 +723,43 @@ console.log("mision-------------------", mission)
                   <Document
                     title="Permis de Conduire"
                     icon="/assets/icons/document.svg"
-                    date=" Feb 13, 2022"
+                    date={infoPersoById?.consultant?.preRegister?.addedDate || "2024-03-09T23:39:46.915Z"}
                     bgColor="bg-[#A67DB8]/20"
                     url={infoPersoById?.consultant?.preRegister?.personalInfo?.carInfo?.drivingLicense?.value
 }
                   />
                    }
+                   {
+                    (infoPersoById?.documents && openAll) &&
+                    infoPersoById?.documents.map((item, i) => (
+                      <Document
+                        key={i}
+                        title={item?.documentName}
+                        icon="/assets/icons/document.svg"
+                        date={item?.createdAt || "2024-03-09T23:39:46.915Z"}
+                        bgColor="bg-[#A67DB8]/20"
+                        url={item?.documentUrl}
+                      />
+                    ))
+
+                   }
                 </div>
+{
+  infoPersoById?.documents &&
+  (
 
                 <div className="w-full flex  justify-end mt-2">
-                  <p className="text-[14px] text-[#503515] ">Tout Afficher</p>
+                  <p className="text-[14px] text-[#503515] ">
+                  {openAll ?
+                  <span onClick={()=>setopenAll(false)} className="cursor-pointer">Fermer</span>
+                  :
+                  <span onClick={()=>setopenAll(true)} className="cursor-pointer">Voir Plus</span>
+
+                  }
+                 </p>
                 </div>
+  )
+}
               </div>
             </Card>
             {/* <Card>

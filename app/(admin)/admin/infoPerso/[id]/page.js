@@ -27,7 +27,7 @@ import Modal from "@/components/ui/Modal";
 import { rhServices } from "@/_services/rh.service";
 import Loading from "@/app/loading";
 import Switch from "./Switch";
-
+import { logServices } from "@/_services/log.service";
 
 const ValidationInfoPerso = ({params}) => {
   const [selectedFilter, setSelectedFilter] = useState("Tous les Consultants");
@@ -42,6 +42,32 @@ const [comment, setcomment] = useState({
 })
 const [switchStates, setSwitchStates] = useState({});
 const [comments, setComments] = useState({});
+const [logsPending, setlogsPending] = useState(false)
+const [resentsActivity, setresentsActivity] = useState([]);
+const getAlllogs = () => {
+  setlogsPending(true)
+  logServices.getlogs(5).then((data) => {
+
+    setlogsPending(false)
+
+    const convertDate = (date) => {
+      const d = new Date(date);
+      return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`
+    }
+console.log('"**********Logs***************"', data?.data)
+setresentsActivity(data?.data.map((item)=>({
+      id: item?._id,
+   action: item?.action,
+   details: item?.details,
+   createdAt: item?.createdAt
+    })))
+  }).catch((err) => {
+    setlogsPending(false)
+  })
+  .finally(() => {
+    setlogsPending(false)
+  })
+}
 const onChange = (e, inputComment) => {
 
   setComments({ ...comments, [inputComment]: e.target.value });
@@ -649,7 +675,9 @@ input.commentaire =="carInfo" ?
               <span className="absolute top-7 right-4 text-[13px] font-semibold text-[#D8CCB2] cursor-pointer hover:border-b hover:border-[#D8CCB2]">
                 Voir tout {">"}
               </span>
-              <MessageList />
+              <MessageList
+              resentsActivity={resentsActivity}
+               />
             </Card>
             <Card
               title="Nos consultants"

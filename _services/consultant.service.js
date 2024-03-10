@@ -14,7 +14,8 @@ export const consultantService = {
   createCra,
   craAlreadyCreated,
   getConsultantClosestEndDateMission,
-  getConsultantVirements
+  getConsultantVirements,
+  addDocument
 };
 
 async function getConsultantMissions(id) {
@@ -153,6 +154,18 @@ async function createCra(data) {
   };
   const response = await fetch(
     ApiConfigs.base_url + ApiConfigs.apis.consultant.createCra,
+    requestOptions
+  );
+  return handleResponse(response);
+}
+async function addDocument(data,consultantId) {
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader() },
+    body: data,
+  };
+  const response = await fetch(
+    ApiConfigs.base_url + ApiConfigs.apis.rh.addDocumentToConsultant+consultantId,
     requestOptions
   );
   return handleResponse(response);

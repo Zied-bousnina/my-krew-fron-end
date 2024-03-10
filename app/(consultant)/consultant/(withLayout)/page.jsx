@@ -17,6 +17,7 @@ import Dropdown from "@/components/ui/Dropdown";
 import Link from "next/link";
 import AddCRA from "@/components/ui/modals/pages/consultant-home/addCRA";
 import UpdateTJM from "@/components/ui/modals/pages/consultant-home/updateTJM";
+import { socket } from "@/socket";
 
 const MostSales = dynamic(
   () => import("@/components/partials/widget/most-sales"),
@@ -535,6 +536,7 @@ const ConsultantDashboard = () => {
   };
 
   useEffect(() => {
+
     groupAsyncFunctions();
   }, []);
 

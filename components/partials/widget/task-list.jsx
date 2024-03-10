@@ -42,6 +42,10 @@ const TaskLists = () => {
     },
   ]);
 
+
+
+  
+
   const deleteItem = (id) => {
     setLists(lists.filter((item) => item.id !== id));
   };

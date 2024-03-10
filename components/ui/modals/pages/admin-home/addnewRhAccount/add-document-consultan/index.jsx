@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Modal from "@/components/ui/Modal";
 import Fileinput from "@/components/ui/Fileinput";
+import Textinput from "@/components/ui/Textinput";
 import { ToastContainer, toast } from "react-toastify";
 import PageLoader from "@/components/ui/loaders/pageloader";
 import Icon from "@/components/ui/Icon";
@@ -9,33 +10,20 @@ import Button from "@/components/ui/Button";
 import { Menu } from "@headlessui/react";
 import ButtonLoader from "@/components/ui/loaders/buttonLoader";
 import { socket } from "@/socket";
-const AddCRA = ({ setToggleDropdown, toggleDropdown, data, refresh }) => {
+const Adddocument = ({ setToggleDropdown, toggleDropdown, data, refresh }) => {
   const [error, setError] = useState(null);
   const [activeModal, setActiveModal] = useState(false);
   const [craFile, setCraFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorInput, setErrorInput] = useState(null);
 
+  const [inputFileName, setinputFileName] = useState(null);
   const [craCreated, setCraCreated] = useState([]);
   const [craCreatedLoading, setCraCreatedLoading] = useState(false);
 
-  const getCreatedCraInCurrentMonth = () => {
-    setCraCreatedLoading(true);
-    consultantService
-      .craAlreadyCreated(data.id)
-      .then((res) => {
-        setCraCreated(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setCraCreatedLoading(false);
-      });
-  };
 
-  useEffect(() => {
-    getCreatedCraInCurrentMonth();
-  }, []);
+
+
 
   const onClose = () => {
     setActiveModal(false);
@@ -58,25 +46,31 @@ const AddCRA = ({ setToggleDropdown, toggleDropdown, data, refresh }) => {
     }
     return true;
   };
-
+  const validateInput = () => {
+    if (!inputFileName) {
+      setErrorInput("Ce champ est obligatoire");
+      return false;
+    }
+    return true;
+  };
+  const onchangeInput = (e) => {
+  setErrorInput(null); // Resetting error state on input change
+  setinputFileName(e.target.value); // Updating the state with the input's new value
+};
   const handleSubmit = () => {
-    if (validateFileInput()) {
+    console.log("submit", data)
+    if (validateFileInput() && validateInput()) {
       setIsLoading(true);
       const formData = new FormData();
-      formData.append("craFile", craFile);
-      formData.append("missionId", data.id);
+      formData.append("document", craFile);
+      formData.append("documentName", inputFileName);
+      formData.append("consultantId", data);
       consultantService
-        .createCra(formData)
+        .addDocument(formData, data)
         .then((_) => {
-          const dataToSocket= {
-            details:         "CRA",
-            pathurl: `CRA/${data.id}`,
-            idToPath:data.id, // Assuming this is related to the mission
 
-          }
-          socket.emit("NewCRA",dataToSocket);
           onClose();
-          toast.success("CRA créé avec succès");
+          toast.success("Document créé avec succès");
           refresh();
         })
         .catch((err) => {
@@ -90,13 +84,7 @@ const AddCRA = ({ setToggleDropdown, toggleDropdown, data, refresh }) => {
   };
   return (
     <>
-      {craCreatedLoading ? (
-        <div className="flex justify-center items-center py-1">
-          {" "}
-          <ButtonLoader />
-        </div>
-      ) : (
-        craCreated.length === 0 && (
+
           <div>
             <ToastContainer />
             <div onClick={onOpen}>
@@ -108,22 +96,35 @@ const AddCRA = ({ setToggleDropdown, toggleDropdown, data, refresh }) => {
                 <span className="text-base">
                   <Icon icon="heroicons:arrow-up-tray" width={15} />
                 </span>
-                <span>Ajouter CRA</span>
+                <span>Ajouter un nouveau document</span>
               </div>
             </div>
 
             <Modal
-              title="Ajouter CRA"
+              title="Ajouter un nouveau document"
               labelclassName="btn-outline-dark"
               activeModal={activeModal}
               onClose={onClose}
             >
+             <div>
+                <label className="form-label">Fichier </label>
+                <Textinput
+    id="firstName"
+    name="firstName"
+    placeholder="Nom"
+    value={inputFileName} // Use the state variable here
+    onChange={onchangeInput} // Attach the onchangeInput function here
+  />
+                {!!errorInput && (
+                  <p className="text-danger-500 text-sm mt-2">{errorInput}</p>
+                )}
+              </div>
               <div>
-                <label className="form-label">Fichier CRA</label>
+                <label className="form-label">Fichier </label>
                 <Fileinput
                   name="CRA "
-                  label="choisir un fichier CRA"
-                  placeholder="Fichier CRA"
+                  label="choisir un fichier "
+                  placeholder="Fichier "
                   selectedFile={craFile}
                   className={`pl-3 ${!!error && "border-2 border-danger-500"} `}
                   onChange={handleCraFileChange}
@@ -144,10 +145,9 @@ const AddCRA = ({ setToggleDropdown, toggleDropdown, data, refresh }) => {
               </div>
             </Modal>
           </div>
-        )
-      )}
+
     </>
   );
 };
 
-export default AddCRA;
+export default Adddocument;

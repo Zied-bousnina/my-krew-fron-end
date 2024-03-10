@@ -1,7 +1,11 @@
 import React from "react";
 import Image from "./Image";
-
+import { format } from 'date-fns';
 const Document = ({ icon, title, date, bgColor,url }) => {
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return format(date, 'MMM dd, yyyy'); // Formats the date to "Mar 09, 2024"
+  };
   const download = (filename, content) => {
     var element = document.createElement("a");
     element.setAttribute("href", content);
@@ -41,7 +45,7 @@ const Document = ({ icon, title, date, bgColor,url }) => {
         <div className="flex flex-col items-start">
           <p className="text-[17px] font-semibold text-[#323842]">{title}</p>
           <span className="text-[13px] text-[#9095A0]">
-            Invoice date: {date}
+            Invoice date: {formatDate(date)}
           </span>
         </div>
       </div>

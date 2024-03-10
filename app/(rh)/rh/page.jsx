@@ -38,6 +38,7 @@ import CustomTable from "@/components/partials/table/custom-table";
 import Dropdown from "@/components/ui/Dropdown";
 import { Menu } from "@headlessui/react";
 import Link from "next/link";
+import { logServices } from "@/_services/log.service";
 import { missionService } from "@/_services/mission.service";
 const MostSales = dynamic(
   () => import("@/components/partials/widget/most-sales"),
@@ -416,10 +417,37 @@ console.log('"*************************"', data)
 
   }
 
+  const [logsPending, setlogsPending] = useState(false)
+  const [resentsActivity, setresentsActivity] = useState([]);
+const getAlllogs = () => {
+  setlogsPending(true)
+  logServices.getlogs(5).then((data) => {
+
+    setlogsPending(false)
+
+    const convertDate = (date) => {
+      const d = new Date(date);
+      return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`
+    }
+console.log('"**********Logs***************"', data?.data)
+setresentsActivity(data?.data.map((item)=>({
+      id: item?._id,
+   action: item?.action,
+   details: item?.details,
+   createdAt: item?.createdAt
+    })))
+  }).catch((err) => {
+    setlogsPending(false)
+  })
+  .finally(() => {
+    setlogsPending(false)
+  })
+}
 useEffect(() => {
   getAllConsultant()
   getstatistiques()
   getAllPendingMission()
+  getAlllogs()
 }, [])
 
 
@@ -659,15 +687,25 @@ useEffect(() => {
           </div>
           <div className="lg:col-span-4 col-span-12 space-y-5">
             <Card
-              title="Historique des demandes"
+              title="Activités Récentes"
               className="border border-[#EAE3D5] bg-white relative"
             >
+                 {
+              logsPending ?
+              <Loading />
+              :
+
+<>
               <span className="absolute top-7 right-4 text-[13px] font-semibold text-[#D8CCB2] cursor-pointer hover:border-b hover:border-[#D8CCB2]">
                 Voir tout {">"}
               </span>
-              <MessageList />
+              <MessageList
+resentsActivity={resentsActivity}
+               />
+               </>
+            }
             </Card>
-            <Card
+            {/* <Card
               title="Nos consultants"
               className="border border-[#EAE3D5] bg-white relative"
             >
@@ -675,7 +713,7 @@ useEffect(() => {
                 Voir tout {">"}
               </span>
               <TaskLists />
-            </Card>
+            </Card> */}
           </div>
         </div>
         {/* <div className="grid xl:grid-cols-3 grid-cols-1 gap-5">

@@ -34,7 +34,8 @@ export const ApiConfigs = {
       sendNote: "users/sendNote/",
       getCRAinfoByMissionId : "users/GetCraByMissionId/",
       validateCRA : "users/ValidateCRA/",
-      AddVirement : "users/AddVirement/"
+      AddVirement : "users/AddVirement/",
+      addDocumentToConsultant: "users/addDocumentToConsultant/",
     },
     consultant: {
       getAllMissions: "consultant/getAllMissions/{id}",
@@ -50,7 +51,8 @@ export const ApiConfigs = {
       createCra: "consultant/createCra",
       craAlreadyCreated: "consultant/craAlreadyCreated/{id}",
       getClosestEndDateMission: "consultant/getClosestEndDateMission/{id}",
-      getVirements:"users/getVirements/{id}"
+      getAllDocument: "consultant/getAllDocument/",
+      getVirements:"users/getVirements/{id}",
 
 
     },
@@ -84,6 +86,13 @@ export const ApiConfigs = {
 
       ShouldChangePassword : "admin/RH/ShouldChangePassword",
       deleteRhAccount : "admin/RH/deleteRhAccount/"
+    },
+    log: {
+      getLogs: "users/fetchDataByUserId?limit=",
+    },
+    notifications: {
+      getnotifications : "users/fetchNotificationsByCurrentUser?limit=",
+      deleteNotificationById: "users/deleteNotificationById/"
     }
   },
 };

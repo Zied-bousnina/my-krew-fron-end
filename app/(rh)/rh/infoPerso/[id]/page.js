@@ -27,7 +27,7 @@ import Modal from "@/components/ui/Modal";
 import { rhServices } from "@/_services/rh.service";
 import Loading from "@/app/loading";
 import Switch from "./Switch";
-
+import { logServices } from "@/_services/log.service";
 
 const ValidationInfoPerso = ({params}) => {
   const [selectedFilter, setSelectedFilter] = useState("Tous les Consultants");
@@ -47,6 +47,7 @@ const onChange = (e, inputComment) => {
   setComments({ ...comments, [inputComment]: e.target.value });
 
 };
+
 const onSwitchChange = (inputComment) => {
   setSwitchStates((prevStates) => ({
     ...prevStates,
@@ -78,9 +79,36 @@ const fetchinfoPersoById = async () => {
   }
   )
 }
+const [logsPending, setlogsPending] = useState(false)
+  const [resentsActivity, setresentsActivity] = useState([]);
+const getAlllogs = () => {
+  setlogsPending(true)
+  logServices.getlogs(5).then((data) => {
+
+    setlogsPending(false)
+
+    const convertDate = (date) => {
+      const d = new Date(date);
+      return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`
+    }
+console.log('"**********Logs***************"', data?.data)
+setresentsActivity(data?.data.map((item)=>({
+      id: item?._id,
+   action: item?.action,
+   details: item?.details,
+   createdAt: item?.createdAt
+    })))
+  }).catch((err) => {
+    setlogsPending(false)
+  })
+  .finally(() => {
+    setlogsPending(false)
+  })
+}
 
 useEffect(() => {
   fetchinfoPersoById()
+  getAlllogs()
 }, [])
 const [updateIsloading, setupdateIsloading] = useState(false)
 const updatePreregistrationClientInfo= async (id, data) => {
@@ -643,13 +671,26 @@ input.commentaire =="carInfo" ?
           </div>
           <div className="lg:col-span-4 col-span-12 space-y-5">
             <Card
-              title="Historique des demandes"
+              title="Activités Récentes"
               className="border border-[#EAE3D5] bg-white relative"
             >
               <span className="absolute top-7 right-4 text-[13px] font-semibold text-[#D8CCB2] cursor-pointer hover:border-b hover:border-[#D8CCB2]">
                 Voir tout {">"}
               </span>
-              <MessageList />
+              {
+              logsPending ?
+              <Loading />
+              :
+
+<>
+              <span className="absolute top-7 right-4 text-[13px] font-semibold text-[#D8CCB2] cursor-pointer hover:border-b hover:border-[#D8CCB2]">
+                Voir tout {">"}
+              </span>
+              <MessageList
+resentsActivity={resentsActivity}
+               />
+               </>
+            }
             </Card>
             <Card
               title="Nos consultants"

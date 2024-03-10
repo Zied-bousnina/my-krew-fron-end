@@ -15,7 +15,7 @@ import ValidationCRA from "@/components/ui/ValidationCRA";
 import React, { useEffect, useState } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import ReactToPrint from "react-to-print";
-
+import { usePathname } from 'next/navigation'
 const ConsultantCompteRenduActivitePage = ({params}) => {
   const canvasRef = React.useRef(null);
   const [selectedDates, setSelectedDates] = useState([]);
@@ -23,6 +23,13 @@ const ConsultantCompteRenduActivitePage = ({params}) => {
   const [currentConsultant, setCurrentConsultant] = useState({});
   const [signatureUrl, setSignatureUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const pathname = usePathname()
+  const pathSegments = pathname.split('/').filter(Boolean);
+
+  // Get the first segment of the path
+  const firstSegment = pathSegments[0];
+  console.log("********************** path name*************", pathname.split('/')[1], "Type:", typeof pathname);
 
   const saveSignature = () => {
     // Assuming you have a button to trigger this function
@@ -37,16 +44,17 @@ const ConsultantCompteRenduActivitePage = ({params}) => {
     setSignatureUrl("");
   };
 
+
   const getCurrentConsultant = () => {
     setIsLoading(true);
     rhServices
       .getCRAinfoByMissionId(params.id)
       .then((res) => {
-        console.log(res)
+
         setCurrentConsultant(res);
       })
       .catch((err) => {
-        console.log(err);
+
       })
       .finally(() => {
         setIsLoading(false);
@@ -69,7 +77,8 @@ const ConsultantCompteRenduActivitePage = ({params}) => {
         return 'En attente';
     }
   };
-console.log(" {currentConsultant?.cra?.userId?.preRegister?.personalInfo?.firstName?.value}",  currentConsultant)
+
+
   return (
     <>
       {isLoading ? (

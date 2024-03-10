@@ -10,6 +10,8 @@ import { useFormik } from "formik";
 import { missionService } from "@/_services/mission.service";
 import { ToastContainer, toast } from "react-toastify";
 import ButtonLoader from "@/components/ui/loaders/buttonLoader";
+import { socket } from "@/socket";
+import { useSelector } from "react-redux";
 
 const validationSchema = yup.object({
   firstName: yup.string().required("Ce champ est obligatoire"),
@@ -34,7 +36,7 @@ const   AddNewMission = ({ refresh }) => {
   const [activeModal, setActiveModal] = useState(false);
   const [simulationFile, setSimulationFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
+  const userData =  useSelector(state=>state.userAuth)
   const onClose = () => {
     setActiveModal(false);
   };
@@ -99,9 +101,19 @@ const   AddNewMission = ({ refresh }) => {
         missionService
           .createMission(formData)
           .then((res) => {
+            console.log(res?.user)
+            const dataToSocket= {
+              details:         "test",
+              pathurl: `consultant/${res?.user?._id}`,
+              idToPath:res?.user?._id, // Assuming this is related to the mission
+              consultanName: res?.user?.personalInfo?.firstName  ,
+              consultantEmail: res.user.email,
+            }
+            socket.emit("newMission",dataToSocket);
             toast.success("Mission ajoutée avec succès");
             onClose();
             refresh();
+
           })
           .catch((err) => {
             console.log(err);
